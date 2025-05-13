@@ -4,6 +4,7 @@
 <dict>
 	<key>UIAppFonts</key>
 	<array>
+		<string>Poppins-Medium.ttf</string>
 		<string>Quicksand-SemiBold.ttf</string>
 		<string>Quicksand-Light.ttf</string>
 		<string>Quicksand-Bold.ttf</string>
