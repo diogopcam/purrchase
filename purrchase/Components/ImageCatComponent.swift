@@ -20,7 +20,7 @@ class ImageCatComponent: UIView {
     lazy var catImage : UIImageView  = {
         let icon = UIImageView()
         icon.translatesAutoresizingMaskIntoConstraints = false
-        icon.image = UIImage(named: "Cat-Image1")
+        icon.image = UIImage(named: "Cat-Image")
         icon.heightAnchor.constraint(equalToConstant: 215).isActive = true
         icon.widthAnchor.constraint(equalToConstant: 215).isActive = true
         return icon
@@ -62,8 +62,7 @@ class ImageCatComponent: UIView {
 }
 
 extension ImageCatComponent: ViewCodeProtocol {
-    
-    func addSubviews() {
+    func addSubViews() {
         addSubview(stack)
     }
     
@@ -77,5 +76,4 @@ extension ImageCatComponent: ViewCodeProtocol {
             //  stack.heightAnchor.constraint(equalToConstant: 257)
         ])
     }
-    
 }

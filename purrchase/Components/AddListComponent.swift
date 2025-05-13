@@ -94,8 +94,7 @@ class AddListComponent: UIView {
 }
 
 extension AddListComponent: ViewCodeProtocol {
-    
-    func addSubviews() {
+    func addSubViews() {
         addSubview(stack)
     }
     
