@@ -21,6 +21,11 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		A3BE9DAE2DD3D8E200C36CBF /* Fonts */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		ADD7F7E62DD3ADD30040F299 /* purrchase */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -45,6 +50,7 @@
 		ADD7F7DB2DD3ADD30040F299 = {
 			isa = PBXGroup;
 			children = (
+				A3BE9DAE2DD3D8E200C36CBF /* Fonts */,
 				ADD7F7E62DD3ADD30040F299 /* purrchase */,
 				ADD7F7E52DD3ADD30040F299 /* Products */,
 			);
@@ -74,6 +80,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				A3BE9DAE2DD3D8E200C36CBF /* Fonts */,
 				ADD7F7E62DD3ADD30040F299 /* purrchase */,
 			);
 			name = purrchase;
