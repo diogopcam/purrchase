@@ -45,7 +45,7 @@ class ListCard: UIView {
         var icon = UIImageView()
         icon.translatesAutoresizingMaskIntoConstraints = false
         icon.contentMode = .scaleAspectFit
-        icon.image = UIImage(systemName: "list.clipboard")
+        icon.image = UIImage(systemName: "list.bullet.clipboard")
         icon.tintColor = .textAndIcons
               
         return icon

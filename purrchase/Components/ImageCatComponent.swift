@@ -12,8 +12,14 @@ class ImageCatComponent: UIView {
     // MARK: Subviews
     private lazy var nameLabel: UILabel = {
         var label = UILabel()
-        label.font = UIFont(name: "Quicksand-Regular", size: 17)
+        label.font = UIFont(name: "Quicksand-SemiBold", size: 17)
         label.text = "Click on “Add List” to add a new list"
+        label.textColor = .grayText
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        label.textAlignment = .center
+        NSLayoutConstraint.activate([label.widthAnchor.constraint(equalToConstant: 215)]
+        )
         return label
     }()
     
@@ -30,6 +36,8 @@ class ImageCatComponent: UIView {
         var stack = UIStackView(arrangedSubviews: [catImage, nameLabel])
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.spacing = 0
+        stack.axis = .vertical
+        stack.alignment = .center
         return stack
     }()
     
