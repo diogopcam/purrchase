@@ -8,13 +8,7 @@
 import UIKit
 
 class ListsVC: UIViewController {
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupViews()
-    }
-    
-    
+
     lazy var welcomeLabel: UILabel = {
         var label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -35,6 +29,10 @@ class ListsVC: UIViewController {
     lazy var addListButton: AddListComponent = {
         var button = AddListComponent()
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addListButtonAction = { [weak self] in
+            self?.addListButtonTapped()
+        }
+
         return button
     }()
     
@@ -52,6 +50,17 @@ class ListsVC: UIViewController {
         list.translatesAutoresizingMaskIntoConstraints = false
         return list
     }()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupViews()
+    }
+    
+    @objc func addListButtonTapped() {
+        let addListVC = AddListVC()
+//        addListVC.delegate = self //Falta fazer essa parte
+        present(addListVC, animated: true)
+    }
 }
 
 extension ListsVC: ViewCodeProtocol {

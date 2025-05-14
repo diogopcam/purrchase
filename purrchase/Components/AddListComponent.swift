@@ -45,12 +45,12 @@ class AddListComponent: UIView {
             textStack.centerYAnchor.constraint(equalTo: button.centerYAnchor)
         ])
         
-        /// aqui fica a ação que o botão irá ativar (implementar de acordo futuramente)
-        //  button.addTarget(self, action: #selector(handleAddList), for: .touchUpInside)
+        button.addTarget(self, action: #selector(addListButtonTapped), for: .touchUpInside)
         
         button.backgroundColor = UIColor(named: "Primaria")
         button.layer.cornerRadius = 17
         button.heightAnchor.constraint(equalToConstant: 56).isActive = true
+        
         return button
     }()
 
@@ -81,6 +81,8 @@ class AddListComponent: UIView {
         return addListButton
     }
     
+    var addListButtonAction: () -> Void = {}    
+    
     // MARK: Initializers
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -89,6 +91,10 @@ class AddListComponent: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc func addListButtonTapped() {
+        addListButtonAction()
     }
     
 }
