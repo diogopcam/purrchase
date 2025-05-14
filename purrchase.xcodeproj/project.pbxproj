@@ -21,6 +21,11 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		AD6B6CA52DD5105600959215 /* Enums */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Enums;
+			sourceTree = "<group>";
+		};
 		ADD7F7E62DD3ADD30040F299 /* purrchase */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -47,6 +52,7 @@
 			children = (
 				ADD7F7E62DD3ADD30040F299 /* purrchase */,
 				ADD7F7E52DD3ADD30040F299 /* Products */,
+				AD6B6CA52DD5105600959215 /* Enums */,
 			);
 			sourceTree = "<group>";
 		};
@@ -74,6 +80,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				AD6B6CA52DD5105600959215 /* Enums */,
 				ADD7F7E62DD3ADD30040F299 /* purrchase */,
 			);
 			name = purrchase;
