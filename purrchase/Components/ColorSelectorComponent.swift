@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ColorSlectoComponent: UIView {
+class ColorSelector: UIView {
     
     private let colorNames: [UIColor] = [.circle1, .circle2, .circle3, .circle4, .circle5, .circle6]
     
@@ -52,7 +52,7 @@ class ColorSlectoComponent: UIView {
     }
 }
 
-extension ColorSlectoComponent: ViewCodeProtocol {
+extension ColorSelector: ViewCodeProtocol {
     func addSubViews() {
         addSubview(stackColorSelector)
     }
