@@ -50,6 +50,12 @@ class ListsVC: UIViewController {
         list.descriptionText = "Lista Padrão"
         list.titleText = "Rancho"
         list.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Adiciona o gesto de toque
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapListCard))
+        list.addGestureRecognizer(tapGesture)
+        list.isUserInteractionEnabled = true // Importante para views customizadas
+        
         return list
     }()
 }
@@ -94,5 +100,16 @@ extension ListsVC: ViewCodeProtocol {
     func setupViews() {
         addSubViews()
         setupConstraints()
+    }
+}
+
+// MARK: Funções do botão
+extension ListsVC {
+    @objc private func didTapListCard() {
+        let productsVC = ProductsVC()
+        navigationController?.pushViewController(productsVC, animated: true)
+        //navigationItem.backBarButtonItem?.title = "Lists"
+        //navigationItem.backBarButtonItem?.tintColor = .textAndIcons
+        //navigationController?.navigationBar.addButton(withTitle: <#T##String?#>)
     }
 }
