@@ -31,7 +31,7 @@ class AddListComponent: UIView {
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .horizontal
         stack.spacing = 10
-        stack.backgroundColor = UIColor(named: "Primaria")
+        stack.backgroundColor = .primary
         return stack
     }()
     
@@ -48,7 +48,7 @@ class AddListComponent: UIView {
         /// aqui fica a ação que o botão irá ativar (implementar de acordo futuramente)
         //  button.addTarget(self, action: #selector(handleAddList), for: .touchUpInside)
         
-        button.backgroundColor = UIColor(named: "Primaria")
+        button.backgroundColor = .primary
         button.layer.cornerRadius = 17
         button.heightAnchor.constraint(equalToConstant: 56).isActive = true
         return button
