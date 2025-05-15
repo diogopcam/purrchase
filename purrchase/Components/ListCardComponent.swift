@@ -57,7 +57,7 @@ class ListCard: UIView {
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.spacing = 120
         stack.layer.cornerRadius = 12
-        stack.backgroundColor = .circulo4
+        stack.backgroundColor = .circle4
         
         return stack
     }()
