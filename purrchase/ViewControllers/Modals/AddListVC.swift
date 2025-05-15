@@ -40,6 +40,7 @@ class AddListVC: UIViewController {
         view.endEditing(true)
     }
     
+    let imagePickerButton = ImagePickerButton()
     // FAZER A FUNCAO DO DoneButtonTapped
 //    func doneButtonTapped() {
         // falta coisa aq dentro
@@ -55,7 +56,6 @@ extension AddListVC: ViewCodeProtocol {
     
     func setupConstraints() {
         NSLayoutConstraint.activate([
-            
             header.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             header.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
