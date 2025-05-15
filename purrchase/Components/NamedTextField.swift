@@ -90,8 +90,4 @@ extension NamedTextField: ViewCodeProtocol {
             stackView.heightAnchor.constraint(equalToConstant: 42),
         ])
     }
-    
-    
-    
-    
 }

@@ -22,18 +22,28 @@ class InspirationVC: UIViewController {
         return label
     } ()
     
+    lazy var amount: AmountComponent = {
+        var amount = AmountComponent()
+        amount.translatesAutoresizingMaskIntoConstraints = false
+        return amount
+    }()
+    
 }
 
 extension InspirationVC: ViewCodeProtocol {
     
     func addSubViews() {
         view.addSubview(welcomeLabel)
+        view.addSubview(amount)
     }
     
     func setupConstraints() {
         NSLayoutConstraint.activate([
             welcomeLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            welcomeLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24)
+            welcomeLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+            amount.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor, constant: 24),
+            amount.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            amount.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16)
         ])
     }
     
