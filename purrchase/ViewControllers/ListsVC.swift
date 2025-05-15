@@ -116,9 +116,13 @@ extension ListsVC: ViewCodeProtocol {
 extension ListsVC {
     @objc private func didTapListCard() {
         let productsVC = ProductsVC()
+        let backButton = UIBarButtonItem(title: "Lists", style: .plain, target: nil, action: nil)
+        backButton.tintColor = .textAndIcons
+        navigationItem.backBarButtonItem = backButton
         navigationController?.pushViewController(productsVC, animated: true)
-        //navigationItem.backBarButtonItem?.title = "Lists"
-        //navigationItem.backBarButtonItem?.tintColor = .textAndIcons
-        //navigationController?.navigationBar.addButton(withTitle: <#T##String?#>)
+    }
+    
+    @objc private func addList() {
+        /// implementar quando tiver todas as ferramentas para tal
     }
 }

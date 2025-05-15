@@ -21,6 +21,7 @@ class InspirationVC: UIViewController {
         label.font = UIFont(name: "Quicksand-Bold", size: 32)
         return label
     } ()
+    
 }
 
 extension InspirationVC: ViewCodeProtocol {

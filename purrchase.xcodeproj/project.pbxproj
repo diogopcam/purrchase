@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		ADD7F7E42DD3ADD30040F299 /* purrchase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = purrchase.app; path = "/Users/diogpcam/academy-projects/purrchase/build/Debug-iphoneos/purrchase.app"; sourceTree = "<absolute>"; };
+		69D765ED2DD533FB00BD0D84 /* purrchase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = purrchase.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -52,6 +52,7 @@
 			children = (
 				ADD7F7E62DD3ADD30040F299 /* purrchase */,
 				AD6B6CA52DD5105600959215 /* Enums */,
+				69D765ED2DD533FB00BD0D84 /* purrchase.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -78,7 +79,7 @@
 			packageProductDependencies = (
 			);
 			productName = purrchase;
-			productReference = ADD7F7E42DD3ADD30040F299 /* purrchase.app */;
+			productReference = 69D765ED2DD533FB00BD0D84 /* purrchase.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */

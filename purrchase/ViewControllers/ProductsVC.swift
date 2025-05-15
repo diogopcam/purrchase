@@ -12,11 +12,23 @@ class ProductsVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(named: "NavBar-Icon1"),
+            style: .plain,
+            target: self,
+            action: #selector(handleAddProduct)
+        )
+        navigationController?.navigationBar.tintColor = .textAndIcons
         setupViews()
     }
     
+    @objc func handleAddProduct() {
+        print("Add Product Tapped!")
+        /// implementar quando tivermos o componente correspondente!!!
+    }
+    
     /// Aqui será necessário conversar com a modal AddList para pegar esse nome!
-    var listName: String = "Rancho da gigi" // botei essa String de exemplo!
+    var listName: String = "Rancho da gigi" /// botei essa String de exemplo!
     
     lazy var titleLabel: UILabel = {
         var label = UILabel()
@@ -30,6 +42,12 @@ class ProductsVC: UIViewController {
         var button = AddListComponent()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.name = "Add Product"
+        
+        // Adiciona o gesto de toque
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(addProductTapped))
+        button.addGestureRecognizer(tapGesture)
+        button.isUserInteractionEnabled = true // Importante para views customizadas
+        
         return button
     }()
     
@@ -74,4 +92,15 @@ extension ProductsVC: ViewCodeProtocol {
         addSubViews()
         setupConstraints()
     }
+}
+
+extension ProductsVC {
+    
+    @objc func addProductTapped() {
+        print("Add Product Tapped")
+        let addProductVC = AddProductVC()
+//        addProductVC.delegate = self //Falta fazer essa parte
+        present(addProductVC, animated: true)
+    }
+    
 }
