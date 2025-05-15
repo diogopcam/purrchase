@@ -26,7 +26,7 @@ class NamedTextField: UIView {
         let stackView = UIStackView(arrangedSubviews: [textLabel, textField])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.spacing = 4
-        stackView.backgroundColor = .primary
+        stackView.backgroundColor = UIColor.primary.withAlphaComponent(0.5)
         stackView.layer.cornerRadius = 12
         stackView.layoutMargins = .init(top: 0, left: 16, bottom: 0, right: 16)
         stackView.isLayoutMarginsRelativeArrangement = true
