@@ -22,8 +22,8 @@ class InspirationVC: UIViewController {
         return label
     } ()
     
-    lazy var amount: AmountComponent = {
-        var amount = AmountComponent()
+    lazy var amount: ZoomSliderComponent = {
+        var amount = ZoomSliderComponent()
         amount.translatesAutoresizingMaskIntoConstraints = false
         return amount
     }()
@@ -41,7 +41,7 @@ extension InspirationVC: ViewCodeProtocol {
         NSLayoutConstraint.activate([
             welcomeLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             welcomeLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
-            amount.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor, constant: 24),
+            amount.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor, constant: 40),
             amount.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             amount.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16)
         ])
