@@ -53,6 +53,7 @@ class AddProductVC: UIViewController {
        }
     
     override func viewDidLoad() {
+        imagePickerButton.configure(presentingController: self)
         super.viewDidLoad()
     
 //        imagePickerButton.configure(presentingController: self)
