@@ -1,0 +1,23 @@
+{
+  "images" : [
+    {
+      "filename" : "Vegetable=Sweet Potato.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "Vegetable=Sweet Potato@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "Vegetable=Sweet Potato@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
