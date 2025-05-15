@@ -60,6 +60,7 @@ class AddListVC: UIViewController {
         view.endEditing(true)
     }
     
+    let imagePickerButton = ImagePickerButton()
     // FAZER A FUNCAO DO DoneButtonTapped
 //    func doneButtonTapped() {
         // falta coisa aq dentro
