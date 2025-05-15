@@ -52,5 +52,3 @@ extension InspirationVC: ViewCodeProtocol {
         setupConstraints()
     }
 }
-
-

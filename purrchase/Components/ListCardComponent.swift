@@ -56,6 +56,7 @@ class ListCard: UIView {
         var stack = UIStackView(arrangedSubviews: [textsStack, icon])
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.spacing = 120
+        stack.alignment = .center
         stack.layer.cornerRadius = 12
         stack.backgroundColor = .circle4
         
@@ -112,8 +113,8 @@ extension ListCard: ViewCodeProtocol {
             icon.heightAnchor.constraint(equalToConstant: 43),
             icon.widthAnchor.constraint(equalToConstant: 40),
             
-            textsStack.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -12),
-            textsStack.topAnchor.constraint(equalTo: self.topAnchor, constant: 12)
+            textsStack.centerYAnchor.constraint(equalTo: iconAndTextStack.centerYAnchor)
+
         ])
     }
 }
