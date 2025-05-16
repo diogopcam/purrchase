@@ -39,15 +39,33 @@ class NamedTextField: UIView {
         }
     }
     
+    var nameFont: UIFont? {
+        didSet {
+            textLabel.font = nameFont
+        }
+    }
+    
     var placeholder: String? {
         didSet {
             textField.placeholder = placeholder
         }
     }
     
+    var placeholderFont: UIFont? {
+        didSet {
+            textField.attributedPlaceholder = NSAttributedString(string: placeholder ?? "", attributes: [NSAttributedString.Key.font: placeholderFont ?? UIFont.systemFont(ofSize: 17)])
+        }
+    }
+    
     override var backgroundColor: UIColor? {
         didSet {
             stackView.backgroundColor = backgroundColor
+        }
+    }
+    
+    var placeholderColor: UIColor? {
+        didSet {
+            textField.attributedPlaceholder = NSAttributedString(string: placeholder ?? "", attributes: [NSAttributedString.Key.foregroundColor: placeholderColor ?? UIColor.label])
         }
     }
     
