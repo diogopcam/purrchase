@@ -55,7 +55,9 @@ class ImagePickerOptionsView: UIView, UITableViewDelegate, UITableViewDataSource
             tableView.leftAnchor.constraint(equalTo: leftAnchor),
             tableView.rightAnchor.constraint(equalTo: rightAnchor),
             tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            tableView.heightAnchor.constraint(equalToConstant: CGFloat(options.count * 50))
+            tableView.heightAnchor.constraint(equalToConstant: 168),
+            tableView.widthAnchor.constraint(equalToConstant: 168),
+
         ])
     }
     

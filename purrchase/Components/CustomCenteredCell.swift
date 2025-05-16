@@ -50,7 +50,7 @@ class CustomCenteredCell: UITableViewCell {
         
         NSLayoutConstraint.activate([
             hStack.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            hStack.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+            hStack.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
         ])
     }
     
