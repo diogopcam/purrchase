@@ -39,7 +39,7 @@ class ListsVC: UIViewController {
     lazy var catIcon: ImageCatComponent = {
         var catIcon = ImageCatComponent()
         catIcon.translatesAutoresizingMaskIntoConstraints = false
-        catIcon.image = .cat
+        catIcon.image = .catBackground1
         return catIcon
     }()
     

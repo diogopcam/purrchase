@@ -34,7 +34,7 @@ class PantryVC: UIViewController {
     lazy var catIcon: ImageCatComponent = {
         var catIcon = ImageCatComponent()
         catIcon.translatesAutoresizingMaskIntoConstraints = false
-        catIcon.image = .catImage2
+        catIcon.image = .catBackground2
         catIcon.name = "Click on “Add Products” to add a new products"
         return catIcon
     }()
