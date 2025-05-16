@@ -4,6 +4,7 @@
 //
 //  Created by Diogo Camargo on 15/05/25.
 //
+//
 
 import UIKit
 
@@ -25,32 +26,37 @@ class CustomCenteredCell: UITableViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 17, weight: .light)
         label.textColor = .softGreen
-        label.textAlignment = .center
+        label.textAlignment = .center  // alinhado à esquerda (mais natural em lista)
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private let hStack: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
-        stack.spacing = 8
+        stack.spacing = 12
         stack.alignment = .center
-        stack.distribution = .equalCentering
+        stack.distribution = .fill
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        backgroundColor = .white
-        selectionStyle = .none
+        
+        backgroundColor = .backgroundWhite
+        contentView.backgroundColor = .backgroundWhite
+        selectionStyle = .default
         
         hStack.addArrangedSubview(iconImageView)
         hStack.addArrangedSubview(titleLabel)
         contentView.addSubview(hStack)
         
         NSLayoutConstraint.activate([
-            hStack.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            hStack.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            hStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            hStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            hStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
+            hStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
         ])
     }
     

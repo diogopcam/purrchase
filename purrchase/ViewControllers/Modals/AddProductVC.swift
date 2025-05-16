@@ -8,6 +8,9 @@
 import UIKit
 
 class AddProductVC: UIViewController {
+    private var dropdownView: ImagePickerOptionsView?
+    private var dropdownIsVisible = false
+    
     //MARK: Header
     lazy var header: NavBarComponent = {
         var header = NavBarComponent()
@@ -96,30 +99,12 @@ class AddProductVC: UIViewController {
 
        func configure(presentingController: UIViewController) {
            self.presentingController = presentingController
-           imagePickerButton.addTarget(self, action: #selector(showOptions), for: .touchUpInside)
        }
 
-       @objc private func showOptions() {
-           let alert = UIAlertController(title: "Escolha uma opção", message: nil, preferredStyle: .actionSheet)
-
-           alert.addAction(UIAlertAction(title: "Galeria", style: .default, handler: { _ in
-               print("Selecionou Galeria")
-           }))
-
-           alert.addAction(UIAlertAction(title: "Câmera", style: .default, handler: { _ in
-               print("Selecionou Câmera")
-           }))
-
-           alert.addAction(UIAlertAction(title: "Cancelar", style: .cancel, handler: nil))
-
-           presentingController?.present(alert, animated: true, completion: nil)
-       }
-    
     override func viewDidLoad() {
-        imagePickerButton.configure(presentingController: self)
         super.viewDidLoad()
-    
-//        imagePickerButton.configure(presentingController: self)
+        imagePickerButton.configure(presentingController: self)
+               setupDropdownToggle()
         
         let tapDismissKeyboard = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapDismissKeyboard)
@@ -132,11 +117,84 @@ class AddProductVC: UIViewController {
         view.endEditing(true)
     }
     
-    // FAZER A FUNCAO DO DoneButtonTapped
-//    func doneButtonTapped() {
-        // falta coisa aq dentro
-//        dismiss(animated: true)
-//    }
+    private func setupDropdownToggle() {
+        imagePickerButton.addTarget(self, action: #selector(toggleDropdown), for: .touchUpInside)
+    }
+    
+    @objc private func toggleDropdown() {
+        if dropdownIsVisible {
+            hideDropdown()
+        } else {
+            showDropdown()
+        }
+    }
+    
+    private func showDropdown() {
+        guard let button = imagePickerButton.superview else { return }
+        
+        let dropdown = ImagePickerOptionsView()
+        dropdown.translatesAutoresizingMaskIntoConstraints = false
+        dropdown.onSelect = { [weak self] index in
+            self?.handleDropdownSelection(index: index)
+            self?.hideDropdown()
+        }
+        
+        view.addSubview(dropdown)
+        
+        // Converte frame do botão para coordenadas da view principal
+        let buttonFrame = imagePickerButton.convert(imagePickerButton.bounds, to: view)
+        
+        NSLayoutConstraint.activate([
+            dropdown.topAnchor.constraint(equalTo: view.topAnchor, constant: buttonFrame.maxY + 4),
+            dropdown.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: buttonFrame.minX),
+            dropdown.widthAnchor.constraint(equalToConstant: buttonFrame.width),
+            dropdown.heightAnchor.constraint(equalToConstant: CGFloat(dropdown.options.count) * 44)
+        ])
+        
+        dropdown.alpha = 0
+        UIView.animate(withDuration: 0.25) {
+            dropdown.alpha = 1
+        }
+        
+        dropdownView = dropdown
+        dropdownIsVisible = true
+        
+        // Adicionar tap gesture para fechar dropdown ao clicar fora
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleOutsideTap(_:)))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+        outsideTapGesture = tapGesture
+    }
+    
+    private var outsideTapGesture: UITapGestureRecognizer?
+    
+    @objc private func handleOutsideTap(_ sender: UITapGestureRecognizer) {
+        guard let dropdown = dropdownView else { return }
+        let location = sender.location(in: view)
+        if !dropdown.frame.contains(location) && !imagePickerButton.frame.contains(location) {
+            hideDropdown()
+        }
+    }
+    
+    private func hideDropdown() {
+        guard let dropdown = dropdownView else { return }
+        UIView.animate(withDuration: 0.25, animations: {
+            dropdown.alpha = 0
+        }, completion: { _ in
+            dropdown.removeFromSuperview()
+        })
+        dropdownIsVisible = false
+        
+        if let tap = outsideTapGesture {
+            view.removeGestureRecognizer(tap)
+            outsideTapGesture = nil
+        }
+    }
+    
+    private func handleDropdownSelection(index: Int) {
+        print("Selecionou opção: \(dropdownView?.options[index].title ?? "")")
+        // Aqui você pode fazer a ação que quiser
+    }
 }
 
 extension AddProductVC: ViewCodeProtocol {
@@ -144,7 +202,6 @@ extension AddProductVC: ViewCodeProtocol {
         view.addSubview(header)
         //view.addSubview(photoAndNameStack)
         view.addSubview(stack)
-        //view.addSubview(imagePickerButton)
     }
     
     func setupConstraints() {
@@ -152,11 +209,6 @@ extension AddProductVC: ViewCodeProtocol {
             header.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             header.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-//            imagePickerButton.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 15),
-//            imagePickerButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-//            nameTextField.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 33),
-//            nameTextField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-//            nameTextField.leadingAnchor.constraint(equalTo: imagePickerButton.trailingAnchor, constant: 19)
             stack.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 15),
             stack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             stack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
