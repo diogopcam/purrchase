@@ -41,7 +41,7 @@ class ProductsVC: UIViewController {
     lazy var addProductButton: AddListComponent = {
         var button = AddListComponent()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.name = "Add products"
+        button.name = "Add Products"
         button.addListButtonAction = { [weak self] in
             self?.addProductTapped()
         }
@@ -52,7 +52,7 @@ class ProductsVC: UIViewController {
     lazy var catIcon: ImageCatComponent = {
         var catIcon = ImageCatComponent()
         catIcon.translatesAutoresizingMaskIntoConstraints = false
-        catIcon.image = UIImage(named: "Cat-Image2")
+        catIcon.image = .catBackground2
         catIcon.name = "Click on “Add Products” to add a new products"
         return catIcon
     }()

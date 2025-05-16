@@ -26,7 +26,7 @@ class ImageCatComponent: UIView {
     lazy var catImage : UIImageView  = {
         let icon = UIImageView()
         icon.translatesAutoresizingMaskIntoConstraints = false
-        icon.image = .cat
+//        icon.image = .back
         icon.heightAnchor.constraint(equalToConstant: 215).isActive = true
         icon.widthAnchor.constraint(equalToConstant: 215).isActive = true
         return icon
