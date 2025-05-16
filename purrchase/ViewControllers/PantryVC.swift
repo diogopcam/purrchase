@@ -21,13 +21,11 @@ class PantryVC: UIViewController {
     lazy var addProductButton: AddListComponent = {
         var button = AddListComponent()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.name = "Add Product"
-        
-        // Adiciona o gesto de toque
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(addProductTapped))
-        button.addGestureRecognizer(tapGesture)
-        button.isUserInteractionEnabled = true // Importante para views customizadas
-        
+        button.name = "Add Products"
+        button.addListButtonAction = { [weak self] in
+            self?.addProductTapped()
+        }
+                
         return button
     }()
     

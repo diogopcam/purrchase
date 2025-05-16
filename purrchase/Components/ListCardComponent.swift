@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ListCard: UIView {
+class ListCardComponent: UIView {
     
     // MARK: "Lista Padrão" description
     private lazy var descriptionTitleLabel: UILabel = {
@@ -59,7 +59,7 @@ class ListCard: UIView {
         stack.alignment = .center
         stack.layer.cornerRadius = 12
         stack.backgroundColor = .circle4
-        
+        stack.isUserInteractionEnabled = true // <- ESSENCIAL
         return stack
     }()
     
@@ -86,6 +86,7 @@ class ListCard: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
+        isUserInteractionEnabled = true // Garante que o componente recebe eventos
     }
     
     required init?(coder: NSCoder) {
@@ -93,7 +94,7 @@ class ListCard: UIView {
     }
 }
 
-extension ListCard: ViewCodeProtocol {
+extension ListCardComponent: ViewCodeProtocol {
     func addSubViews() {
         addSubview(iconAndTextStack)
     }

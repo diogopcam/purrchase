@@ -43,17 +43,16 @@ class ListsVC: UIViewController {
     }()
     
     //MARK: List
-    lazy var listCard: ListCard = {
-        var list = ListCard()
+    lazy var listCard: ListCardComponent = {
+        var list = ListCardComponent()
         list.descriptionText = "Lista Padrão"
         list.titleText = "Rancho"
         list.translatesAutoresizingMaskIntoConstraints = false
-        
-        // Adiciona o gesto de toque
+    
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapListCard))
         list.addGestureRecognizer(tapGesture)
-        list.isUserInteractionEnabled = true // Importante para views customizadas
-        
+        list.isUserInteractionEnabled = true
+    
         return list
     }()
     
@@ -98,6 +97,7 @@ extension ListsVC: ViewCodeProtocol {
             listCard.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             listCard.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             listCard.topAnchor.constraint(equalTo: addListButton.bottomAnchor, constant: 14),
+            listCard.heightAnchor.constraint(equalToConstant: 104),
             
             //MARK: Cat icon
             catIcon.topAnchor.constraint(equalTo: yellowView.bottomAnchor, constant: 236),
@@ -115,6 +115,7 @@ extension ListsVC: ViewCodeProtocol {
 // MARK: Funções do botão
 extension ListsVC {
     @objc private func didTapListCard() {
+        print("Botao clicado")
         let productsVC = ProductsVC()
         let backButton = UIBarButtonItem(title: "Lists", style: .plain, target: nil, action: nil)
         backButton.tintColor = .textAndIcons
