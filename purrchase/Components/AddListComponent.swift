@@ -14,6 +14,7 @@ class AddListComponent: UIView {
         var label = UILabel()
         label.font = UIFont(name: "Poppins-Medium", size: 24)
         label.text = "Add List"
+//        label.isUserInteractionEnabled = true
         return label
     }()
     
@@ -23,6 +24,7 @@ class AddListComponent: UIView {
         icon.image = UIImage(named: "GreenPlus-Icon")
         icon.heightAnchor.constraint(equalToConstant: 18).isActive = true
         icon.widthAnchor.constraint(equalToConstant: 19).isActive = true
+//        icon.isUserInteractionEnabled = true
         return icon
     }()
     
@@ -32,6 +34,7 @@ class AddListComponent: UIView {
         stack.axis = .horizontal
         stack.spacing = 10
         stack.backgroundColor = .primary
+        stack.isUserInteractionEnabled = false
         return stack
     }()
     
@@ -110,7 +113,8 @@ extension AddListComponent: ViewCodeProtocol {
             stack.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             stack.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             stack.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            stack.heightAnchor.constraint(equalToConstant: 56)
+            stack.heightAnchor.constraint(equalToConstant: 56),
+            
         ])
     }
     

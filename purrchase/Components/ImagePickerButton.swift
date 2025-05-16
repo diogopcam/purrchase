@@ -23,32 +23,61 @@ class ImagePickerButton: UIButton {
     // MARK: - Apresentação do Action Sheet
     private weak var presentingController: UIViewController?
     
-//    func configure(presentingController: UIViewController) {
-//        self.presentingController = presentingController
-////        self.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
-//    }
+    func configure(presentingController: UIViewController) {
+        self.presentingController = presentingController
+        self.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
+    }
     
-//    @objc private func handleTap() {
-//        presentOptions()
-//    }
+    @objc private func handleTap() {
+        guard let parentView = self.superview else { return }
 
-//    private func presentOptions() {
-//        guard let viewController = presentingController else { return }
-//
-//        let alert = UIAlertController(title: "Selecionar imagem", message: nil, preferredStyle: .actionSheet)
-//        
-//        alert.addAction(UIAlertAction(title: "Tirar Foto", style: .default, handler: { _ in
-//            print("Tirar foto selecionado")
-//        }))
-//        
-//        alert.addAction(UIAlertAction(title: "Escolher da Galeria", style: .default, handler: { _ in
-//            print("Escolher da galeria selecionado")
-//        }))
-//        
-//        alert.addAction(UIAlertAction(title: "Cancelar", style: .cancel))
-//
-//        viewController.present(alert, animated: true)
-//    }
+        // Criar a lista customizada
+        let optionsView = ImagePickerOptionsView()
+        optionsView.translatesAutoresizingMaskIntoConstraints = false
+
+        // Configurar ação quando uma opção for selecionada
+        optionsView.onSelect = { [weak self] index in
+            switch index {
+            case 0:
+                print("Galeria selecionada")
+            case 1:
+                print("Câmera selecionada")
+            case 2:
+                print("Cancelar selecionado")
+            default:
+                break
+            }
+            optionsView.removeFromSuperview()
+        }
+
+        parentView.addSubview(optionsView)
+
+        // Definir constraints para posicionar a lista logo abaixo do botão
+        NSLayoutConstraint.activate([
+            optionsView.topAnchor.constraint(equalTo: self.bottomAnchor, constant: 8),
+            optionsView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            optionsView.widthAnchor.constraint(equalToConstant: 180), // largura fixa para a lista
+            optionsView.heightAnchor.constraint(equalToConstant: CGFloat(optionsView.options.count * 50))
+        ])
+    }
+
+    private func presentOptions() {
+        guard let viewController = presentingController else { return }
+
+        let alert = UIAlertController(title: "Selecionar imagem", message: nil, preferredStyle: .actionSheet)
+        
+        alert.addAction(UIAlertAction(title: "Tirar Foto", style: .default, handler: { _ in
+            print("Tirar foto selecionado")
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Escolher da Galeria", style: .default, handler: { _ in
+            print("Escolher da galeria selecionado")
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Cancelar", style: .cancel))
+
+        viewController.present(alert, animated: true)
+    }
 }
 
 // MARK: - ViewCodeProtocol
