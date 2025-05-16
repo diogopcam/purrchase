@@ -12,21 +12,26 @@ class NamedDatePicker: UIView {
     private lazy var nameLabel: UILabel = {
         var label = UILabel()
         label.text = "Expirations Date"
-        label.font = UIFont(name: "SFProRounded-Semibold", size: 17)
+        label.font = UIFont(name: "Poppins-Medium", size: 17)
         return label
     }()
     
     private lazy var datePicker: UIDatePicker = {
         var datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
+        datePicker.tintColor = .textAndIcons
         return datePicker
     }()
 
-    private lazy var stack: UIStackView = {
-        var stack = UIStackView(arrangedSubviews: [nameLabel, datePicker])
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.spacing = 0
-        return stack
+    lazy var stack: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [nameLabel, datePicker])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.spacing = 4
+        stackView.backgroundColor = UIColor.primary.withAlphaComponent(0.5)
+        stackView.layer.cornerRadius = 12
+        stackView.layoutMargins = .init(top: 0, left: 16, bottom: 0, right: 5)
+        stackView.isLayoutMarginsRelativeArrangement = true
+        return stackView
     }()
     
     // MARK: Properties
