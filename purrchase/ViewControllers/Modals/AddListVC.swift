@@ -32,6 +32,7 @@ class AddListVC: UIViewController {
         var listNameTextField = NamedTextField()
         listNameTextField.name = "Name"
         listNameTextField.placeholder = "Name of the List"
+        listNameTextField.placeholderColor = .textAndIcons
         return listNameTextField
     }()
     

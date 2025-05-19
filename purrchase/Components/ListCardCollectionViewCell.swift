@@ -1,13 +1,15 @@
 //
-//  ListCard.swift
+//  CardCollectionViewCell.swift
 //  purrchase
 //
-//  Created by Maria Santellano on 13/05/25.
+//  Created by Maria Santellano on 19/05/25.
 //
 
 import UIKit
 
-class ListCardComponent: UIView {
+class ListCardCollectionViewCell: UICollectionViewCell {
+    
+    static let identifier: String = "listCardCollectionCell"
     
     // MARK: "Lista Padrão" description
     private lazy var descriptionTitleLabel: UILabel = {
@@ -18,7 +20,7 @@ class ListCardComponent: UIView {
         
         return label
     }()
-
+    
     //MARK: List Title
     private lazy var titleLabel: UILabel = {
         var title = UILabel()
@@ -47,7 +49,7 @@ class ListCardComponent: UIView {
         icon.contentMode = .scaleAspectFit
         icon.image = UIImage(systemName: "list.bullet.clipboard")
         icon.tintColor = .textAndIcons
-              
+        
         return icon
     }()
     
@@ -59,27 +61,17 @@ class ListCardComponent: UIView {
         stack.alignment = .center
         stack.layer.cornerRadius = 12
         stack.backgroundColor = .circle4
-        stack.isUserInteractionEnabled = true // <- ESSENCIAL
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(buttonTapped))
+        stack.addGestureRecognizer(tapGesture)
+        stack.isUserInteractionEnabled = true
         return stack
     }()
     
     //MARK: Properties
-    var descriptionText: String? {
-        didSet {
-            descriptionTitleLabel.text = descriptionText
-        }
-    }
-    
-    var titleText: String? {
-        didSet {
-            titleLabel.text = titleText
-        }
-    }
-    
-    var backgroundStack: UIColor? {
-        didSet {
-            iconAndTextStack.backgroundColor = backgroundStack
-        }
+    func configure(title: String, subTitle: String, bgColor: UIColor? = nil) {
+        titleLabel.text = title
+        descriptionTitleLabel.text = subTitle
+        iconAndTextStack.backgroundColor = bgColor
     }
     
     // MARK: Initializers
@@ -92,9 +84,16 @@ class ListCardComponent: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    var listCardTapped: () -> Void = {}
+    
+    @objc func buttonTapped() {
+        listCardTapped()
+    }
+
 }
 
-extension ListCardComponent: ViewCodeProtocol {
+extension ListCardCollectionViewCell: ViewCodeProtocol {
     func addSubViews() {
         addSubview(iconAndTextStack)
     }
@@ -115,7 +114,8 @@ extension ListCardComponent: ViewCodeProtocol {
             icon.widthAnchor.constraint(equalToConstant: 40),
             
             textsStack.centerYAnchor.constraint(equalTo: iconAndTextStack.centerYAnchor)
-
+            
         ])
     }
 }
+
