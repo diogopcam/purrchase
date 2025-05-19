@@ -8,6 +8,18 @@
 import UIKit
 
 class PantryVC: UIViewController {
+    let controller: PantryController
+    
+    // Inicializador customizado
+    init(controller: PantryController) {
+        self.controller = controller
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    // Obrigatório quando você customiza o init
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - ScrollView Container
         private lazy var scrollView: UIScrollView = {
@@ -277,7 +289,7 @@ extension PantryVC {
     
     @objc func addProductTapped() {
         print("Add Product Tapped")
-        let addProductVC = AddProductVC2()
+        let addProductVC = AddProductPantryVC()
 //        addProductVC.delegate = self //Falta fazer essa parte
         present(addProductVC, animated: true)
     }
