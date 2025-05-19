@@ -1,32 +1,19 @@
 import Foundation
 
 class PantryRepository {
-    private var pantry: [PantryProduct] = []
-    
-    // Carrega os produtos armazenados
+    private let storageKey = "pantry_products"
+
     func load() -> [PantryProduct] {
-        return pantry
+        if let data = UserDefaults.standard.data(forKey: storageKey),
+           let products = try? JSONDecoder().decode([PantryProduct].self, from: data) {
+            return products
+        }
+        return []
     }
-    
-    // Salva o array completo de produtos
+
     func save(_ products: [PantryProduct]) {
-        pantry = products
-    }
-    
-    // Adiciona um produto à lista local
-    func addProduct(_ product: PantryProduct) {
-        pantry.append(product)
-    }
-    
-    // Remove um produto por ID
-    func removeProduct(_ product: PantryProduct) {
-        pantry.removeAll { $0.id == product.id }
-    }
-    
-    // Atualiza um produto na lista local
-    func updateProduct(_ product: PantryProduct) {
-        if let index = pantry.firstIndex(where: { $0.id == product.id }) {
-            pantry[index] = product
+        if let data = try? JSONEncoder().encode(products) {
+            UserDefaults.standard.set(data, forKey: storageKey)
         }
     }
 }

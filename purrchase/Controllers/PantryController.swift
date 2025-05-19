@@ -2,36 +2,40 @@ import Foundation
 
 class PantryController {
     let repository = PantryRepository()
-    private(set) var pantryItems: [PantryProduct] = []
-    
+    private(set) var pantry: [PantryProduct] = []
+
     init() {
-        pantryItems = repository.load()
+        pantry = repository.load()
     }
-    
+
+    func getPantryItems() -> [PantryProduct] {
+        return pantry
+    }
+
     func addToPantry(_ product: PantryProduct) {
-        pantryItems.append(product)
-        repository.save(pantryItems)
+        pantry.append(product)
+        repository.save(pantry)
     }
-    
-    func removeFromPantry(at index: Int) {
-        guard index < pantryItems.count else { return }
-        pantryItems.remove(at: index)
-        repository.save(pantryItems)
+
+    func removeFromPantry(_ product: PantryProduct) {
+        pantry.removeAll { $0.id == product.id }
+        repository.save(pantry)
     }
-    
-    func updatePantryItem(at index: Int, with updatedProduct: PantryProduct) {
-        guard index < pantryItems.count else { return }
-        pantryItems[index] = updatedProduct
-        repository.save(pantryItems)
+
+    func updateProduct(_ product: PantryProduct) {
+        if let index = pantry.firstIndex(where: { $0.id == product.id }) {
+            pantry[index] = product
+            repository.save(pantry)
+        }
     }
-    
+
     func printAllPantryProducts() {
-        guard !pantryItems.isEmpty else {
+        guard !pantry.isEmpty else {
             print("Não há produtos na despensa.")
             return
         }
-        
-        for (index, product) in pantryItems.enumerated() {
+
+        for (index, product) in pantry.enumerated() {
             print("Produto \(index + 1):")
             print("  Nome: \(product.name)")
             print("  Categoria: \(product.category)")
