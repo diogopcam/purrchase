@@ -7,6 +7,8 @@
 import UIKit
 
 class AddListVC: UIViewController {
+    var controller: ProductListController!
+    
     //MARK: Header
     lazy var header: NavBarComponent = {
         var header = NavBarComponent()
@@ -19,9 +21,9 @@ class AddListVC: UIViewController {
             self?.dismiss(animated: true)
         }
         
-//        header.doneButtonAction = { [weak self] in
-//            self?.doneButtonTapped()
-//        }
+        header.doneButtonAction = {[weak self] in
+            self?.doneButtonTapped()
+        }
         
         return header
     }()
@@ -60,19 +62,25 @@ class AddListVC: UIViewController {
         view.endEditing(true)
     }
     
-    let imagePickerButton = ImagePickerButton()
-    // FAZER A FUNCAO DO DoneButtonTapped
-//    func doneButtonTapped() {
-        // falta coisa aq dentro
-//        dismiss(animated: true)
-//    }
+    func doneButtonTapped() {
+        print("Botão done pressionado! ")
+        guard let name = listName.text, !name.isEmpty else {
+            return
+        }
+        
+        let colorName = "Primary"
+        let newList = ProductList(list: [], colorName: colorName, name: name)
+        controller.addList(newList)
+        print("Lista adicionada!")
+        controller.repository.printAllProducts()
+        dismiss(animated: true)
+    }
 }
 
 extension AddListVC: ViewCodeProtocol {
     func addSubViews() {
         view.addSubview(header)
         view.addSubview(stackListDetails)
-
     }
     
     func setupConstraints() {
