@@ -106,7 +106,7 @@ extension PantryVC {
     
     @objc func addProductTapped() {
         print("Add Product Tapped")
-        let addProductVC = AddProductVC()
+        let addProductVC = AddProductVC2()
 //        addProductVC.delegate = self //Falta fazer essa parte
         present(addProductVC, animated: true)
     }
