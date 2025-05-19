@@ -8,6 +8,7 @@ import UIKit
 import Foundation
 
 final class Product: Codable {
+    var id = UUID()
     var name: String
     var category: Category
     var amount: Int

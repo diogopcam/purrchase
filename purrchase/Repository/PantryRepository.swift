@@ -8,21 +8,21 @@
 import Foundation
 
 class PantryRepository {
-    private var pantry: [Product] = []
+    private var pantry: [PantryProduct] = []
 
-    func getAllProducts() -> [Product] {
+    func getAllProducts() -> [PantryProduct] {
         return pantry
     }
 
-    func addProduct(_ product: Product) {
+    func addProduct(_ product: PantryProduct) {
         pantry.append(product)
     }
 
-    func removeProduct(_ product: Product) {
+    func removeProduct(_ product: PantryProduct) {
         pantry.removeAll { $0.id == product.id }
     }
 
-    func updateProduct(_ product: Product) {
+    func updateProduct(_ product: PantryProduct) {
         if let index = pantry.firstIndex(where: { $0.id == product.id }) {
             pantry[index] = product
         }

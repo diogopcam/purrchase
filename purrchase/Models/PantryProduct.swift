@@ -5,20 +5,28 @@
 //  Created by Diogo Camargo on 19/05/25.
 //
 
+
+//
+//  PantryProduct.swift
+//  purrchase
+//
+//  Created by Diogo Camargo on 19/05/25.
+//
+
 import UIKit
 import Foundation
 
-final class PantryProduct: Codable {
+class PantryProduct: Codable {
     var id = UUID()
     var name: String
     var category: Category
-    var image: UIImage?
+    var image: String
     var expirationDate: Date?
     var price: Double?
 
     init(name: String,
          category: Category,
-         image: UIImage? = nil,
+         image: String,
          expirationDate: Date? = nil,
          price: Double? = nil) {
         self.name = name

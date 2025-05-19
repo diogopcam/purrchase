@@ -1,13 +1,14 @@
 //
-//  AddProductVC2.swift
+//  AddProductPantryVC.swift
 //  purrchase
 //
 //  Created by Bernardo Garcia Fensterseifer on 16/05/25.
 //
 
 import UIKit
+import Foundation
 
-class AddProductVC2: UIViewController {
+class AddProductPantryVC: UIViewController {
     //MARK: Header
     lazy var header: NavBarComponent = {
         var header = NavBarComponent()
@@ -20,9 +21,9 @@ class AddProductVC2: UIViewController {
             self?.dismiss(animated: true)
         }
         
-//        header.doneButtonAction = { [weak self] in
-//            self?.doneButtonTapped()
-//        }
+        header.doneButtonAction = { [weak self] in
+            self?.doneButtonTapped()
+        }
         
         return header
     }()
@@ -132,14 +133,58 @@ class AddProductVC2: UIViewController {
         view.endEditing(true)
     }
     
-    // FAZER A FUNCAO DO DoneButtonTapped
-//    func doneButtonTapped() {
-        // falta coisa aq dentro
-//        dismiss(animated: true)
-//    }
+    func doneButtonTapped() {
+        print("Botão done pressionado!")
+
+        let requiredFields: [Validatable] = [nameTextField, price]
+
+        for field in requiredFields {
+            if !field.validate() {
+                showAlert(message: field.errorMessage ?? "Preencha todos os campos corretamente.")
+                return
+            }
+        }
+
+        guard let name = nameTextField.text, !name.isEmpty else {
+            showAlert(message: "O nome do produto é obrigatório.")
+            return
+        }
+
+        guard let selectedCategory = category.selectedCategory else {
+            showAlert(message: "Selecione uma categoria.")
+            return
+        }
+
+        guard let priceText = price.text?.replacingOccurrences(of: ",", with: "."), // trata vírgula
+              let priceValue = Double(priceText) else {
+            showAlert(message: "Digite um valor numérico válido para o preço.")
+            return
+        }
+
+        let expiration = expirationDate.date
+
+        let newProduct = PantryProduct(
+            name: name,
+            category: selectedCategory,
+            image: "IMAGEM", // aqui você pode trocar pela imagem real depois
+            expirationDate: expiration,
+            price: String(format: "%.2f", priceValue)
+        )
+
+        controller.addList(newProduct)
+        print("Produto adicionado!")
+        controller.repository.printAllProducts()
+        dismiss(animated: true)
+    }
+    
+    func showAlert(message: String) {
+        let alert = UIAlertController(title: "Atenção", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
 }
 
-extension AddProductVC2: ViewCodeProtocol {
+extension AddProductPantryVC: ViewCodeProtocol {
     func addSubViews() {
         view.addSubview(header)
         //view.addSubview(photoAndNameStack)

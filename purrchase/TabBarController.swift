@@ -21,7 +21,8 @@ class TabBarController: UITabBarController {
         listsNav.title = "List"
         listsNav.tabBarItem = UITabBarItem(title: "List", image: UIImage(systemName: "list.bullet"), tag: 0)
         
-        let pantryVC = PantryVC()
+        
+        let pantryVC = PantryVC(controller: PantryController(repository: <#PantryRepository#>))
         let pantryNav = UINavigationController(rootViewController: pantryVC)
         pantryNav.title = "Pantry"
         pantryNav.tabBarItem = UITabBarItem(title: "Pantry", image: UIImage(systemName: "bag.fill"), tag: 1)
