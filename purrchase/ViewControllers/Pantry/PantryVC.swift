@@ -118,9 +118,6 @@ class PantryVC: UIViewController {
         return collectionView
     }()
     
-    
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
@@ -289,7 +286,7 @@ extension PantryVC {
     
     @objc func addProductTapped() {
         print("Add Product Tapped")
-        let addProductVC = AddProductPantryVC()
+        let addProductVC = AddProductPantryVC(controller: controller)
 //        addProductVC.delegate = self //Falta fazer essa parte
         present(addProductVC, animated: true)
     }

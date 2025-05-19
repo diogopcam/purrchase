@@ -29,8 +29,6 @@ class AddProductVC: UIViewController {
         
         return header
     }()
-        
-    //let imagePickerButton = ImagePickerButton()
     
     lazy var imagePickerButton: ImagePickerButton = {
         let button = ImagePickerButton()
@@ -80,7 +78,6 @@ class AddProductVC: UIViewController {
         observationsTextField.placeholder = ""
         observationsTextField.nameFont = UIFont(name: "Poppins-Medium", size: 17)
         observationsTextField.heightAnchor.constraint(equalToConstant: 147).isActive = true
-        //observationsTextField.topAnchor.constraint(equalTo: self.topAnchor, constant: 11).isActive = true
         return observationsTextField
     }()
     
@@ -89,22 +86,14 @@ class AddProductVC: UIViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.spacing = 24
-        //stackView.alignment = .center
         stackView.distribution = .fill
         stackView.isUserInteractionEnabled = true
         return stackView
     }()
-    
-    private weak var presentingController: UIViewController?
-
-       func configure(presentingController: UIViewController) {
-           self.presentingController = presentingController
-       }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        imagePickerButton.configure(presentingController: self)
-               setupDropdownToggle()
+        setupDropdownToggle()
         
         let tapDismissKeyboard = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapDismissKeyboard)
@@ -141,7 +130,6 @@ class AddProductVC: UIViewController {
         
         view.addSubview(dropdown)
         
-        // Converte frame do botão para coordenadas da view principal
         let buttonFrame = imagePickerButton.convert(imagePickerButton.bounds, to: view)
         
         NSLayoutConstraint.activate([

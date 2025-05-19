@@ -9,7 +9,19 @@ import UIKit
 import Foundation
 
 class AddProductPantryVC: UIViewController {
-    var controller: PantryController!
+    private var dropdownView: ImagePickerOptionsView?
+    private var dropdownIsVisible = false
+    private var outsideTapGesture: UITapGestureRecognizer?
+    var controller: PantryController
+    
+    init(controller: PantryController) {
+        self.controller = controller
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     //MARK: Header
     lazy var header: NavBarComponent = {
@@ -29,8 +41,6 @@ class AddProductPantryVC: UIViewController {
         
         return header
     }()
-        
-    //let imagePickerButton = ImagePickerButton()
     
     lazy var imagePickerButton: ImagePickerButton = {
         let button = ImagePickerButton()
@@ -95,34 +105,9 @@ class AddProductPantryVC: UIViewController {
         return stackView
     }()
     
-    private weak var presentingController: UIViewController?
-
-       func configure(presentingController: UIViewController) {
-           self.presentingController = presentingController
-           imagePickerButton.addTarget(self, action: #selector(showOptions), for: .touchUpInside)
-       }
-
-       @objc private func showOptions() {
-           let alert = UIAlertController(title: "Escolha uma opção", message: nil, preferredStyle: .actionSheet)
-
-           alert.addAction(UIAlertAction(title: "Galeria", style: .default, handler: { _ in
-               print("Selecionou Galeria")
-           }))
-
-           alert.addAction(UIAlertAction(title: "Câmera", style: .default, handler: { _ in
-               print("Selecionou Câmera")
-           }))
-
-           alert.addAction(UIAlertAction(title: "Cancelar", style: .cancel, handler: nil))
-
-           presentingController?.present(alert, animated: true, completion: nil)
-       }
-    
     override func viewDidLoad() {
-        imagePickerButton.configure(presentingController: self)
         super.viewDidLoad()
-    
-//        imagePickerButton.configure(presentingController: self)
+        setupDropdownToggle()
         
         let tapDismissKeyboard = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapDismissKeyboard)
@@ -135,53 +120,109 @@ class AddProductPantryVC: UIViewController {
         view.endEditing(true)
     }
     
+    private func setupDropdownToggle() {
+        imagePickerButton.addTarget(self, action: #selector(toggleDropdown), for: .touchUpInside)
+    }
+    
+    @objc private func toggleDropdown() {
+        if dropdownIsVisible {
+            hideDropdown()
+        } else {
+            showDropdown()
+        }
+    }
+    
+    private func showDropdown() {
+        guard let button = imagePickerButton.superview else { return }
+        
+        let dropdown = ImagePickerOptionsView()
+        dropdown.translatesAutoresizingMaskIntoConstraints = false
+        dropdown.onSelect = { [weak self] index in
+            self?.handleDropdownSelection(index: index)
+            self?.hideDropdown()
+        }
+        
+        view.addSubview(dropdown)
+        
+        let buttonFrame = imagePickerButton.convert(imagePickerButton.bounds, to: view)
+        
+        NSLayoutConstraint.activate([
+            dropdown.topAnchor.constraint(equalTo: view.topAnchor, constant: buttonFrame.maxY + 4),
+            dropdown.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: buttonFrame.minX),
+            dropdown.widthAnchor.constraint(equalToConstant: buttonFrame.width),
+            dropdown.heightAnchor.constraint(equalToConstant: CGFloat(dropdown.options.count) * 44)
+        ])
+        
+        dropdown.alpha = 0
+        UIView.animate(withDuration: 0.25) {
+            dropdown.alpha = 1
+        }
+        
+        dropdownView = dropdown
+        dropdownIsVisible = true
+        
+        // Adicionar tap gesture para fechar dropdown ao clicar fora
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleOutsideTap(_:)))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+        outsideTapGesture = tapGesture
+    }
+    
+    @objc private func handleOutsideTap(_ sender: UITapGestureRecognizer) {
+        guard let dropdown = dropdownView else { return }
+        let location = sender.location(in: view)
+        if !dropdown.frame.contains(location) && !imagePickerButton.frame.contains(location) {
+            hideDropdown()
+        }
+    }
+    
+    private func hideDropdown() {
+        guard let dropdown = dropdownView else { return }
+        UIView.animate(withDuration: 0.25, animations: {
+            dropdown.alpha = 0
+        }, completion: { _ in
+            dropdown.removeFromSuperview()
+        })
+        dropdownIsVisible = false
+        
+        if let tap = outsideTapGesture {
+            view.removeGestureRecognizer(tap)
+            outsideTapGesture = nil
+        }
+    }
+    
+    private func handleDropdownSelection(index: Int) {
+        print("Selecionou opção: \(dropdownView?.options[index].title ?? "")")
+        // Aqui você pode fazer a ação que quiser
+    }
+    
     func doneButtonTapped() {
         print("Botão done pressionado!")
 
-//        let requiredFields: [Validatable] = [nameTextField, price]
-//
-//        for field in requiredFields {
-//            if !field.validate() {
-//                showAlert(message: field.errorMessage ?? "Preencha todos os campos corretamente.")
-//                return
-//            }
-//        }
-//
-//        guard let name = nameTextField.text, !name.isEmpty else {
-//            showAlert(message: "O nome do produto é obrigatório.")
-//            return
-//        }
-//
-//        guard let selectedCategory = category.selectedCategory else {
-//            showAlert(message: "Selecione uma categoria.")
-//            return
-//        }
-//
-//        guard let priceText = price.text?.replacingOccurrences(of: ",", with: "."), // trata vírgula
-//              let priceValue = Double(priceText) else {
-//            showAlert(message: "Digite um valor numérico válido para o preço.")
-//            return
-//        }
-//
-//        let expiration = expirationDate.date
-//        
-//        if let priceString = price.text, let priceDouble = Double(priceString) {
-//            let newProduct = PantryProduct(name: name, category: category.selectedCategory ?? Category.others, image: "IMAGEM", expirationDate: expirationDate.date, price: priceDouble)
-//            controller.addToPantry(newProduct)
-//            print("Produto adicionado!")
-//            controller.printAllPantryProducts()
-//            dismiss(animated: true)
-//        } else {
-//            print("Preço inválido, informe um valor numérico.")
-//            return
-//        }
+        guard let name = nameTextField.text, !name.isEmpty else {
+            print("O nome do produto é obrigatório.")
+            return
+        }
+
+        guard let selectedCategory = category.selectedCategory else {
+            print("Selecione uma categoria.")
+            return
+        }
+
+        guard let priceText = price.text?.replacingOccurrences(of: ",", with: "."),
+            let priceValue = Double(priceText) else {
+            print("Digite um valor numérico válido para o preço.")
+            return
+        }
+        
+        let expirationDate = expirationDate.date
+        
+        let pantryProduct = PantryProduct(name: name, category: selectedCategory, image: "IMAGEM", expirationDate: expirationDate, price: priceValue)
+        
+        controller.addToPantry(pantryProduct)
+        controller.printAllPantryProducts()
+        self.dismiss(animated: true)
     }
-    
-//    func showAlert(message: String) {
-//        let alert = UIAlertController(title: "Atenção", message: message, preferredStyle: .alert)
-//        alert.addAction(UIAlertAction(title: "OK", style: .default))
-//        present(alert, animated: true)
-//    }
 }
 
 extension AddProductPantryVC: ViewCodeProtocol {
