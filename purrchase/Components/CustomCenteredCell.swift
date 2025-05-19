@@ -26,7 +26,7 @@ class CustomCenteredCell: UITableViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 17, weight: .light)
         label.textColor = .softGreen
-        label.textAlignment = .center  // alinhado à esquerda (mais natural em lista)
+        label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -34,7 +34,7 @@ class CustomCenteredCell: UITableViewCell {
     private let hStack: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
-        stack.spacing = 12
+        stack.spacing = 6
         stack.alignment = .center
         stack.distribution = .fill
         stack.translatesAutoresizingMaskIntoConstraints = false
@@ -53,10 +53,9 @@ class CustomCenteredCell: UITableViewCell {
         contentView.addSubview(hStack)
         
         NSLayoutConstraint.activate([
-            hStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            hStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            hStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
-            hStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
+            hStack.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            hStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 15),
+            hStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -15)
         ])
     }
     
