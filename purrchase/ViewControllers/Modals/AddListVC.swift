@@ -6,6 +6,10 @@
 //
 import UIKit
 
+protocol AddListDelegate: AnyObject {
+    func didAddList(list: ProductList)
+}
+
 class AddListVC: UIViewController {
     var controller: ProductListController!
     
@@ -49,6 +53,8 @@ class AddListVC: UIViewController {
         return stackListDetails
     }()
     
+    weak var delegate: AddListDelegate?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -74,6 +80,8 @@ class AddListVC: UIViewController {
         controller.addList(newList)
         print("Lista adicionada!")
         controller.repository.printAllProducts()
+        
+        delegate?.didAddList(list: newList)
         dismiss(animated: true)
     }
 }

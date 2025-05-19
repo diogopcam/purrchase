@@ -60,7 +60,6 @@ class ListCardCollectionViewCell: UICollectionViewCell {
         stack.spacing = 120
         stack.alignment = .center
         stack.layer.cornerRadius = 12
-        stack.backgroundColor = .circle4
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(buttonTapped))
         stack.addGestureRecognizer(tapGesture)
         stack.isUserInteractionEnabled = true

@@ -13,6 +13,8 @@ class ProductListController {
     private(set) var lists: [ProductList] = []
     
     init() {
+        let defaultList = ProductList(list: [], colorName: "Circle-1", name: "Rancho1")
+        addList(defaultList)
         lists = repository.load()
     }
     
