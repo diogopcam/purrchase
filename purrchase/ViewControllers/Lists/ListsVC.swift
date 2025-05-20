@@ -10,15 +10,9 @@ import UIKit
 class ListsVC: UIViewController {
     
     let productListController: ProductListController
-
-    init(productListController: ProductListController) {
-         self.productListController = productListController
-         super.init(nibName: nil, bundle: nil)
-     }
-    let controller: ProductListController
     
-    init(controller: ProductListController) {
-        self.controller = controller
+    init(productListController: ProductListController) {
+        self.productListController = productListController
         super.init(nibName: nil, bundle: nil)
     }
     
