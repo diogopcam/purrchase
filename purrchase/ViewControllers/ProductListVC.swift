@@ -10,7 +10,6 @@ import UIKit
 class ProductListVC: UIViewController {
     let controller: ProductListController
     let productList: ProductList
-    var listOfProducts: [Product]
 
     private func updateCatIconVisibility() {
         catIcon.isHidden = !productList.list.isEmpty
@@ -19,7 +18,6 @@ class ProductListVC: UIViewController {
     init(controller: ProductListController, productList: ProductList) {
         self.controller = controller
         self.productList = productList
-        self.listOfProducts = productList.list
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -30,10 +28,10 @@ class ProductListVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         updateCatIconVisibility()
-        // 🔽 Aqui você imprime todos os produtos
+
         print("📦 Produtos da lista \(productList.name):")
         for product in productList.list {
-            print("- \(product.name)") // ou qualquer outra propriedade relevante
+            print("- \(product.name)")
         }
         
         view.backgroundColor = .systemBackground
@@ -50,7 +48,7 @@ class ProductListVC: UIViewController {
     
     @objc func handleAddProduct() {
         print("Add Product Tapped!")
-        /// implementar quando tivermos o componente correspondente!!!
+        // ainda será implementado
     }
     
     @objc func addProductTapped() {
@@ -58,35 +56,33 @@ class ProductListVC: UIViewController {
         addProductVC.delegate = self
         present(addProductVC, animated: true)
     }
-    
-    
+
     lazy var titleLabel: UILabel = {
-        var label = UILabel()
+        let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = productList.name
         label.font = UIFont(name: "Quicksand-Bold", size: 40)
         return label
-    } ()
+    }()
 
     lazy var addProductButton: AddListComponent = {
-        var button = AddListComponent()
+        let button = AddListComponent()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.name = "Add Products"
         button.addListButtonAction = { [weak self] in
             self?.addProductTapped()
         }
-
         return button
     }()
-    
+
     lazy var catIcon: ImageCatComponent = {
-        var catIcon = ImageCatComponent()
+        let catIcon = ImageCatComponent()
         catIcon.translatesAutoresizingMaskIntoConstraints = false
         catIcon.image = .catBackground2
         catIcon.name = "Click on “Add Products” to add a new products"
         return catIcon
     }()
-    
+
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -114,7 +110,6 @@ extension ProductListVC: ViewCodeProtocol {
     
     func setupConstraints() {
         NSLayoutConstraint.activate([
-            
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 98),
             titleLabel.heightAnchor.constraint(equalToConstant: 52),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
@@ -130,9 +125,9 @@ extension ProductListVC: ViewCodeProtocol {
             catIcon.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -94),
             
             collectionView.topAnchor.constraint(equalTo: addProductButton.bottomAnchor, constant: 24),
-                collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-                collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-                collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
     
@@ -148,7 +143,7 @@ extension ProductListVC: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return listOfProducts.count
+        return productList.list.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -158,14 +153,13 @@ extension ProductListVC: UICollectionViewDataSource {
             fatalError("Unable to dequeue CardCollectionViewCell")
         }
 
-        let product = listOfProducts[indexPath.item]
+        let product = productList.list[indexPath.item]
         cell.configure(title: product.name, pImage: .apple)
         return cell
     }
 }
 
 extension ProductListVC: UICollectionViewDelegateFlowLayout {
-    // Define o tamanho de cada célula
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -178,9 +172,8 @@ extension ProductListVC: UICollectionViewDelegateFlowLayout {
 
 extension ProductListVC: AddProductDelegate {
     func didAddProduct(_ product: Product) {
+        productList.list.append(product)
         updateCatIconVisibility()
-        listOfProducts.append(product)
         collectionView.reloadData()
     }
 }
-
