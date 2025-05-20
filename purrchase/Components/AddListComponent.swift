@@ -34,6 +34,9 @@ class AddListComponent: UIView {
         stack.axis = .horizontal
         stack.spacing = 10
         stack.backgroundColor = .primary
+        stack.heightAnchor.constraint(equalToConstant: 42).isActive = true
+        greenPlusIcon.centerYAnchor.constraint(equalTo: stack.centerYAnchor).isActive = true
+        stack.alignment = .center
         stack.isUserInteractionEnabled = false
         return stack
     }()
@@ -52,7 +55,7 @@ class AddListComponent: UIView {
         
         button.backgroundColor = .primary
         button.layer.cornerRadius = 17
-        button.heightAnchor.constraint(equalToConstant: 56).isActive = true
+        //button.heightAnchor.constraint(equalToConstant: 56).isActive = true
         
         return button
     }()

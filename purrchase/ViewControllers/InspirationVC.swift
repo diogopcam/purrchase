@@ -14,18 +14,26 @@ class InspirationVC: UIViewController {
         setupViews()
     }
     
-    lazy var welcomeLabel: UILabel = {
+    lazy var inspirationsLabel: UILabel = {
         var label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Welcome To Inspiration"
+        label.text = "Inspirations"
         label.font = UIFont(name: "Quicksand-Bold", size: 32)
         return label
-    } ()
+    }()
     
-    lazy var amount: ZoomSliderComponent = {
-        var amount = ZoomSliderComponent()
-        amount.translatesAutoresizingMaskIntoConstraints = false
-        return amount
+    private lazy var searchController: UISearchController = {
+        var search = UISearchController.create()
+        search.searchResultsUpdater = self
+        search.searchBar.delegate = self
+        return search
+    }()
+    
+    lazy var addNewRecipeButton: AddListComponent = {
+        var button = AddListComponent()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.name = "Add New Recipe"
+        return button
     }()
     
 }
@@ -33,22 +41,36 @@ class InspirationVC: UIViewController {
 extension InspirationVC: ViewCodeProtocol {
     
     func addSubViews() {
-        view.addSubview(welcomeLabel)
-        view.addSubview(amount)
+        view.addSubview(inspirationsLabel)
+        navigationItem.searchController = searchController
+        view.addSubview(searchController.searchBar)
+        view.addSubview(addNewRecipeButton)
     }
     
     func setupConstraints() {
         NSLayoutConstraint.activate([
-            welcomeLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            welcomeLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
-            amount.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor, constant: 40),
-            amount.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            amount.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16)
+            inspirationsLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            inspirationsLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            inspirationsLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            searchController.searchBar.topAnchor.constraint(equalTo: inspirationsLabel.bottomAnchor, constant: 16),
+            searchController.searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            searchController.searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            addNewRecipeButton.topAnchor.constraint(equalTo: inspirationsLabel.bottomAnchor, constant: 39),
+            addNewRecipeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            addNewRecipeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
         ])
     }
     
     func setupViews() {
         addSubViews()
         setupConstraints()
+    }
+    
+}
+
+// MARK: SearchResults
+extension InspirationVC: UISearchResultsUpdating, UISearchBarDelegate {
+    func updateSearchResults(for searchController: UISearchController) {
+        print("Degbug: \(searchController.searchBar.text ?? "")")
     }
 }
