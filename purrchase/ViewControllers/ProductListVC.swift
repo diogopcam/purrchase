@@ -10,10 +10,16 @@ import UIKit
 class ProductListVC: UIViewController {
     let controller: ProductListController
     let productList: ProductList
+    var listOfProducts: [Product]
+
+    private func updateCatIconVisibility() {
+        catIcon.isHidden = !productList.list.isEmpty
+    }
     
     init(controller: ProductListController, productList: ProductList) {
         self.controller = controller
         self.productList = productList
+        self.listOfProducts = productList.list
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -23,6 +29,13 @@ class ProductListVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        updateCatIconVisibility()
+        // 🔽 Aqui você imprime todos os produtos
+        print("📦 Produtos da lista \(productList.name):")
+        for product in productList.list {
+            print("- \(product.name)") // ou qualquer outra propriedade relevante
+        }
+        
         view.backgroundColor = .systemBackground
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(named: "NavBar-Icon1"),
@@ -30,6 +43,7 @@ class ProductListVC: UIViewController {
             target: self,
             action: #selector(handleAddProduct)
         )
+        
         navigationController?.navigationBar.tintColor = .textAndIcons
         setupViews()
     }
@@ -38,6 +52,13 @@ class ProductListVC: UIViewController {
         print("Add Product Tapped!")
         /// implementar quando tivermos o componente correspondente!!!
     }
+    
+    @objc func addProductTapped() {
+        let addProductVC = AddProductVC(controller: controller, productList: productList)
+        addProductVC.delegate = self
+        present(addProductVC, animated: true)
+    }
+    
     
     lazy var titleLabel: UILabel = {
         var label = UILabel()
@@ -66,6 +87,20 @@ class ProductListVC: UIViewController {
         return catIcon
     }()
     
+    lazy var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumInteritemSpacing = 12
+        layout.minimumLineSpacing = 16
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.register(CardCollectionViewCell.self, forCellWithReuseIdentifier: CardCollectionViewCell.identifier)
+        collectionView.backgroundColor = .clear
+        return collectionView
+    }()
 }
 
 extension ProductListVC: ViewCodeProtocol {
@@ -73,6 +108,7 @@ extension ProductListVC: ViewCodeProtocol {
     func addSubViews() {
         view.addSubview(titleLabel)
         view.addSubview(addProductButton)
+        view.addSubview(collectionView)
         view.addSubview(catIcon)
     }
     
@@ -92,6 +128,11 @@ extension ProductListVC: ViewCodeProtocol {
             catIcon.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 203),
             catIcon.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 93),
             catIcon.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -94),
+            
+            collectionView.topAnchor.constraint(equalTo: addProductButton.bottomAnchor, constant: 24),
+                collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+                collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+                collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
     
@@ -101,13 +142,45 @@ extension ProductListVC: ViewCodeProtocol {
     }
 }
 
-extension ProductListVC {
-    
-    @objc func addProductTapped() {
-        print("Add Product Tapped")
-        let addProductVC = AddProductVC(controller: controller, productList: productList)
-//        addProductVC.delegate = self //Falta fazer essa parte
-        present(addProductVC, animated: true)
+extension ProductListVC: UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
     }
-    
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return listOfProducts.count
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: CardCollectionViewCell.identifier,
+            for: indexPath) as? CardCollectionViewCell else {
+            fatalError("Unable to dequeue CardCollectionViewCell")
+        }
+
+        let product = listOfProducts[indexPath.item]
+        cell.configure(title: product.name, pImage: .apple)
+        return cell
+    }
 }
+
+extension ProductListVC: UICollectionViewDelegateFlowLayout {
+    // Define o tamanho de cada célula
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let totalSpacing = 12 * 3 // 3 espaços entre 4 itens
+        let width = (collectionView.bounds.width - CGFloat(totalSpacing)) / 4
+        return CGSize(width: width, height: 100)
+    }
+}
+
+extension ProductListVC: AddProductDelegate {
+    func didAddProduct(_ product: Product) {
+        updateCatIconVisibility()
+        listOfProducts.append(product)
+        collectionView.reloadData()
+    }
+}
+

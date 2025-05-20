@@ -11,9 +11,9 @@ class AddProductVC: UIViewController {
     private var dropdownView: ImagePickerOptionsView?
     private var dropdownIsVisible = false
     var controller: ProductListController
-    private let productList: ProductList      // <- nova propriedade
+    private let productList: ProductList
+    weak var delegate: AddProductDelegate?
 
-    
     init(controller: ProductListController, productList: ProductList) {
         self.controller = controller
         self.productList = productList
@@ -220,8 +220,9 @@ class AddProductVC: UIViewController {
         let product = Product(name: name, category: selectedCategory, amount: amountNum, observation: observationInfo, image: "IMAGEM")
             
         productList.list.append(product)
-        controller.updateList(productList)
         controller.repository.printAllProducts()
+        controller.updateList(productList)
+        delegate?.didAddProduct(product)
         self.dismiss(animated: true)
     }
 }
@@ -242,4 +243,8 @@ extension AddProductVC: ViewCodeProtocol {
             stack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
         ])
     }
+}
+
+protocol AddProductDelegate: AnyObject {
+    func didAddProduct(_ product: Product)
 }

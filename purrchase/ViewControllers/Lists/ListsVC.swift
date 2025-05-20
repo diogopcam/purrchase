@@ -65,6 +65,7 @@ class ListsVC: UIViewController {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(ListCardCollectionViewCell.self, forCellWithReuseIdentifier: ListCardCollectionViewCell.identifier)
         collectionView.dataSource = self
+        collectionView.isScrollEnabled = true
         
         return collectionView
     }()
