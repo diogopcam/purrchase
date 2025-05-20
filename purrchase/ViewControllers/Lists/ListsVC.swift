@@ -74,8 +74,8 @@ class ListsVC: UIViewController {
     }
     
     @objc func addListButtonTapped() {
-        addListVC.delegate = self
         let addListVC = AddListVC(controller: controller)
+        addListVC.delegate = self
         present(addListVC, animated: true)
     }
     
@@ -93,10 +93,6 @@ extension ListsVC {
         backButton.tintColor = .textAndIcons
         navigationItem.backBarButtonItem = backButton
         navigationController?.pushViewController(productsVC, animated: true)
-    }
-    
-    @objc private func addList() {
-        /// implementar quando tiver todas as ferramentas para tal
     }
 }
 
@@ -125,5 +121,4 @@ extension ListsVC: UICollectionViewDataSource {
         
         return cell
     }
-    
 }
