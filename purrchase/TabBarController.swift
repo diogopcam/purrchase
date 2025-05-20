@@ -15,7 +15,7 @@ class TabBarController: UITabBarController {
     }
     
     private func setupTabs() {
-        let listsVC = ListsVC(controller: ProductListController())
+        let listsVC = ListsVC(productListController: ProductListController())
         let listsNav = UINavigationController(rootViewController: listsVC)
         listsNav.title = "List"
         listsNav.tabBarItem = UITabBarItem(title: "List", image: UIImage(systemName: "list.bullet"), tag: 0)
