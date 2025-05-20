@@ -170,66 +170,6 @@ class PantryVC: UIViewController {
 }
 
 extension PantryVC: ViewCodeProtocol {
-    
-//    func addSubViews() {
-//        view.addSubview(titleLabel)
-//        view.addSubview(addProductButton)
-//        
-//        view.addSubview(sectionTitle1)
-//        view.addSubview(collectionView1)
-//        view.addSubview(sectionTitle2)
-//        view.addSubview(collectionView2)
-//        view.addSubview(sectionTitle3)
-//        view.addSubview(collectionView3)
-//        
-////        view.addSubview(catIcon)
-//    }
-//    
-//    func setupConstraints() {
-//        NSLayoutConstraint.activate([
-//            
-//            // MARK: titleLabel
-//            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 98),
-//            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-//            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-//            
-//            // MARK: button
-//            addProductButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 24),
-//            addProductButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-//            addProductButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-//            
-//            // MARK: catImage
-////            catIcon.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 211),
-////            catIcon.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 93),
-////            catIcon.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -94)
-//            
-//            // MARK: collectionViews
-//            sectionTitle1.topAnchor.constraint(equalTo: addProductButton.bottomAnchor, constant: 24),
-//            sectionTitle1.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-//            sectionTitle1.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-//            collectionView1.topAnchor.constraint(equalTo: sectionTitle1.bottomAnchor, constant: 24),
-//            collectionView1.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-//            collectionView1.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -0),
-//            sectionTitle2.topAnchor.constraint(equalTo: collectionView1.bottomAnchor, constant: 32),
-//            sectionTitle2.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-//            sectionTitle2.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-//            collectionView2.topAnchor.constraint(equalTo: sectionTitle2.bottomAnchor, constant: 24),
-//            collectionView2.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-//            collectionView2.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -0),
-//            sectionTitle3.topAnchor.constraint(equalTo: collectionView2.bottomAnchor, constant: 32),
-//            sectionTitle3.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-//            sectionTitle3.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-//            collectionView3.topAnchor.constraint(equalTo: sectionTitle3.bottomAnchor, constant: 24),
-//            collectionView3.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-//            collectionView3.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -0),
-//            
-//            collectionView1.heightAnchor.constraint(equalToConstant: 150),
-//            collectionView2.heightAnchor.constraint(equalToConstant: 150),
-//            collectionView3.heightAnchor.constraint(equalToConstant: 150)
-//            
-//        ])
-//    }
-    
     func addSubViews() {
             // Adiciona a scrollView e a stackView como container principal
             view.addSubview(scrollView)
