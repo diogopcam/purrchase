@@ -12,12 +12,12 @@ extension ListsVC {
         // Item
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
         
         // Group
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
              heightDimension: .absolute(104))
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-
         
         // Section
         let section = NSCollectionLayoutSection(group: group)
