@@ -66,11 +66,20 @@ class ListCardCollectionViewCell: UICollectionViewCell {
         return stack
     }()
     
+    private lazy var cardBackgroundView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.cornerRadius = 12
+        view.clipsToBounds = true
+        return view
+    }()
+    
     //MARK: Properties
     func configure(title: String, subTitle: String, bgColor: UIColor? = nil) {
         titleLabel.text = title
         descriptionTitleLabel.text = subTitle
-        iconAndTextStack.backgroundColor = bgColor
+        //iconAndTextStack.backgroundColor = bgColor
+        cardBackgroundView.backgroundColor = bgColor ?? .primary
     }
     
     // MARK: Initializers
@@ -94,12 +103,17 @@ class ListCardCollectionViewCell: UICollectionViewCell {
 
 extension ListCardCollectionViewCell: ViewCodeProtocol {
     func addSubViews() {
-        addSubview(iconAndTextStack)
+        addSubview(cardBackgroundView)
+        cardBackgroundView.addSubview(iconAndTextStack)
     }
     
     func setupConstraints() {
         NSLayoutConstraint.activate([
             
+            cardBackgroundView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            cardBackgroundView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            cardBackgroundView.topAnchor.constraint(equalTo: self.topAnchor),
+            cardBackgroundView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             
             iconAndTextStack.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             iconAndTextStack.trailingAnchor.constraint(equalTo: self.trailingAnchor),
