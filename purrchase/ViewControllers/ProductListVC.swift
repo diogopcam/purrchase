@@ -163,7 +163,7 @@ extension ProductListVC: UICollectionViewDataSource {
         // REMOVA ESTA LINHA: collectionView.dataSource = self
 
         let product = productList.list[indexPath.item]
-        cell.configure(title: product.name, pImage: .apple)
+        cell.configure(title: product.name, pImage: product.image)
         return cell
     }
 }

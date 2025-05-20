@@ -13,7 +13,9 @@ class AddProductVC: UIViewController {
     var controller: ProductListController
     private let productList: ProductList
     weak var delegate: AddProductDelegate?
-
+    private var selectedImage: UIImage?
+    private var outsideTapGesture: UITapGestureRecognizer?
+    
     init(controller: ProductListController, productList: ProductList) {
         self.controller = controller
         self.productList = productList
@@ -24,7 +26,7 @@ class AddProductVC: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: Header
+    // MARK: - UI Components
     lazy var header: NavBarComponent = {
         var header = NavBarComponent()
         header.translatesAutoresizingMaskIntoConstraints = false
@@ -46,6 +48,7 @@ class AddProductVC: UIViewController {
     lazy var imagePickerButton: ImagePickerButton = {
         let button = ImagePickerButton()
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(toggleDropdown), for: .touchUpInside)
         return button
     }()
     
@@ -103,7 +106,12 @@ class AddProductVC: UIViewController {
         stackView.isUserInteractionEnabled = true
         return stackView
     }()
+    
+    private func setupDropdownToggle() {
+          imagePickerButton.addTarget(self, action: #selector(toggleDropdown), for: .touchUpInside)
+      }
 
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupDropdownToggle()
@@ -115,12 +123,9 @@ class AddProductVC: UIViewController {
         setup()
     }
     
+    // MARK: - Actions
     @objc func dismissKeyboard() {
         view.endEditing(true)
-    }
-    
-    private func setupDropdownToggle() {
-        imagePickerButton.addTarget(self, action: #selector(toggleDropdown), for: .touchUpInside)
     }
     
     @objc private func toggleDropdown() {
@@ -160,14 +165,11 @@ class AddProductVC: UIViewController {
         dropdownView = dropdown
         dropdownIsVisible = true
         
-        // Adicionar tap gesture para fechar dropdown ao clicar fora
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleOutsideTap(_:)))
         tapGesture.cancelsTouchesInView = false
         view.addGestureRecognizer(tapGesture)
         outsideTapGesture = tapGesture
     }
-    
-    private var outsideTapGesture: UITapGestureRecognizer?
     
     @objc private func handleOutsideTap(_ sender: UITapGestureRecognizer) {
         guard let dropdown = dropdownView else { return }
@@ -193,41 +195,108 @@ class AddProductVC: UIViewController {
     }
     
     private func handleDropdownSelection(index: Int) {
-        print("Selecionou opção: \(dropdownView?.options[index].title ?? "")")
-        // Aqui você pode fazer a ação que quiser
+        switch index {
+        case 0: // Take photo
+            openCamera()
+        case 1: // Choose from gallery
+            openPhotoLibrary()
+        case 2: // Our library
+            // Implement your custom image library here
+            print("Our library selected")
+        default:
+            break
+        }
+    }
+    
+    private func openCamera() {
+        guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
+            showAlert(title: "Error", message: "Camera not available")
+            return
+        }
+        
+        let imagePicker = UIImagePickerController()
+        imagePicker.sourceType = .camera
+        imagePicker.delegate = self
+        present(imagePicker, animated: true)
+    }
+    
+    private func openPhotoLibrary() {
+        let imagePicker = UIImagePickerController()
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.delegate = self
+        present(imagePicker, animated: true)
     }
     
     func doneButtonTapped() {
-        print("Botão done pressionado!")
-
         guard let name = nameTextField.text, !name.isEmpty else {
-            print("O nome do produto é obrigatório.")
+            showAlert(title: "Name Required", message: "Please enter a product name")
             return
         }
 
         guard let selectedCategory = category.selectedCategory else {
-            print("Selecione uma categoria.")
+            showAlert(title: "Category Required", message: "Please select a category")
             return
         }
         
-        var amountNum = amount.value
-
-        guard let observationInfo = observations.text else {
-            print("Escreva uma observação")
-            return
+        let amountNum = amount.value
+        let observationInfo = observations.text ?? ""
+        let imageName = selectedImage != nil ? "product_\(UUID().uuidString).jpg" : "IMAGEM"
+        
+        if let image = selectedImage {
+            saveImageToDocuments(image: image, imageName: imageName)
         }
-    
-        let product = Product(name: name, category: selectedCategory, amount: amountNum, observation: observationInfo, image: "IMAGEM")
+        
+        let product = Product(name: name,
+                             category: selectedCategory,
+                             amount: amountNum,
+                             observation: observationInfo,
+                              image: selectedImage)
             
-        controller.repository.printAllProducts()
-        controller.updateList(productList)
         controller.addProduct(product, toListWithId: productList.id)
         delegate?.didAddProduct(product)
-        controller.repository.printAllProducts()
-        self.dismiss(animated: true)
+        dismiss(animated: true)
+    }
+    
+    private func saveImageToDocuments(image: UIImage, imageName: String) {
+        guard let data = image.jpegData(compressionQuality: 0.8) else { return }
+        
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let fileURL = documentsDirectory.appendingPathComponent(imageName)
+        
+        do {
+            try data.write(to: fileURL)
+            print("Image saved successfully at: \(fileURL.path)")
+        } catch {
+            print("Error saving image: \(error)")
+        }
+    }
+    
+    private func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
     }
 }
 
+// MARK: - Image Picker Delegate
+extension AddProductVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let image = info[.originalImage] as? UIImage {
+            selectedImage = image
+            imagePickerButton.setImage(image, for: .normal)
+            imagePickerButton.imageView?.contentMode = .scaleAspectFill
+            imagePickerButton.layer.cornerRadius = imagePickerButton.frame.width / 2
+            imagePickerButton.clipsToBounds = true
+        }
+        picker.dismiss(animated: true)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true)
+    }
+}
+
+// MARK: - View Code Protocol
 extension AddProductVC: ViewCodeProtocol {
     func addSubViews() {
         view.addSubview(header)
@@ -244,8 +313,14 @@ extension AddProductVC: ViewCodeProtocol {
             stack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
         ])
     }
+    
+    func setupViews() {
+        addSubViews()
+        setupConstraints()
+    }
 }
 
 protocol AddProductDelegate: AnyObject {
     func didAddProduct(_ product: Product)
 }
+
