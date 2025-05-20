@@ -8,7 +8,13 @@
 import UIKit
 
 class ListsVC: UIViewController {
+    
+    let productListController: ProductListController
 
+    init(productListController: ProductListController) {
+         self.productListController = productListController
+         super.init(nibName: nil, bundle: nil)
+     }
     let controller: ProductListController
     
     init(controller: ProductListController) {
@@ -20,7 +26,6 @@ class ListsVC: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-
     lazy var welcomeLabel: UILabel = {
         var label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -53,9 +58,10 @@ class ListsVC: UIViewController {
         var empty = EmptyStateComponent()
         empty.image = .catBackground1
         empty.translatesAutoresizingMaskIntoConstraints = false
-        empty.listCardTapped = { [weak self] in
-            self?.didTapListCard()
-        }
+        
+//        empty.listCardTapped = { [weak self] in
+//            self?.didTapListCard(with: productList)
+//        }
         
         return empty
     }()
@@ -75,26 +81,25 @@ class ListsVC: UIViewController {
     }
     
     @objc func addListButtonTapped() {
-        let addListVC = AddListVC()
-//        addListVC.delegate = self //Falta fazer essa parte
+        let addListVC = AddListVC(controller: productListController)
+        addListVC.delegate = self
         present(addListVC, animated: true)
+    }
+    
+    var sections: [ProductList] {
+        return productListController.lists
     }
 }
 
-
 // MARK: Funções do botão
 extension ListsVC {
-    @objc private func didTapListCard() {
-        print("Botao clicado")
-        let productsVC = ProductsVC()
+    func didTapListCard(with list: ProductList) {
+        print("Botão clicado - \(list.name)")
+        let productListVC = ProductListVC(controller: productListController, productList: list)
         let backButton = UIBarButtonItem(title: "Lists", style: .plain, target: nil, action: nil)
         backButton.tintColor = .textAndIcons
         navigationItem.backBarButtonItem = backButton
-        navigationController?.pushViewController(productsVC, animated: true)
-    }
-    
-    @objc private func addList() {
-        /// implementar quando tiver todas as ferramentas para tal
+        navigationController?.pushViewController(productListVC, animated: true)
     }
 }
 
@@ -105,7 +110,8 @@ extension ListsVC: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        10
+       collectionView.isHidden = sections.isEmpty
+        return sections.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -113,16 +119,16 @@ extension ListsVC: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ListCardCollectionViewCell.identifier, for: indexPath) as? ListCardCollectionViewCell
         else { fatalError() }
         
-//        cell.configure(title: indexPath.description, subTitle: indexPath.description, bgColor: UIColor.systemOrange)
+        let list = sections[indexPath.item]
+        
+        cell.configure(title: list.name, subTitle: "", bgColor: list.color)
         
         cell.listCardTapped = { [weak self] in
-            self?.didTapListCard()
+            guard let self = self else { return }
+            let selectedList = self.sections[indexPath.item]  // <- a lista clicada
+            self.didTapListCard(with: selectedList)
         }
         
-        cell.configure(title: "A", subTitle: "K", bgColor: .circle2)
-                
         return cell
     }
-    
 }
-

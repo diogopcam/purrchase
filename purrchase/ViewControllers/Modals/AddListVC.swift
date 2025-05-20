@@ -6,8 +6,21 @@
 //
 import UIKit
 
+protocol AddListDelegate: AnyObject {
+    func didAddList(list: ProductList)
+}
+
 class AddListVC: UIViewController {
-    var controller: ProductListController!
+    let controller: ProductListController
+    
+    init(controller: ProductListController) {
+        self.controller = controller
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     //MARK: Header
     lazy var header: NavBarComponent = {
@@ -49,6 +62,8 @@ class AddListVC: UIViewController {
         return stackListDetails
     }()
     
+    weak var delegate: AddListDelegate?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -74,6 +89,8 @@ class AddListVC: UIViewController {
         controller.addList(newList)
         print("Lista adicionada!")
         controller.repository.printAllProducts()
+        
+        delegate?.didAddList(list: newList)
         dismiss(animated: true)
     }
 }

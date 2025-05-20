@@ -10,6 +10,7 @@ import UIKit
 import Foundation
 
 class ProductList: Codable {
+    var id = UUID()
     var list: [Product]
     var colorName: String  // Nome da cor no Assets
     var name: String

@@ -10,6 +10,19 @@ import UIKit
 class AddProductVC: UIViewController {
     private var dropdownView: ImagePickerOptionsView?
     private var dropdownIsVisible = false
+    var controller: ProductListController
+    private let productList: ProductList      // <- nova propriedade
+
+    
+    init(controller: ProductListController, productList: ProductList) {
+        self.controller = controller
+        self.productList = productList
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     //MARK: Header
     lazy var header: NavBarComponent = {
@@ -23,14 +36,12 @@ class AddProductVC: UIViewController {
             self?.dismiss(animated: true)
         }
         
-//        header.doneButtonAction = { [weak self] in
-//            self?.doneButtonTapped()
-//        }
+        header.doneButtonAction = { [weak self] in
+            self?.doneButtonTapped()
+        }
         
         return header
     }()
-        
-    //let imagePickerButton = ImagePickerButton()
     
     lazy var imagePickerButton: ImagePickerButton = {
         let button = ImagePickerButton()
@@ -80,7 +91,6 @@ class AddProductVC: UIViewController {
         observationsTextField.placeholder = ""
         observationsTextField.nameFont = UIFont(name: "Poppins-Medium", size: 17)
         observationsTextField.heightAnchor.constraint(equalToConstant: 147).isActive = true
-        //observationsTextField.topAnchor.constraint(equalTo: self.topAnchor, constant: 11).isActive = true
         return observationsTextField
     }()
     
@@ -89,22 +99,14 @@ class AddProductVC: UIViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.spacing = 24
-        //stackView.alignment = .center
         stackView.distribution = .fill
         stackView.isUserInteractionEnabled = true
         return stackView
     }()
-    
-    private weak var presentingController: UIViewController?
-
-       func configure(presentingController: UIViewController) {
-           self.presentingController = presentingController
-       }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        imagePickerButton.configure(presentingController: self)
-               setupDropdownToggle()
+        setupDropdownToggle()
         
         let tapDismissKeyboard = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapDismissKeyboard)
@@ -141,7 +143,6 @@ class AddProductVC: UIViewController {
         
         view.addSubview(dropdown)
         
-        // Converte frame do botão para coordenadas da view principal
         let buttonFrame = imagePickerButton.convert(imagePickerButton.bounds, to: view)
         
         NSLayoutConstraint.activate([
@@ -195,12 +196,39 @@ class AddProductVC: UIViewController {
         print("Selecionou opção: \(dropdownView?.options[index].title ?? "")")
         // Aqui você pode fazer a ação que quiser
     }
+    
+    func doneButtonTapped() {
+        print("Botão done pressionado!")
+
+        guard let name = nameTextField.text, !name.isEmpty else {
+            print("O nome do produto é obrigatório.")
+            return
+        }
+
+        guard let selectedCategory = category.selectedCategory else {
+            print("Selecione uma categoria.")
+            return
+        }
+        
+        var amountNum = amount.value
+
+        guard let observationInfo = observations.text else {
+            print("Escreva uma observação")
+            return
+        }
+    
+        let product = Product(name: name, category: selectedCategory, amount: amountNum, observation: observationInfo, image: "IMAGEM")
+            
+        productList.list.append(product)
+        controller.updateList(productList)
+        controller.repository.printAllProducts()
+        self.dismiss(animated: true)
+    }
 }
 
 extension AddProductVC: ViewCodeProtocol {
     func addSubViews() {
         view.addSubview(header)
-        //view.addSubview(photoAndNameStack)
         view.addSubview(stack)
     }
     

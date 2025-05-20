@@ -109,3 +109,29 @@ extension NamedTextField: ViewCodeProtocol {
         ])
     }
 }
+
+extension NamedTextField: Validatable {
+    var errorMessage: String? {
+        switch name?.lowercased() {
+        case "name":
+            return "O campo Nome não pode estar vazio."
+        case "price":
+            return "Preço inválido. Digite apenas números."
+        default:
+            return "Campo inválido."
+        }
+    }
+
+    func validate() -> Bool {
+        guard let text = self.text?.trimmingCharacters(in: .whitespacesAndNewlines), !text.isEmpty else {
+            return false
+        }
+
+        if name?.lowercased() == "price" {
+            let normalized = text.replacingOccurrences(of: ",", with: ".")
+            return Double(normalized) != nil
+        }
+
+        return true
+    }
+}

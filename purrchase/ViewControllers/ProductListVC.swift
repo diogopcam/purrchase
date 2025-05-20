@@ -1,5 +1,5 @@
 //
-//  ProductsVC.swift
+//  ProductListVC.swift
 //  purrchase
 //
 //  Created by Bernardo Garcia Fensterseifer on 14/05/25.
@@ -7,7 +7,19 @@
 
 import UIKit
 
-class ProductsVC: UIViewController {
+class ProductListVC: UIViewController {
+    let controller: ProductListController
+    let productList: ProductList
+    
+    init(controller: ProductListController, productList: ProductList) {
+        self.controller = controller
+        self.productList = productList
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,13 +39,10 @@ class ProductsVC: UIViewController {
         /// implementar quando tivermos o componente correspondente!!!
     }
     
-    /// Aqui será necessário conversar com a modal AddList para pegar esse nome!
-    var listName: String = "Rancho da gigi" /// botei essa String de exemplo!
-    
     lazy var titleLabel: UILabel = {
         var label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = listName
+        label.text = productList.name
         label.font = UIFont(name: "Quicksand-Bold", size: 40)
         return label
     } ()
@@ -59,7 +68,7 @@ class ProductsVC: UIViewController {
     
 }
 
-extension ProductsVC: ViewCodeProtocol {
+extension ProductListVC: ViewCodeProtocol {
     
     func addSubViews() {
         view.addSubview(titleLabel)
@@ -92,11 +101,11 @@ extension ProductsVC: ViewCodeProtocol {
     }
 }
 
-extension ProductsVC {
+extension ProductListVC {
     
     @objc func addProductTapped() {
         print("Add Product Tapped")
-        let addProductVC = AddProductVC()
+        let addProductVC = AddProductVC(controller: controller, productList: productList)
 //        addProductVC.delegate = self //Falta fazer essa parte
         present(addProductVC, animated: true)
     }
