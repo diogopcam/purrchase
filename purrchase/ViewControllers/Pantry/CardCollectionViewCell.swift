@@ -13,6 +13,7 @@ class CardCollectionViewCell: UICollectionViewCell {
     private lazy var productImage: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: "photo")
         imageView.backgroundColor = .backgroundYellow
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 24.0
