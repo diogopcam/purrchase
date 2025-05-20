@@ -34,4 +34,16 @@ class ProductListController {
         lists[index] = updatedList
         repository.save(lists)
     }
+    
+    // ✅ Novo método para adicionar um produto a uma lista pelo ID
+    func addProduct(_ product: Product, toListWithId listId: UUID) {
+        guard let index = lists.firstIndex(where: { $0.id == listId }) else {
+            print("❌ Lista com ID \(listId) não encontrada.")
+            return
+        }
+
+        lists[index].list.append(product)
+        repository.save(lists)
+        print("✅ Produto '\(product.name)' adicionado à lista '\(lists[index].name)'.")
+    }
 }

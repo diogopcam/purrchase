@@ -1,5 +1,5 @@
 //
-//  ProductsVC.swift
+//  ProductListVC.swift
 //  purrchase
 //
 //  Created by Bernardo Garcia Fensterseifer on 14/05/25.
@@ -7,7 +7,17 @@
 
 import UIKit
 
-class ProductsVC: UIViewController {
+class ProductListVC: UIViewController {
+    let controller: ProductListController
+    
+    init(controller: ProductListController) {
+        self.controller = controller
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,7 +69,7 @@ class ProductsVC: UIViewController {
     
 }
 
-extension ProductsVC: ViewCodeProtocol {
+extension ProductListVC: ViewCodeProtocol {
     
     func addSubViews() {
         view.addSubview(titleLabel)
@@ -92,11 +102,11 @@ extension ProductsVC: ViewCodeProtocol {
     }
 }
 
-extension ProductsVC {
+extension ProductListVC {
     
     @objc func addProductTapped() {
         print("Add Product Tapped")
-        let addProductVC = AddProductVC()
+        let addProductVC = AddProductVC(controller: controller)
 //        addProductVC.delegate = self //Falta fazer essa parte
         present(addProductVC, animated: true)
     }

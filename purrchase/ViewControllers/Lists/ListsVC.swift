@@ -9,10 +9,10 @@ import UIKit
 
 class ListsVC: UIViewController {
     
-    let controller: ProductListController
+    let productListController: ProductListController
 
-     init(controller: ProductListController) {
-         self.controller = controller
+    init(productListController: ProductListController) {
+         self.productListController = productListController
          super.init(nibName: nil, bundle: nil)
      }
 
@@ -74,7 +74,7 @@ class ListsVC: UIViewController {
     }
     
     @objc func addListButtonTapped() {
-        let addListVC = AddListVC(controller: controller)
+        let addListVC = AddListVC(controller: productListController)
         addListVC.delegate = self
         present(addListVC, animated: true)
     }
@@ -88,11 +88,11 @@ class ListsVC: UIViewController {
 extension ListsVC {
     @objc private func didTapListCard() {
         print("Botao clicado")
-        let productsVC = ProductsVC()
+        let ProductListVC = ProductListVC(controller: productListController)
         let backButton = UIBarButtonItem(title: "Lists", style: .plain, target: nil, action: nil)
         backButton.tintColor = .textAndIcons
         navigationItem.backBarButtonItem = backButton
-        navigationController?.pushViewController(productsVC, animated: true)
+        navigationController?.pushViewController(ProductListVC, animated: true)
     }
 }
 
