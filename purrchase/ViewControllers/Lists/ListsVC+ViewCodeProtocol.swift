@@ -42,9 +42,6 @@ extension ListsVC: ViewCodeProtocol {
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.topAnchor.constraint(equalTo: addListButton.bottomAnchor, constant: 14),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -16)
-
-            
-
         ])
     }
 }
