@@ -40,7 +40,7 @@ extension ListsVC: ViewCodeProtocol {
             //MARK: Collection View
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.topAnchor.constraint(equalTo: addListButton.bottomAnchor, constant: 14),
+            collectionView.topAnchor.constraint(equalTo: addListButton.bottomAnchor, constant: 120),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -16)
         ])
     }

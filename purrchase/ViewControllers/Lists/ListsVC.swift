@@ -19,7 +19,6 @@ class ListsVC: UIViewController {
      required init?(coder: NSCoder) {
          fatalError("init(coder:) has not been implemented")
      }
-     
     
     lazy var welcomeLabel: UILabel = {
         var label = UILabel()
@@ -76,11 +75,14 @@ class ListsVC: UIViewController {
     
     @objc func addListButtonTapped() {
         let addListVC = AddListVC(controller: productListController)
-//        addListVC.delegate = self //Falta fazer essa parte
+        addListVC.delegate = self
         present(addListVC, animated: true)
     }
+    
+    var sections: [ProductList] {
+        return controller.lists
+    }
 }
-
 
 // MARK: Funções do botão
 extension ListsVC {
@@ -92,10 +94,6 @@ extension ListsVC {
         navigationItem.backBarButtonItem = backButton
         navigationController?.pushViewController(ProductListVC, animated: true)
     }
-    
-    @objc private func addList() {
-        /// implementar quando tiver todas as ferramentas para tal
-    }
 }
 
 extension ListsVC: UICollectionViewDataSource {
@@ -105,7 +103,8 @@ extension ListsVC: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        10
+       collectionView.isHidden = sections.isEmpty
+        return sections.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -113,16 +112,13 @@ extension ListsVC: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ListCardCollectionViewCell.identifier, for: indexPath) as? ListCardCollectionViewCell
         else { fatalError() }
         
-//        cell.configure(title: indexPath.description, subTitle: indexPath.description, bgColor: UIColor.systemOrange)
+        let list = sections[indexPath.item]
+        cell.configure(title: list.name, subTitle: "", bgColor: list.color)
         
         cell.listCardTapped = { [weak self] in
             self?.didTapListCard()
         }
         
-        cell.configure(title: "A", subTitle: "K", bgColor: .circle2)
-                
         return cell
     }
-    
 }
-
