@@ -61,7 +61,5 @@ class ProductListController {
         loadLists()
         print("✅ Produto '\(product.name)' adicionado à lista '\(lists[index].name)'.")
     }
-    
-//    func getListProducts()
 }
 

@@ -13,6 +13,8 @@ class AddProductPantryVC: UIViewController {
     private var dropdownIsVisible = false
     private var outsideTapGesture: UITapGestureRecognizer?
     var controller: PantryController
+
+    weak var delegate: AddPantryProductDelegate?
     
     init(controller: PantryController) {
         self.controller = controller
@@ -221,6 +223,7 @@ class AddProductPantryVC: UIViewController {
         
         controller.addToPantry(pantryProduct)
         controller.printAllPantryProducts()
+        delegate?.didAddProduct()
         self.dismiss(animated: true)
     }
 }
@@ -248,4 +251,8 @@ extension AddProductPantryVC: ViewCodeProtocol {
             stack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
         ])
     }
+}
+
+protocol AddProductPantryDelegate: AnyObject {
+    func didAddPantryProduct(_ product: PantryProduct)
 }

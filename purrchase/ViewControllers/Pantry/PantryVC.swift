@@ -314,8 +314,39 @@ extension PantryVC {
     @objc func addProductTapped() {
         print("Add Product Tapped")
         let addProductVC = AddProductPantryVC(controller: controller)
-//        addProductVC.delegate = self //Falta fazer essa parte
+//        addProductVC.delegate = self
+        addProductVC.delegate = self
         present(addProductVC, animated: true)
     }
     
+    func refreshPantryData() {
+        // Atualiza os dados
+        products = controller.getPantryItems()
+
+        // Recalcula os derivados
+        productsCloseToExpiration = products.filter {
+            guard let expirationDate = $0.expirationDate else { return false }
+            return expirationDate < Date().addingTimeInterval(3 * 24 * 60 * 60) && expirationDate >= Date()
+        }
+
+        productsExpired = products.filter {
+            guard let expirationDate = $0.expirationDate else { return false }
+            return expirationDate < Date()
+        }
+
+        // Atualiza as collectionViews
+        collectionView1.reloadData()
+        collectionView2.reloadData()
+        collectionView3.reloadData()
+    }
+}
+
+protocol AddPantryProductDelegate: AnyObject {
+    func didAddProduct()
+}
+
+extension PantryVC: AddPantryProductDelegate {
+    func didAddProduct() {
+        refreshPantryData()
+    }
 }
