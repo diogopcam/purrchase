@@ -11,9 +11,12 @@ class AddProductVC: UIViewController {
     private var dropdownView: ImagePickerOptionsView?
     private var dropdownIsVisible = false
     var controller: ProductListController
+    private let productList: ProductList      // <- nova propriedade
+
     
-    init(controller: ProductListController) {
+    init(controller: ProductListController, productList: ProductList) {
         self.controller = controller
+        self.productList = productList
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -215,8 +218,10 @@ class AddProductVC: UIViewController {
         }
     
         let product = Product(name: name, category: selectedCategory, amount: amountNum, observation: observationInfo, image: "IMAGEM")
-        
-//        controller.addProduct(product, toListWithId: <#T##UUID#>)
+            
+        productList.list.append(product)
+        controller.updateList(productList)
+        controller.repository.printAllProducts()
         self.dismiss(animated: true)
     }
 }

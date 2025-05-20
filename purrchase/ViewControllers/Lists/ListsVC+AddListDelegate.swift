@@ -9,7 +9,7 @@ import UIKit
 
 extension ListsVC: AddListDelegate {
     func didAddList(list: ProductList) {
-        controller.repository.printAllProducts()
+        productListController.repository.printAllProducts()
         collectionView.reloadData()
     }
 }

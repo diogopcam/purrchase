@@ -52,9 +52,10 @@ class ListsVC: UIViewController {
         var empty = EmptyStateComponent()
         empty.image = .catBackground1
         empty.translatesAutoresizingMaskIntoConstraints = false
-        empty.listCardTapped = { [weak self] in
-            self?.didTapListCard()
-        }
+        
+//        empty.listCardTapped = { [weak self] in
+//            self?.didTapListCard(with: productList)
+//        }
         
         return empty
     }()
@@ -80,19 +81,19 @@ class ListsVC: UIViewController {
     }
     
     var sections: [ProductList] {
-        return controller.lists
+        return productListController.lists
     }
 }
 
 // MARK: Funções do botão
 extension ListsVC {
-    @objc private func didTapListCard() {
-        print("Botao clicado")
-        let ProductListVC = ProductListVC(controller: productListController)
+    func didTapListCard(with list: ProductList) {
+        print("Botão clicado - \(list.name)")
+        let productListVC = ProductListVC(controller: productListController, productList: list)
         let backButton = UIBarButtonItem(title: "Lists", style: .plain, target: nil, action: nil)
         backButton.tintColor = .textAndIcons
         navigationItem.backBarButtonItem = backButton
-        navigationController?.pushViewController(ProductListVC, animated: true)
+        navigationController?.pushViewController(productListVC, animated: true)
     }
 }
 
@@ -113,10 +114,13 @@ extension ListsVC: UICollectionViewDataSource {
         else { fatalError() }
         
         let list = sections[indexPath.item]
+        
         cell.configure(title: list.name, subTitle: "", bgColor: list.color)
         
         cell.listCardTapped = { [weak self] in
-            self?.didTapListCard()
+            guard let self = self else { return }
+            let selectedList = self.sections[indexPath.item]  // <- a lista clicada
+            self.didTapListCard(with: selectedList)
         }
         
         return cell
