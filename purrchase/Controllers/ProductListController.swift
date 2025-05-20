@@ -13,10 +13,6 @@ class ProductListController {
 
     init() {
         lists = repository.load()
-        if lists.isEmpty {
-            let defaultList = ProductList(list: [], colorName: "Circle-1", name: "Rancho1")
-            addList(defaultList)
-        }
     }
 
     func loadLists() {
