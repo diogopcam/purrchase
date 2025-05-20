@@ -219,10 +219,11 @@ class AddProductVC: UIViewController {
     
         let product = Product(name: name, category: selectedCategory, amount: amountNum, observation: observationInfo, image: "IMAGEM")
             
-        productList.list.append(product)
         controller.repository.printAllProducts()
         controller.updateList(productList)
+        controller.addProduct(product, toListWithId: productList.id)
         delegate?.didAddProduct(product)
+        controller.repository.printAllProducts()
         self.dismiss(animated: true)
     }
 }

@@ -97,6 +97,14 @@ class ProductListVC: UIViewController {
         collectionView.backgroundColor = .clear
         return collectionView
     }()
+    
+    func refreshProductListData() {
+        // Atualiza os dados
+        var productListProducts = controller.lists
+
+        // Atualiza as collectionViews
+        collectionView.reloadData()
+    }
 }
 
 extension ProductListVC: ViewCodeProtocol {
@@ -145,13 +153,14 @@ extension ProductListVC: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return productList.list.count
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: CardCollectionViewCell.identifier,
             for: indexPath) as? CardCollectionViewCell else {
             fatalError("Unable to dequeue CardCollectionViewCell")
         }
+        // REMOVA ESTA LINHA: collectionView.dataSource = self
 
         let product = productList.list[indexPath.item]
         cell.configure(title: product.name, pImage: .apple)
@@ -173,7 +182,7 @@ extension ProductListVC: UICollectionViewDelegateFlowLayout {
 extension ProductListVC: AddProductDelegate {
     func didAddProduct(_ product: Product) {
         productList.list.append(product)
-        updateCatIconVisibility()
         collectionView.reloadData()
+        print("Produto adicionado: \(product.name)")
     }
 }
