@@ -98,13 +98,13 @@ class ProductListVC: UIViewController {
         return collectionView
     }()
     
-    func refreshProductListData() {
-        // Atualiza os dados
-        var productListProducts = controller.lists
-
-        // Atualiza as collectionViews
-        collectionView.reloadData()
-    }
+//    func refreshProductListData() {
+//        // Atualiza os dados
+//        var productListProducts = controller.lists
+//
+//        // Atualiza as collectionViews
+//        collectionView.reloadData()
+//    }
 }
 
 extension ProductListVC: ViewCodeProtocol {
@@ -181,7 +181,6 @@ extension ProductListVC: UICollectionViewDelegateFlowLayout {
 
 extension ProductListVC: AddProductDelegate {
     func didAddProduct(_ product: Product) {
-        productList.list.append(product)
         collectionView.reloadData()
         print("Produto adicionado: \(product.name)")
     }

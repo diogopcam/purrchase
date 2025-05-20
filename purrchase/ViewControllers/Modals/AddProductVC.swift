@@ -240,35 +240,19 @@ class AddProductVC: UIViewController {
         
         let amountNum = amount.value
         let observationInfo = observations.text ?? ""
-        let imageName = selectedImage != nil ? "product_\(UUID().uuidString).jpg" : "IMAGEM"
+        
+        var imageName: String? = nil
         
         if let image = selectedImage {
-            saveImageToDocuments(image: image, imageName: imageName)
+            // Salva a imagem no storage e pega o nome do arquivo
+            imageName = ProductStorageService.shared.saveImage(image)
+            ProductStorageService.shared.listStoredImages() // log da
         }
-        
-        let product = Product(name: name,
-                             category: selectedCategory,
-                             amount: amountNum,
-                             observation: observationInfo,
-                              image: selectedImage)
             
+        let product = Product(name: name, category: selectedCategory, amount: amountNum, observation: observationInfo, imageName: imageName)
         controller.addProduct(product, toListWithId: productList.id)
         delegate?.didAddProduct(product)
         dismiss(animated: true)
-    }
-    
-    private func saveImageToDocuments(image: UIImage, imageName: String) {
-        guard let data = image.jpegData(compressionQuality: 0.8) else { return }
-        
-        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let fileURL = documentsDirectory.appendingPathComponent(imageName)
-        
-        do {
-            try data.write(to: fileURL)
-            print("Image saved successfully at: \(fileURL.path)")
-        } catch {
-            print("Error saving image: \(error)")
-        }
     }
     
     private func showAlert(title: String, message: String) {
@@ -281,15 +265,13 @@ class AddProductVC: UIViewController {
 // MARK: - Image Picker Delegate
 extension AddProductVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let image = info[.originalImage] as? UIImage {
-            selectedImage = image
-            imagePickerButton.setImage(image, for: .normal)
-            imagePickerButton.imageView?.contentMode = .scaleAspectFill
-            imagePickerButton.layer.cornerRadius = imagePickerButton.frame.width / 2
-            imagePickerButton.clipsToBounds = true
+            if let image = info[.originalImage] as? UIImage {
+                selectedImage = image
+                imagePickerButton.setImage(image, for: .normal)
+                imagePickerButton.imageView?.contentMode = .scaleAspectFill
+            }
+            picker.dismiss(animated: true)
         }
-        picker.dismiss(animated: true)
-    }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true)
