@@ -9,6 +9,30 @@ import UIKit
 
 class PantryVC: UIViewController {
     let controller: PantryController
+//    lazy var products: [PantryProduct]
+    
+    lazy var products: [PantryProduct] = {
+        var productList = controller.getPantryItems()
+        return productList
+    }()
+    lazy var productsCloseToExpiration: [PantryProduct] = { // revisar logica
+        var productList: [PantryProduct] = []
+        for product in products {
+            if product.expirationDate! < Date().addingTimeInterval(259200) { // equivalente a 3 dias (ta em segundos)
+                productList.append(product)
+            }
+        }
+        return productList
+    }()
+    lazy var productsExpired: [PantryProduct] = {
+        var productList: [PantryProduct] = []
+        for product in products {
+            if product.expirationDate! < Date() {
+                productList.append(product)
+            }
+        }
+        return productList
+    }()
     
     // Inicializador customizado
     init(controller: PantryController) {
@@ -80,6 +104,8 @@ class PantryVC: UIViewController {
         label.text = "All Products"
         return label
     }()
+    
+    /// aqui aparece tudo
     lazy var collectionView1: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createAllLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -95,6 +121,7 @@ class PantryVC: UIViewController {
         label.text = "Close to Expiration Date"
         return label
     }()
+    /// AQUI TEM QUE APARECER SOMENTE OS ITENS CLOSE TO EXPIRATION DATE
     lazy var collectionView2: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createAllLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -110,6 +137,7 @@ class PantryVC: UIViewController {
         label.text = "Expired Products"
         return label
     }()
+    /// AQUI TEM QUE APARECER SOMENTE OS ITENS EXPIRADOS
     lazy var collectionView3: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createAllLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -121,6 +149,10 @@ class PantryVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+        print("Essa é a lista de produtos da pantry: ")
+        for product in products {
+            print(product.name, terminator: " / ")
+        }
         view.backgroundColor = .systemBackground
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(named: "NavBar-Icon1"),
