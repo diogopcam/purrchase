@@ -12,27 +12,22 @@ class PantryVC: UIViewController {
 //    lazy var products: [PantryProduct]
     
     lazy var products: [PantryProduct] = {
-        var productList = controller.getPantryItems()
-        return productList
-    }()
-    lazy var productsCloseToExpiration: [PantryProduct] = { // revisar logica
-        var productList: [PantryProduct] = []
-        for product in products {
-            if product.expirationDate! < Date().addingTimeInterval(259200) { // equivalente a 3 dias (ta em segundos)
-                productList.append(product)
+            controller.getPantryItems()
+        }()
+
+        lazy var productsCloseToExpiration: [PantryProduct] = {
+            products.filter {
+                guard let expirationDate = $0.expirationDate else { return false }
+                return expirationDate < Date().addingTimeInterval(3 * 24 * 60 * 60) && expirationDate >= Date()
             }
-        }
-        return productList
-    }()
-    lazy var productsExpired: [PantryProduct] = {
-        var productList: [PantryProduct] = []
-        for product in products {
-            if product.expirationDate! < Date() {
-                productList.append(product)
+        }()
+
+        lazy var productsExpired: [PantryProduct] = {
+            products.filter {
+                guard let expirationDate = $0.expirationDate else { return false }
+                return expirationDate < Date()
             }
-        }
-        return productList
-    }()
+        }()
     
     // Inicializador customizado
     init(controller: PantryController) {
