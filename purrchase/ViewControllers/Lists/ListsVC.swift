@@ -8,18 +8,18 @@
 import UIKit
 
 class ListsVC: UIViewController {
-    
+
     let productListController: ProductListController
-    
+
     init(productListController: ProductListController) {
         self.productListController = productListController
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     lazy var welcomeLabel: UILabel = {
         var label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -28,7 +28,7 @@ class ListsVC: UIViewController {
         label.textColor = .tertiary
         return label
     } ()
-    
+
     lazy var yellowView: UIView = {
         var view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -36,7 +36,7 @@ class ListsVC: UIViewController {
         view.addSubview(welcomeLabel)
         return view
     }()
-    
+
     lazy var addListButton: AddListComponent = {
         var button = AddListComponent()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -46,41 +46,47 @@ class ListsVC: UIViewController {
 
         return button
     }()
-    
-    //MARK: Empty State 
+
+    //MARK: Empty State
     lazy var emptyState: EmptyStateComponent = {
         var empty = EmptyStateComponent()
         empty.image = .catBackground1
         empty.translatesAutoresizingMaskIntoConstraints = false
-        
-//        empty.listCardTapped = { [weak self] in
-//            self?.didTapListCard(with: productList)
-//        }
-        
+
+        let placeholderList = ProductList(
+            list: [],
+            colorName: "Circle-4",
+            name: "Rancho"
+            )
+
+        empty.listCardTapped = { [weak self] in
+            self?.didTapListCard(with: placeholderList)
+        }
+
         return empty
     }()
-    
+
     lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createAllLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(ListCardCollectionViewCell.self, forCellWithReuseIdentifier: ListCardCollectionViewCell.identifier)
         collectionView.dataSource = self
         collectionView.isScrollEnabled = true
-        
+
         return collectionView
     }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
     }
-    
+
     @objc func addListButtonTapped() {
         let addListVC = AddListVC(controller: productListController)
         addListVC.delegate = self
         present(addListVC, animated: true)
     }
-    
+
     var sections: [ProductList] {
         return productListController.lists
     }
@@ -99,31 +105,31 @@ extension ListsVC {
 }
 
 extension ListsVC: UICollectionViewDataSource {
-    
+
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         1
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
        collectionView.isHidden = sections.isEmpty
         return sections.count
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
+
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ListCardCollectionViewCell.identifier, for: indexPath) as? ListCardCollectionViewCell
         else { fatalError() }
-        
+
         let list = sections[indexPath.item]
-        
+
         cell.configure(title: list.name, subTitle: "", bgColor: list.color)
-        
+
         cell.listCardTapped = { [weak self] in
             guard let self = self else { return }
             let selectedList = self.sections[indexPath.item]  // <- a lista clicada
             self.didTapListCard(with: selectedList)
         }
-        
+
         return cell
     }
 }
