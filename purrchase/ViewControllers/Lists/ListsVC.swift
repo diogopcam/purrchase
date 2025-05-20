@@ -10,15 +10,15 @@ import UIKit
 class ListsVC: UIViewController {
     
     let controller: ProductListController
-    
-    init(controller: ProductListController){
-        self.controller = controller
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+
+     init(controller: ProductListController) {
+         self.controller = controller
+         super.init(nibName: nil, bundle: nil)
+     }
+
+     required init?(coder: NSCoder) {
+         fatalError("init(coder:) has not been implemented")
+     }
     
     lazy var welcomeLabel: UILabel = {
         var label = UILabel()
@@ -74,9 +74,8 @@ class ListsVC: UIViewController {
     }
     
     @objc func addListButtonTapped() {
-        let addListVC = AddListVC()
         addListVC.delegate = self
-        addListVC.controller = self.controller
+        let addListVC = AddListVC(controller: controller)
         present(addListVC, animated: true)
     }
     
