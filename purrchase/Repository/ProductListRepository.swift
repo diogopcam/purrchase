@@ -38,7 +38,7 @@ final class ProductListRepository {
         print("🔍 Listando todos os produtos de todas as listas:")
         
         for (index, list) in productLists.enumerated() {
-            print("📦 Lista \(index + 1): \(list.name)")
+            print("📦 Lista \(index + 1): \(list.name). Cor: \(list.colorName).")
             for product in list.list {
                 print("  - 🛒 Produto: \(product.name), Categoria: \(product.category), Quantidade: \(product.amount), Observação: \(product.observation ?? "nenhuma")")
             }

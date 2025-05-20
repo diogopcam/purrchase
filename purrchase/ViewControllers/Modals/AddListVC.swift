@@ -80,18 +80,32 @@ class AddListVC: UIViewController {
     
     func doneButtonTapped() {
         print("Botão done pressionado! ")
+        
         guard let name = listName.text, !name.isEmpty else {
+            showAlert(message: "Please enter a list name.")
             return
         }
         
-        let colorName = "Primary"
-        let newList = ProductList(list: [], colorName: colorName, name: name)
+        guard let selectedColor = colorSelector.selectedColorName else {
+            showAlert(message: "Please select a color.")
+            return
+        }
+
+        let newList = ProductList(list: [], colorName: selectedColor, name: name)
         controller.addList(newList)
         print("Lista adicionada!")
         controller.repository.printAllProducts()
         
+        
         delegate?.didAddList(list: newList)
         dismiss(animated: true)
+        
+        func showAlert(message: String) {
+            let alert = UIAlertController(title: "Oops!", message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
+        }
+
     }
 }
 
