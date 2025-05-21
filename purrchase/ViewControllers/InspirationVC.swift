@@ -33,8 +33,19 @@ class InspirationVC: UIViewController {
         var button = AddListComponent()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.name = "Add New Recipe"
+        button.addListButtonAction = { [weak self] in
+            self?.addProductTapped()
+        }
+                
         return button
     }()
+    
+    @objc func addProductTapped() {
+        print("Add Product Tapped")
+        let addProductVC = AddInspirationVC()
+//        addProductVC.delegate = self //Falta fazer essa parte
+        present(addProductVC, animated: true)
+    }
     
 }
 

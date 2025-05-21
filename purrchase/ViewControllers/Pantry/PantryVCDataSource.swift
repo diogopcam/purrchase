@@ -44,8 +44,28 @@ extension PantryVC: UICollectionViewDataSource {
             product = productsExpired[indexPath.item]
         }
 
+
         let productName = product.name
-        cell.configure(title: productName, pImage: UIImage(named: "Apple"))
+        cell.configure(title: productName, pImage: UIImage(named: "Apple")) {
+            // This closure will be called when the image is tapped
+            print("Image tapped at index \(indexPath.item)")
+            // Add your action here, like showing a detail view
+                    
+                    // Create and configure the modal view controller
+                    let editProductVC = EditProductVC()
+//                    editProductVC.product = product // Pass the product data if needed
+                    
+                    // Configure the modal presentation style
+//                    editProductVC.modalPresentationStyle = .pageSheet // or .formSheet
+//                    if let sheet = editProductVC.sheetPresentationController {
+//                        sheet.detents = [.medium(), .large()] // For semi-modal (iOS 15+)
+//                        sheet.prefersGrabberVisible = true // Shows the grabber handle
+//                    }
+                    
+                    // Present the modal
+            self.present(editProductVC, animated: true)
+        }
+        
         return cell
     }
 }
