@@ -31,6 +31,13 @@ class ProductListController {
         repository.save(lists)
         loadLists()
     }
+    
+    func removeListByID(_ listID: UUID) {
+        guard let index = lists.firstIndex(where: { $0.id == listID }) else { return }
+        lists.remove(at: index)
+        repository.save(lists)
+        loadLists()
+    }
 
     func updateList(at index: Int, with updatedList: ProductList) {
         guard index < lists.count else { return }
