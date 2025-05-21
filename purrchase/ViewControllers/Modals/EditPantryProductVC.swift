@@ -208,16 +208,17 @@ extension EditPantryProductVC: ViewCodeProtocol {
             header.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             
-            productComponent.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 40),
+            productComponent.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 16),
             productComponent.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            productComponent.textLabel.widthAnchor.constraint(equalToConstant: 1000),
             
-            infoStackView.topAnchor.constraint(equalTo: productComponent.bottomAnchor, constant: 0),
+            infoStackView.topAnchor.constraint(equalTo: productComponent.bottomAnchor, constant: 16),
             infoStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             infoStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             
             deleteButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             deleteButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            deleteButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -48),
+            deleteButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
             deleteButton.heightAnchor.constraint(equalToConstant: 56),
         ])
     }
