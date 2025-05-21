@@ -43,9 +43,19 @@ class InspirationVC: UIViewController {
         var button = AddListComponent()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.name = "Add New Recipe"
+        button.addListButtonAction = { [weak self] in
+            self?.addProductTapped()
+        }
+                
         return button
     }()
     
+    @objc func addProductTapped() {
+        print("Add Product Tapped")
+        let addProductVC = AddInspirationVC()
+        present(addProductVC, animated: true)
+    }
+
     lazy var catIcon: ImageCatComponent = {
         var catIcon = ImageCatComponent()
         catIcon.translatesAutoresizingMaskIntoConstraints = false

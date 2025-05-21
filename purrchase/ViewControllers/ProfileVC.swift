@@ -144,6 +144,17 @@ class ProfileVC: UIViewController {
         return label
     }()
     
+    lazy var shareGreaterImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: "Greater-Icon")
+        imageView.widthAnchor.constraint(equalToConstant: 15).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        imageView.contentMode = .scaleAspectFit
+        imageView.backgroundColor = .clear
+        return imageView
+    }()
+    
     lazy var shareListImage: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -161,6 +172,17 @@ class ProfileVC: UIViewController {
         label.text = "Share Your List"
         label.font = UIFont(name: "Poppins-SemiBold", size: 17)
         return label
+    }()
+    
+    lazy var shareListGreaterImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: "Greater-Icon")
+        imageView.widthAnchor.constraint(equalToConstant: 15).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 15).isActive = true
+        imageView.contentMode = .scaleAspectFit
+        imageView.backgroundColor = .clear
+        return imageView
     }()
     
     // MARK: - Contact Section
@@ -191,6 +213,17 @@ class ProfileVC: UIViewController {
         label.text = "Contact Us"
         label.font = UIFont(name: "Poppins-SemiBold", size: 17)
         return label
+    }()
+    
+    lazy var contactGreaterImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: "Greater-Icon")
+        imageView.widthAnchor.constraint(equalToConstant: 15).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 15).isActive = true
+        imageView.contentMode = .scaleAspectFit
+        imageView.backgroundColor = .clear
+        return imageView
     }()
     
     // MARK: - Stack Views
@@ -235,7 +268,7 @@ class ProfileVC: UIViewController {
     }()
     
     lazy var shareHorizontalStack: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [shareImage, shareLabel, UIView()])
+        let stack = UIStackView(arrangedSubviews: [shareImage, shareLabel, UIView(), shareGreaterImage])
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .horizontal
         stack.spacing = 12
@@ -244,7 +277,7 @@ class ProfileVC: UIViewController {
     }()
     
     lazy var shareListHorizontalStack: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [shareListImage, shareListLabel, UIView()])
+        let stack = UIStackView(arrangedSubviews: [shareListImage, shareListLabel, UIView(), shareListGreaterImage])
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .horizontal
         stack.spacing = 12
@@ -265,7 +298,7 @@ class ProfileVC: UIViewController {
     }()
     
     lazy var contactHorizontalStack: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [contactImage, contactLabel, UIView()])
+        let stack = UIStackView(arrangedSubviews: [contactImage, contactLabel, UIView(), contactGreaterImage])
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .horizontal
         stack.spacing = 12
