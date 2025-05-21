@@ -254,7 +254,6 @@ extension PantryVC {
     @objc func addProductTapped() {
         print("Add Product Tapped")
         let addProductVC = AddProductPantryVC(controller: controller)
-//        addProductVC.delegate = self
         addProductVC.delegate = self
         present(addProductVC, animated: true)
     }
@@ -278,10 +277,6 @@ extension PantryVC {
         collectionView2.reloadData()
         collectionView3.reloadData()
     }
-}
-
-protocol AddPantryProductDelegate: AnyObject {
-    func didAddProduct()
 }
 
 extension PantryVC: AddPantryProductDelegate {

@@ -294,10 +294,6 @@ extension AddProductPantryVC: ViewCodeProtocol {
     }
 }
 
-protocol AddProductPantryDelegate: AnyObject {
-    func didAddPantryProduct(_ product: PantryProduct)
-}
-
 // MARK: - Image Picker Delegate
 extension AddProductPantryVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {

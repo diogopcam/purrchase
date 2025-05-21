@@ -18,24 +18,26 @@ class AddListComponent: UIView {
         return label
     }()
     
-    lazy var greenPlusIcon : UIImageView  = {
+    lazy var plusIcon: UIImageView = {
         let icon = UIImageView()
         icon.translatesAutoresizingMaskIntoConstraints = false
-        icon.image = UIImage(named: "GreenPlus-Icon")
+
+        let config = UIImage.SymbolConfiguration(pointSize: 18, weight: .bold)
+        icon.image = UIImage(systemName: "plus", withConfiguration: config)
+        icon.tintColor = .softGreen
         icon.heightAnchor.constraint(equalToConstant: 18).isActive = true
-        icon.widthAnchor.constraint(equalToConstant: 19).isActive = true
-//        icon.isUserInteractionEnabled = true
+        icon.widthAnchor.constraint(equalToConstant: 18).isActive = true
         return icon
     }()
     
     private lazy var textStack: UIStackView = {
-        var stack = UIStackView(arrangedSubviews: [nameLabel, greenPlusIcon])
+        var stack = UIStackView(arrangedSubviews: [nameLabel, plusIcon])
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .horizontal
         stack.spacing = 10
         stack.backgroundColor = .primary
         stack.heightAnchor.constraint(equalToConstant: 42).isActive = true
-        greenPlusIcon.centerYAnchor.constraint(equalTo: stack.centerYAnchor).isActive = true
+        plusIcon.centerYAnchor.constraint(equalTo: stack.centerYAnchor).isActive = true
         stack.alignment = .center
         stack.isUserInteractionEnabled = false
         return stack
@@ -76,10 +78,10 @@ class AddListComponent: UIView {
     
     var plusImage: UIImage? {
         get {
-            return greenPlusIcon.image
+            return plusIcon.image
         }
         set {
-            greenPlusIcon.image = newValue
+            plusIcon.image = newValue
         }
     }
     

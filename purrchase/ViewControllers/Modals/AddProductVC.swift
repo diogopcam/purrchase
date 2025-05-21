@@ -12,9 +12,9 @@ class AddProductVC: UIViewController {
     private var dropdownIsVisible = false
     var controller: ProductListController
     private let productList: ProductList
-    weak var delegate: AddProductDelegate?
     private var selectedImage: UIImage?
     private var outsideTapGesture: UITapGestureRecognizer?
+    weak var delegate: AddProductDelegate?
     
     init(controller: ProductListController, productList: ProductList) {
         self.controller = controller
@@ -249,8 +249,12 @@ class AddProductVC: UIViewController {
         }
             
         let product = Product(name: name, category: selectedCategory, amount: amountNum, observation: observationInfo, imageName: imageName)
+        
+        delegate?.didAddProduct()
+            
+        // Depois adiciona no controller
         controller.addProduct(product, toListWithId: productList.id)
-        delegate?.didAddProduct(product)
+    
         dismiss(animated: true)
     }
     
@@ -299,9 +303,5 @@ extension AddProductVC: ViewCodeProtocol {
         addSubViews()
         setupConstraints()
     }
-}
-
-protocol AddProductDelegate: AnyObject {
-    func didAddProduct(_ product: Product)
 }
 

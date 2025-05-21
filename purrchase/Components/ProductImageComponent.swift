@@ -11,9 +11,11 @@ class ProductImageComponent: UIView {
     
     lazy var imageView: UIImageView  = {
         let icon = UIImageView()
+        icon.layer.cornerRadius = 24
         icon.translatesAutoresizingMaskIntoConstraints = false
         icon.heightAnchor.constraint(equalToConstant: 215).isActive = true
         icon.widthAnchor.constraint(equalToConstant: 215).isActive = true
+           icon.clipsToBounds = true
         return icon
     }()
 
@@ -32,7 +34,7 @@ class ProductImageComponent: UIView {
        var view = UIStackView(arrangedSubviews: [imageView, textLabel])
         view.axis = .vertical
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.spacing = 24
+        view.spacing = 10
         return view
     }()
     

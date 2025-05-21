@@ -72,12 +72,25 @@ class EditPantryProductVC: UIViewController {
     lazy var priceField: NamedTextField = {
         let tf = NamedTextField()
         tf.translatesAutoresizingMaskIntoConstraints = false
-        tf.name = "Price"
+        tf.name = "Last Purchase Value"
         tf.placeholder = "R$xx,xx"
         tf.nameFont = UIFont(name: "Poppins-Medium", size: 17)
         tf.placeholderFont = UIFont(name: "Poppins-Medium", size: 17)!
         tf.placeholderColor = .textAndIcons
+        tf.heightAnchor.constraint(equalToConstant: 50).isActive = true
         return tf
+    }()
+    
+    lazy var infoStackView: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [
+            categoryComponent,
+            expirationDatePicker,
+            priceField
+        ])
+        stack.axis = .vertical
+        stack.spacing = 24
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        return stack
     }()
     
     lazy var deleteButton: DeleteButtonComponent = {
@@ -140,13 +153,10 @@ class EditPantryProductVC: UIViewController {
     @objc private func doneButtonTapped() {
         guard let name = productComponent.name, !name.isEmpty else { return }
         guard let category = categoryComponent.selectedCategory else { return }
-        //let amount = amountComponent.value
 
-        // parse expiration date
         let expDate = expirationDatePicker.date
         product.expirationDate = expDate
 
-        // parse price text "R$xx,xx"
         if let text = priceField.text?
             .replacingOccurrences(of: "R$", with: "")
             .replacingOccurrences(of: ",", with: "."),
@@ -154,10 +164,8 @@ class EditPantryProductVC: UIViewController {
             product.price = priceValue
         }
 
-        // update core fields
         product.name = name
         product.category = category
-        //product.amount = amount
 
         controller.updateProduct(product)
         delegate?.didUpdatePantryProduct(product)
@@ -174,7 +182,6 @@ class EditPantryProductVC: UIViewController {
     private func populateFields() {
         productComponent.name = product.name
         categoryComponent.selectedCategory = product.category
-        //amountComponent.value = product.amount
         if let img = product.image {
             productComponent.image = img
         } else {
@@ -191,40 +198,27 @@ extension EditPantryProductVC: ViewCodeProtocol {
     func addSubViews() {
         view.addSubview(header)
         view.addSubview(productComponent)
-        view.addSubview(categoryComponent)
-        view.addSubview(expirationDatePicker)
-        view.addSubview(priceField)
+        view.addSubview(infoStackView)
         view.addSubview(deleteButton)
     }
+    
     func setupConstraints() {
         NSLayoutConstraint.activate([
             header.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             header.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             
-            productComponent.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 41),
+            productComponent.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 40),
             productComponent.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
-            categoryComponent.topAnchor.constraint(equalTo: productComponent.bottomAnchor, constant: 40),
-            categoryComponent.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            categoryComponent.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            categoryComponent.heightAnchor.constraint(equalToConstant: 60),
-            
-            expirationDatePicker.topAnchor.constraint(equalTo: categoryComponent.bottomAnchor, constant: 24),
-            expirationDatePicker.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            expirationDatePicker.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            expirationDatePicker.heightAnchor.constraint(equalToConstant: 50),
-            
-            priceField.topAnchor.constraint(equalTo: expirationDatePicker.bottomAnchor, constant: 24),
-            priceField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            priceField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            priceField.heightAnchor.constraint(equalToConstant: 50),
+            infoStackView.topAnchor.constraint(equalTo: productComponent.bottomAnchor, constant: 0),
+            infoStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            infoStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             
             deleteButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             deleteButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            deleteButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
+            deleteButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -48),
             deleteButton.heightAnchor.constraint(equalToConstant: 56),
         ])
     }
 }
-

@@ -9,8 +9,13 @@ import UIKit
 
 class ProductListVC: UIViewController {
     let controller: ProductListController
-    let productList: ProductList
+    var productList: ProductList
     weak var delegate: DeleteListDelegate? // <--- Adicione isso
+    
+    lazy var products: [Product] = {
+        var allProducts = productList.list
+        return allProducts
+    }()
     
     private func updateCatIconVisibility() {
         catIcon.isHidden = !productList.list.isEmpty
@@ -31,6 +36,7 @@ class ProductListVC: UIViewController {
         updateCatIconVisibility()
 
         print("📦 Produtos da lista \(productList.name):")
+        
         for product in productList.list {
             print("- \(product.name)")
         }
@@ -178,13 +184,21 @@ class ProductListVC: UIViewController {
         return collectionView
     }()
     
-//    func refreshProductListData() {
-//        // Atualiza os dados
-//        var productListProducts = controller.lists
-//
-//        // Atualiza as collectionViews
-//        collectionView.reloadData()
-//    }
+    func refreshProductListData() {
+        // Atualiza a referência da lista atual
+
+        guard let index = controller.lists.firstIndex(where: { $0.id == productList.id }) else {
+            print("Lista não encontrada no controller!")
+            return
+        }
+        productList = controller.lists[index]
+        
+        // Atualiza a UI
+        DispatchQueue.main.async {
+            self.updateCatIconVisibility()
+            self.collectionView.reloadData()
+        }
+    }
 }
 
 extension ProductListVC: ViewCodeProtocol {
@@ -241,7 +255,8 @@ extension ProductListVC: UICollectionViewDataSource {
             fatalError("Unable to dequeue CardCollectionViewCell")
         }
         // REMOVA ESTA LINHA: collectionView.dataSource = self
-
+//        collectionView.dataSource = self
+        
         let product = productList.list[indexPath.item]
         cell.configure(title: product.name, pImage: product.image)
         return cell
@@ -260,12 +275,8 @@ extension ProductListVC: UICollectionViewDelegateFlowLayout {
 }
 
 extension ProductListVC: AddProductDelegate {
-    func didAddProduct(_ product: Product) {
-        collectionView.reloadData()
-        print("Produto adicionado: \(product.name)")
+    func didAddProduct() {
+        updateCatIconVisibility()
+        refreshProductListData()
     }
-}
-
-protocol DeleteListDelegate: AnyObject {
-    func didDeleteList(_ productList: ProductList)
 }
