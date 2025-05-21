@@ -64,13 +64,13 @@ class InspirationVC: UIViewController {
         let addProductVC = AddInspirationVC()
         present(addProductVC, animated: true)
     }
-
-    lazy var catIcon: ImageCatComponent = {
-        var catIcon = ImageCatComponent()
-        catIcon.translatesAutoresizingMaskIntoConstraints = false
-        catIcon.image = .catBackground3
-        catIcon.name = "Click on “Add New Recipe” to add a new recipe"
-        return catIcon
+    
+    lazy var recipeCard: RecipeCardComponent = {
+        var card = RecipeCardComponent()
+        card.translatesAutoresizingMaskIntoConstraints = false
+        card.name = "Cookies"
+        
+        return card
     }()
     
     @objc func handleComponent() {
@@ -86,7 +86,7 @@ extension InspirationVC: ViewCodeProtocol {
         view.addSubview(inspirationsLabel)
         view.addSubview(searchController)
         view.addSubview(addNewRecipeButton)
-        view.addSubview(catIcon)
+        view.addSubview(recipeCard)
     }
     
     func setupConstraints() {
@@ -109,8 +109,9 @@ extension InspirationVC: ViewCodeProtocol {
             addNewRecipeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
             
-            catIcon.topAnchor.constraint(equalTo: addNewRecipeButton.bottomAnchor, constant: 100),
-            catIcon.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            recipeCard.topAnchor.constraint(equalTo: addNewRecipeButton.bottomAnchor, constant: 32),
+            recipeCard.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            recipeCard.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
         ])
     }
     
