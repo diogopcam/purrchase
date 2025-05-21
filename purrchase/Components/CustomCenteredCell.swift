@@ -38,6 +38,7 @@ class CustomCenteredCell: UITableViewCell {
         stack.alignment = .center
         stack.distribution = .fill
         stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.isUserInteractionEnabled = true
         return stack
     }()
     
@@ -53,9 +54,11 @@ class CustomCenteredCell: UITableViewCell {
         contentView.addSubview(hStack)
         
         NSLayoutConstraint.activate([
-            hStack.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            hStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 15),
-            hStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -15)
+            hStack.leadingAnchor.constraint(greaterThanOrEqualTo: contentView.leadingAnchor, constant: 12),
+            hStack.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -12),
+           hStack.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+           hStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 15),
+           hStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -15)
         ])
     }
     

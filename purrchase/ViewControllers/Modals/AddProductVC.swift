@@ -137,10 +137,9 @@ class AddProductVC: UIViewController {
     }
     
     private func showDropdown() {
-        guard let button = imagePickerButton.superview else { return }
-        
         let dropdown = ImagePickerOptionsView()
         dropdown.translatesAutoresizingMaskIntoConstraints = false
+        dropdown.isUserInteractionEnabled = true
         dropdown.onSelect = { [weak self] index in
             self?.handleDropdownSelection(index: index)
             self?.hideDropdown()
@@ -153,7 +152,7 @@ class AddProductVC: UIViewController {
         NSLayoutConstraint.activate([
             dropdown.topAnchor.constraint(equalTo: view.topAnchor, constant: buttonFrame.maxY + 4),
             dropdown.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: buttonFrame.minX),
-            dropdown.widthAnchor.constraint(equalToConstant: buttonFrame.width),
+            dropdown.widthAnchor.constraint(equalToConstant: dropdown.dropdownWidth),
             dropdown.heightAnchor.constraint(equalToConstant: CGFloat(dropdown.options.count) * 44)
         ])
         
