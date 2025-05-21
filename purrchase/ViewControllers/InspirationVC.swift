@@ -30,7 +30,6 @@ class InspirationVC: UIViewController {
         view.endEditing(true)
     }
         
-        
     lazy var inspirationsLabel: UILabel = {
         var label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -78,7 +77,6 @@ class InspirationVC: UIViewController {
         print("component tapped")
         /// implementar quando der
     }
-    
 }
 
 extension InspirationVC: ViewCodeProtocol {
@@ -93,12 +91,11 @@ extension InspirationVC: ViewCodeProtocol {
     func setupConstraints() {
         NSLayoutConstraint.activate([
             //MARK: Title Inspirations
-            inspirationsLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            inspirationsLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
             inspirationsLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             inspirationsLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             
-            
-            searchController.topAnchor.constraint(equalTo: inspirationsLabel.bottomAnchor, constant: 1),
+            searchController.topAnchor.constraint(equalTo: inspirationsLabel.bottomAnchor, constant: 12),
             searchController.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 6),
             searchController.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             searchController.heightAnchor.constraint(equalToConstant: 36),

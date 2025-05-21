@@ -262,11 +262,10 @@ extension PantryVC {
     func refreshPantryData() {
         // Atualiza os dados
         products = controller.getPantryItems()
-
-        // Recalcula os derivados
+        
         productsCloseToExpiration = products.filter {
             guard let expirationDate = $0.expirationDate else { return false }
-            return expirationDate < Date().addingTimeInterval(3 * 24 * 60 * 60) && expirationDate >= Date()
+            return expirationDate < Date().addingTimeInterval(14 * 24 * 60 * 60) && expirationDate >= Date()
         }
 
         productsExpired = products.filter {
