@@ -16,22 +16,9 @@ class EmptyStateComponent: UIView {
         return catIcon
     }()
     
-    //MARK: List
-    private lazy var listCard: ListCardComponent = {
-        var list = ListCardComponent()
-        list.descriptionText = "Lista Padrão"
-        list.titleText = "Rancho"
-        list.translatesAutoresizingMaskIntoConstraints = false
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(buttonTapped))
-        list.addGestureRecognizer(tapGesture)
-        list.isUserInteractionEnabled = true
-    
-        return list
-    }()
-    
     //MARK: Stack
     private lazy var stack: UIStackView = {
-        var stack = UIStackView(arrangedSubviews: [listCard, catIcon])
+        var stack = UIStackView(arrangedSubviews: [catIcon])
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .vertical
         stack.spacing = 42
@@ -50,12 +37,12 @@ class EmptyStateComponent: UIView {
     }
     
     
-    
-    var bgCard: UIColor? {
-        didSet {
-            listCard.backgroundColor = bgCard
-        }
-    }
+//    
+//    var bgCard: UIColor? {
+//        didSet {
+//            listCard.backgroundColor = bgCard
+//        }
+//    }
     
     var listCardTapped: () -> Void = {}
 
@@ -87,10 +74,6 @@ extension EmptyStateComponent: ViewCodeProtocol {
             stack.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             stack.topAnchor.constraint(equalTo: self.topAnchor),
             stack.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            listCard.heightAnchor.constraint(equalToConstant: 104)
-            
         ])
     }
-    
-    
 }

@@ -8,6 +8,12 @@
 import UIKit
 
 class ListsVC: UIViewController {
+    
+    let placeholderList = ProductList(
+        list: [],
+        colorName: "Circle-4",
+        name: "Rancho"
+    )
 
     let productListController: ProductListController
     weak var delegate: DeleteListDelegate?
@@ -15,6 +21,10 @@ class ListsVC: UIViewController {
     init(productListController: ProductListController) {
         self.productListController = productListController
         super.init(nibName: nil, bundle: nil)
+    }
+    
+    func updateCatIconVisibility() {
+        catIcon.isHidden = productListController.lists.count >= 2
     }
 
     required init?(coder: NSCoder) {
@@ -47,24 +57,13 @@ class ListsVC: UIViewController {
 
         return button
     }()
-
-    //MARK: Empty State
-    lazy var emptyState: EmptyStateComponent = {
-        var empty = EmptyStateComponent()
-        empty.image = .catBackground1
-        empty.translatesAutoresizingMaskIntoConstraints = false
-
-        let placeholderList = ProductList(
-            list: [],
-            colorName: "Circle-4",
-            name: "Rancho"
-            )
-
-        empty.listCardTapped = { [weak self] in
-            self?.didTapListCard(with: placeholderList)
-        }
-
-        return empty
+    
+    lazy var catIcon: ImageCatComponent = {
+        let catIcon = ImageCatComponent()
+        catIcon.translatesAutoresizingMaskIntoConstraints = false
+        catIcon.image = .catBackground1
+        catIcon.name = "Click on “Add List” to add a new list"
+        return catIcon
     }()
 
     lazy var collectionView: UICollectionView = {
@@ -79,6 +78,20 @@ class ListsVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if let bundleID = Bundle.main.bundleIdentifier {
+            UserDefaults.standard.removePersistentDomain(forName: bundleID)
+        }
+        
+        updateCatIconVisibility()
+        
+        let hasInsertedPlaceholder = UserDefaults.standard.bool(forKey: "hasInsertedPlaceholder")
+
+        if !hasInsertedPlaceholder && productListController.lists.isEmpty {
+            productListController.addList(placeholderList)
+            UserDefaults.standard.set(true, forKey: "hasInsertedPlaceholder")
+        }
+        
         setup()
     }
 
@@ -98,8 +111,7 @@ extension ListsVC {
     func didTapListCard(with list: ProductList) {
         print("Botão clicado - \(list.name)")
         let productListVC = ProductListVC(controller: productListController, productList: list)
-        productListVC.delegate = self // <--- Aqui!
-    
+        productListVC.delegate = self
         let backButton = UIBarButtonItem(title: "Lists", style: .plain, target: nil, action: nil)
         backButton.tintColor = .textAndIcons
         navigationItem.backBarButtonItem = backButton
@@ -140,6 +152,7 @@ extension ListsVC: UICollectionViewDataSource {
 extension ListsVC: DeleteListDelegate {
     func didDeleteList(_ productList: ProductList) {
         print("Lista de Produtos deletado: \(productList.name)")
+        updateCatIconVisibility()
         collectionView.reloadData()
     }
 }

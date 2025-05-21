@@ -10,6 +10,7 @@ import UIKit
 extension ListsVC: AddListDelegate {
     func didAddList(list: ProductList) {
         productListController.repository.printAllProducts()
+        updateCatIconVisibility()
         collectionView.reloadData()
     }
 }
