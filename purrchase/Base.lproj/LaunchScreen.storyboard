@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="4oK-gM-oJT">
-                                <rect key="frame" x="43" y="254.66666666666666" width="316" height="267.33333333333337"/>
+                                <rect key="frame" x="43" y="251" width="316" height="271"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="CatBackground4" translatesAutoresizingMaskIntoConstraints="NO" id="Jg9-Mf-B6Y">
                                         <rect key="frame" x="0.0" y="0.0" width="316" height="182"/>
@@ -25,10 +25,16 @@
                                             <constraint firstAttribute="width" constant="316" id="4vP-2q-R1q"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Purrchase" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vfF-5F-xah">
-                                        <rect key="frame" x="2" y="191.00000000000003" width="312" height="76.333333333333343"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="64"/>
-                                        <color key="textColor" name="Tertiary"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vfF-5F-xah">
+                                        <rect key="frame" x="3.3333333333333428" y="191" width="309.66666666666663" height="80"/>
+                                        <attributedString key="attributedText">
+                                            <fragment content="Purrchase">
+                                                <attributes>
+                                                    <color key="NSColor" name="Tertiary"/>
+                                                    <font key="NSFont" size="64" name="Quicksand-Bold"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
