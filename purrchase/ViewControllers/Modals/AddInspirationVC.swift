@@ -41,55 +41,68 @@ class AddInspirationVC: UIViewController {
         return header
     }()
     
-    lazy var imagePickerButton: ImagePickerButton = {
-        let button = ImagePickerButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
     lazy var nameTextField: NamedTextField = {
         let textField = NamedTextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.name = "Name"
-        textField.placeholder = "Name of the Product"
+        textField.placeholder = "Name of the Recipe"
         textField.nameFont = UIFont(name: "Poppins-Medium", size: 17)
         textField.placeholderFont = UIFont(name: "Poppins-Medium", size: 17)!
         textField.placeholderColor = .textAndIcons
         return textField
     }()
     
-    lazy var contactComponentLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Contact"
-        label.font = UIFont(name: "Poppins-Medium", size: 14)
-        label.textColor = .grayText
-        return label
+    lazy var imagePickerButton: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .clear
+        view.layer.cornerRadius = 24
+        view.clipsToBounds = true
+        
+        // Add your image view
+        let imageView = UIImageView(image: UIImage(named: "cameraFill"))
+        imageView.contentMode = .scaleAspectFill  // Changed to fill for rounded corners
+        imageView.backgroundColor = .clear  // Set if needed
+        imageView.layer.cornerRadius = 20  // Slightly smaller than container
+        imageView.clipsToBounds = true
+        
+        view.addSubview(imageView)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            imageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 8),
+            imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -8),
+            imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
+            imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8)
+        ])
+        
+        return view
     }()
     
-    lazy var contactImage: UIImageView = {
+    
+    lazy var ingredientsImage: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(named: "Message-Icon")
+        imageView.image = UIImage(named: "Carrot-Icon")
         imageView.contentMode = .scaleAspectFit
         imageView.backgroundColor = .clear
-        imageView.widthAnchor.constraint(equalToConstant: 26).isActive = true
-        imageView.heightAnchor.constraint(equalToConstant: 26).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: 15).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 15).isActive = true
         return imageView
     }()
     
-    lazy var contactLabel: UILabel = {
+    lazy var ingredientsLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Contact Us"
+        label.text = "Ingredients"
         label.font = UIFont(name: "Poppins-SemiBold", size: 17)
         return label
     }()
     
-    lazy var contactGreaterImage: UIImageView = {
+    lazy var ingredientsPlusImage: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(named: "Greater-Icon")
+        imageView.image = .greenPlusIcon
         imageView.widthAnchor.constraint(equalToConstant: 15).isActive = true
         imageView.heightAnchor.constraint(equalToConstant: 15).isActive = true
         imageView.contentMode = .scaleAspectFit
@@ -97,8 +110,8 @@ class AddInspirationVC: UIViewController {
         return imageView
     }()
     
-    lazy var contactHorizontalStack: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [contactImage, contactLabel, UIView(), contactGreaterImage])
+    lazy var ingredientsHorizontalStack: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [ingredientsImage, ingredientsLabel, UIView(), ingredientsPlusImage])
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .horizontal
         stack.spacing = 12
@@ -106,8 +119,8 @@ class AddInspirationVC: UIViewController {
         return stack
     }()
     
-    lazy var contactComponentStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [contactHorizontalStack])
+    lazy var ingredientsComponentStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [ingredientsHorizontalStack])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.backgroundColor = .backgroundPrimaria
@@ -117,6 +130,67 @@ class AddInspirationVC: UIViewController {
         stackView.heightAnchor.constraint(equalToConstant: 60).isActive = true
         return stackView
     }()
+    
+    lazy var lineSeparator: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = ""
+        label.font = UIFont(name: "Poppins-Medium", size: 14)
+        label.textColor = .grayText
+        return label
+    }()
+    
+    lazy var stepsImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: "Pen-Icon")
+        imageView.contentMode = .scaleAspectFit
+        imageView.backgroundColor = .clear
+        imageView.widthAnchor.constraint(equalToConstant: 15).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 15).isActive = true
+        return imageView
+    }()
+    
+    lazy var stepsLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Steps"
+        label.font = UIFont(name: "Poppins-SemiBold", size: 17)
+        return label
+    }()
+    
+    lazy var stepsPlusImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = .greenPlusIcon
+        imageView.widthAnchor.constraint(equalToConstant: 15).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 15).isActive = true
+        imageView.contentMode = .scaleAspectFit
+        imageView.backgroundColor = .clear
+        return imageView
+    }()
+    
+    lazy var stepsHorizontalStack: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [stepsImage, stepsLabel, UIView(), stepsPlusImage])
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.axis = .horizontal
+        stack.spacing = 12
+        stack.alignment = .center
+        return stack
+    }()
+    
+    lazy var stepsComponentStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [stepsHorizontalStack])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.backgroundColor = .backgroundPrimaria
+        stackView.layer.cornerRadius = 17
+        stackView.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        return stackView
+    }()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -136,7 +210,7 @@ class AddInspirationVC: UIViewController {
     }
     
     private func setupDropdownToggle() {
-        imagePickerButton.addTarget(self, action: #selector(toggleDropdown), for: .touchUpInside)
+//        imagePickerButton.addTarget(self, action: #selector(toggleDropdown), for: .touchUpInside)
     }
     
     @objc private func toggleDropdown() {
@@ -233,9 +307,10 @@ class AddInspirationVC: UIViewController {
 extension AddInspirationVC: ViewCodeProtocol {
     func addSubViews() {
         view.addSubview(header)
-        //view.addSubview(photoAndNameStack)
-        //view.addSubview(stack)
-        //view.addSubview(imagePickerButton)
+        view.addSubview(nameTextField)
+        view.addSubview(imagePickerButton)
+        view.addSubview(ingredientsComponentStackView)
+        view.addSubview(stepsComponentStackView)
     }
     
     func setupConstraints() {
@@ -243,14 +318,22 @@ extension AddInspirationVC: ViewCodeProtocol {
             header.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             header.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-//            imagePickerButton.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 15),
-//            imagePickerButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-//            nameTextField.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 33),
-//            nameTextField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-//            nameTextField.leadingAnchor.constraint(equalTo: imagePickerButton.trailingAnchor, constant: 19)
-//            stack.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 15),
-//            stack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-//            stack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
+            nameTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 88),
+            nameTextField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            nameTextField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            nameTextField.heightAnchor.constraint(equalToConstant: 42),
+            imagePickerButton.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 24),
+            imagePickerButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            imagePickerButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            imagePickerButton.bottomAnchor.constraint(equalTo: ingredientsComponentStackView.topAnchor, constant: -24),
+            ingredientsComponentStackView.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 255),
+            ingredientsComponentStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            ingredientsComponentStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            ingredientsComponentStackView.heightAnchor.constraint(equalToConstant: 54),
+            stepsComponentStackView.topAnchor.constraint(equalTo: ingredientsComponentStackView.bottomAnchor, constant: 24),
+            stepsComponentStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            stepsComponentStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            stepsComponentStackView.heightAnchor.constraint(equalToConstant: 54),
         ])
     }
 }
