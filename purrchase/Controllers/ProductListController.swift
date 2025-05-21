@@ -64,5 +64,23 @@ class ProductListController {
         loadLists()
         print("✅ Produto '\(product.name)' adicionado à lista '\(lists[index].name)'.")
     }
-}
+    
+    func updateProduct(_ updated: Product, inListWithId listId: UUID) {
+        guard let li = lists.firstIndex(where: { $0.id == listId }),
+              let pi = lists[li].list.firstIndex(where: { $0.id == updated.id })
+        else { return }
 
+        lists[li].list[pi] = updated
+        repository.save(lists)
+        loadLists()
+    }
+
+    func removeProduct(_ productId: UUID, fromListWithId listId: UUID) {
+        guard let li = lists.firstIndex(where: { $0.id == listId }) else { return }
+
+        lists[li].list.removeAll { $0.id == productId }
+        repository.save(lists)
+        loadLists()
+    }
+
+}

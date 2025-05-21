@@ -290,3 +290,15 @@ extension PantryVC: AddPantryProductDelegate {
         refreshPantryData()
     }
 }
+
+extension PantryVC: EditPantryProductDelegate {
+    func didUpdatePantryProduct(_ product: PantryProduct) {
+        // persiste a mudança no controller e recarrega a UI
+        controller.updateProduct(product)
+        refreshPantryData()
+    }
+    func didDeletePantryProduct(_ product: PantryProduct) {
+        controller.removeFromPantry(product)
+        refreshPantryData()
+    }
+}

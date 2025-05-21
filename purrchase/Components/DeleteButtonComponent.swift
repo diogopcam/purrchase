@@ -47,9 +47,6 @@ class DeleteButtonComponent: UIView {
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.systemRed.cgColor
         
-        //Adicionar lógica
-        //button.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
-        
         return button
     }()
     
