@@ -98,13 +98,13 @@ class ProductListVC: UIViewController {
         return collectionView
     }()
     
-    func refreshProductListData() {
-        // Atualiza os dados
-        var productListProducts = controller.lists
-
-        // Atualiza as collectionViews
-        collectionView.reloadData()
-    }
+//    func refreshProductListData() {
+//        // Atualiza os dados
+//        var productListProducts = controller.lists
+//
+//        // Atualiza as collectionViews
+//        collectionView.reloadData()
+//    }
 }
 
 extension ProductListVC: ViewCodeProtocol {
@@ -163,7 +163,7 @@ extension ProductListVC: UICollectionViewDataSource {
         // REMOVA ESTA LINHA: collectionView.dataSource = self
 
         let product = productList.list[indexPath.item]
-        cell.configure(title: product.name, pImage: .apple)
+        cell.configure(title: product.name, pImage: product.image)
         return cell
     }
 }
@@ -181,8 +181,8 @@ extension ProductListVC: UICollectionViewDelegateFlowLayout {
 
 extension ProductListVC: AddProductDelegate {
     func didAddProduct(_ product: Product) {
-        productList.list.append(product)
         collectionView.reloadData()
         print("Produto adicionado: \(product.name)")
     }
 }
+
