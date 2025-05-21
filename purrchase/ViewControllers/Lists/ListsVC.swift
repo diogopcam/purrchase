@@ -98,6 +98,8 @@ extension ListsVC {
     func didTapListCard(with list: ProductList) {
         print("Botão clicado - \(list.name)")
         let productListVC = ProductListVC(controller: productListController, productList: list)
+        productListVC.delegate = self // <--- Aqui!
+    
         let backButton = UIBarButtonItem(title: "Lists", style: .plain, target: nil, action: nil)
         backButton.tintColor = .textAndIcons
         navigationItem.backBarButtonItem = backButton
@@ -137,7 +139,7 @@ extension ListsVC: UICollectionViewDataSource {
 
 extension ListsVC: DeleteListDelegate {
     func didDeleteList(_ productList: ProductList) {
-//        collectionView.reloadData()
         print("Lista de Produtos deletado: \(productList.name)")
+        collectionView.reloadData()
     }
 }

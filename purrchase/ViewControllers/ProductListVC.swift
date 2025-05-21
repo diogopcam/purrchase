@@ -10,6 +10,7 @@ import UIKit
 class ProductListVC: UIViewController {
     let controller: ProductListController
     let productList: ProductList
+    weak var delegate: DeleteListDelegate? // <--- Adicione isso
     
     private func updateCatIconVisibility() {
         catIcon.isHidden = !productList.list.isEmpty
@@ -123,21 +124,10 @@ class ProductListVC: UIViewController {
     
     //MARK: delete list
     @objc func deleteList() {
-        print("Delete List Tapped!")
-        // deletar lista
         controller.removeListByID(productList.id)
         dismissPopup()
-        
-        // Verifica se há uma tela anterior e se ela conforma com o protocolo
-        // Acessa a tela anterior diretamente (última view controller antes da atual)
-            if let navigationStack = navigationController?.viewControllers,
-               navigationStack.count >= 2 { // Garante que há pelo menos uma tela anterior
-                let previousVC = navigationStack[navigationStack.count - 2] // Pega a tela anterior
-//                previousVC.delegate = self
-                // Aqui você pode manipular a tela anterior diretamente, se necessário
-            }
-        
-            navigationController?.popViewController(animated: true) // Volta para a tela anterior
+        delegate?.didDeleteList(productList) // <--- Notifica a tela anterior
+        navigationController?.popViewController(animated: true)
     }
     
     

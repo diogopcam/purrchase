@@ -35,7 +35,8 @@ class InspirationVC: UIViewController {
         var label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Inspirations"
-        label.font = UIFont(name: "Quicksand-Bold", size: 32)
+        label.font = UIFont(name: "Quicksand-Bold", size: 40)
+        label.textColor = .label
         return label
     }()
     
