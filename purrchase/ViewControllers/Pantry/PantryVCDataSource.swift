@@ -45,10 +45,14 @@ extension PantryVC: UICollectionViewDataSource {
         }
 
         let productName = product.name
-        cell.configure(title: productName, pImage: product.image) {
-            print("Image tapped at index \(indexPath.item)")
-            let editProductVC = EditProductVC()
-            self.present(editProductVC, animated: true)
+        cell.configure(title: product.name, pImage: product.image) {
+            // 1) Cria o VC de edição da despensa passando o controller e o produto correto
+            let editVC = EditPantryProductVC(controller: self.controller,
+                                             product: product)
+            // 2) Faz seu VC principal (PantryVC) escutar os callbacks de update/delete
+            editVC.delegate = self
+            // 3) Apresenta
+            self.present(editVC, animated: true)
         }
         
         return cell

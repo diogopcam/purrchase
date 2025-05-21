@@ -32,8 +32,6 @@ class ProductImageComponent: UIView {
        var view = UIStackView(arrangedSubviews: [imageView, textLabel])
         view.axis = .vertical
         view.translatesAutoresizingMaskIntoConstraints = false
-        // MARK: TALVEZ PRECISE ALTERAR
-        //view.distribution = .fill
         view.spacing = 24
         return view
     }()
@@ -83,3 +81,5 @@ extension ProductImageComponent: ViewCodeProtocol {
     
     
 }
+
+
