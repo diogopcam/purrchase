@@ -55,6 +55,5 @@ class Product: Codable {
 //
 //        if let image = image, let imageName = imageName {
 //            ProductStorageService.shared.saveImage(image, named: imageName)
-//        }
-    }
+        }
 }

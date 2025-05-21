@@ -20,18 +20,25 @@ class PantryProduct: Codable {
     var id = UUID()
     var name: String
     var category: Category
-    var image: String
     var expirationDate: Date?
     var price: Double?
+    var imageName: String?
+    
+    var image: UIImage? {
+        guard let imageName = imageName else { return nil }
+        return ProductStorageService.shared.loadImage(named: imageName)
+    }
 
-    init(name: String,
-         category: Category,
-         image: String,
-         expirationDate: Date? = nil,
-         price: Double? = nil) {
+    init(
+        id: UUID = UUID(),
+        name: String,
+        category: Category,
+        imageName: String? = nil,
+        expirationDate: Date? = nil,
+        price: Double? = nil) {
         self.name = name
         self.category = category
-        self.image = image
+        self.imageName = imageName
         self.expirationDate = expirationDate
         self.price = price
     }
