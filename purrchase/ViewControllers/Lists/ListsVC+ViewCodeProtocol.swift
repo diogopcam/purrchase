@@ -12,8 +12,8 @@ extension ListsVC: ViewCodeProtocol {
     func addSubViews() {
         view.addSubview(yellowView)
         view.addSubview(addListButton)
-        view.addSubview(emptyState)
         view.addSubview(collectionView)
+        view.addSubview(catIcon)
     }
     
     func setupConstraints() {
@@ -32,17 +32,14 @@ extension ListsVC: ViewCodeProtocol {
             addListButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             addListButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
-            //MARK: Empty State
-            emptyState.topAnchor.constraint(equalTo: addListButton.bottomAnchor, constant: 14),
-            emptyState.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            emptyState.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            
             //MARK: Collection View
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.topAnchor.constraint(equalTo: addListButton.bottomAnchor, constant: 120),
-//            collectionView.topAnchor.constraint(equalTo: addListButton.bottomAnchor, constant: 14),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -16)
+            collectionView.topAnchor.constraint(equalTo: addListButton.bottomAnchor, constant: 8),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -16),
+            
+            catIcon.topAnchor.constraint(equalTo: addListButton.bottomAnchor, constant: 140),
+            catIcon.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         ])
     }
 }
