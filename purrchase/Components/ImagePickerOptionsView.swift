@@ -8,6 +8,8 @@ import UIKit
 
 class ImagePickerOptionsView: UIView, UITableViewDelegate, UITableViewDataSource {
     
+    let dropdownWidth: CGFloat = 168
+    
     var options: [(title: String, icon: UIImage?)] = [
         ("Take", UIImage(systemName: "camera.fill")?.withTintColor(.softGreen, renderingMode: .alwaysOriginal)),
         ("Choose", UIImage(systemName: "photo.fill")?.withTintColor(.softGreen, renderingMode: .alwaysOriginal)),
