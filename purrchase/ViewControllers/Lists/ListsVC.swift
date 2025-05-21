@@ -10,6 +10,7 @@ import UIKit
 class ListsVC: UIViewController {
 
     let productListController: ProductListController
+    weak var delegate: DeleteListDelegate?
 
     init(productListController: ProductListController) {
         self.productListController = productListController
@@ -131,5 +132,12 @@ extension ListsVC: UICollectionViewDataSource {
         }
 
         return cell
+    }
+}
+
+extension ListsVC: DeleteListDelegate {
+    func didDeleteList(_ productList: ProductList) {
+//        collectionView.reloadData()
+        print("Lista de Produtos deletado: \(productList.name)")
     }
 }

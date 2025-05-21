@@ -10,7 +10,7 @@ import UIKit
 class ProductListVC: UIViewController {
     let controller: ProductListController
     let productList: ProductList
-
+    
     private func updateCatIconVisibility() {
         catIcon.isHidden = !productList.list.isEmpty
     }
@@ -35,6 +35,7 @@ class ProductListVC: UIViewController {
         }
         
         view.backgroundColor = .systemBackground
+        
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(named: "NavBar-Icon1"),
             style: .plain,
@@ -44,12 +45,101 @@ class ProductListVC: UIViewController {
         
         navigationController?.navigationBar.tintColor = .textAndIcons
         setupViews()
+        
+        view.addSubview(popupView)
+            popupView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                popupView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+                popupView.topAnchor.constraint(equalTo: view.topAnchor, constant: 101),
+                popupView.widthAnchor.constraint(equalToConstant: 250),
+                popupView.heightAnchor.constraint(equalToConstant: 139)
+            ])
+            
+            // Add tap gesture to dismiss when tapping outside
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopup))
+            tapGesture.cancelsTouchesInView = false
+            view.addGestureRecognizer(tapGesture)
     }
     
+    // 1. Declare the view as a property at the top of your class
+    private lazy var popupView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        view.layer.cornerRadius = 12
+        view.layer.shadowOpacity = 0.2
+        view.layer.shadowRadius = 8
+        view.layer.shadowOffset = CGSize(width: 0, height: 4)
+        view.isHidden = true
+        view.alpha = 0
+        
+        // Add your image view
+        let imageView = UIImageView(image: UIImage(named: "tresPontinhos"))
+        imageView.contentMode = .scaleAspectFit
+        view.addSubview(imageView)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            imageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 8),
+            imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -8),
+            imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
+            imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8)
+        ])
+        
+        let deleteButton = UIButton(type: .system)
+        deleteButton.setTitle("", for: .normal)
+        deleteButton.addTarget(self, action: #selector(deleteList), for: .touchUpInside)
+        deleteButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(deleteButton)
+        NSLayoutConstraint.activate([
+            deleteButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 88),
+            deleteButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -8),
+            deleteButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
+            deleteButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8)
+        ])
+        
+        return view
+    }()
+
+    // 3. Button action
     @objc func handleAddProduct() {
         print("Add Product Tapped!")
-        // ainda será implementado
+        showPopup()
     }
+
+    // 4. Show/hide methods
+    private func showPopup() {
+        popupView.isHidden = false
+        UIView.animate(withDuration: 0.3) {
+            self.popupView.alpha = 1
+        }
+    }
+
+    @objc private func dismissPopup() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.popupView.alpha = 0
+        }) { _ in
+            self.popupView.isHidden = true
+        }
+    }
+    
+    //MARK: delete list
+    @objc func deleteList() {
+        print("Delete List Tapped!")
+        // deletar lista
+        controller.removeListByID(productList.id)
+        dismissPopup()
+        
+        // Verifica se há uma tela anterior e se ela conforma com o protocolo
+        // Acessa a tela anterior diretamente (última view controller antes da atual)
+            if let navigationStack = navigationController?.viewControllers,
+               navigationStack.count >= 2 { // Garante que há pelo menos uma tela anterior
+                let previousVC = navigationStack[navigationStack.count - 2] // Pega a tela anterior
+//                previousVC.delegate = self
+                // Aqui você pode manipular a tela anterior diretamente, se necessário
+            }
+        
+            navigationController?.popViewController(animated: true) // Volta para a tela anterior
+    }
+    
     
     @objc func addProductTapped() {
         let addProductVC = AddProductVC(controller: controller, productList: productList)
@@ -186,3 +276,6 @@ extension ProductListVC: AddProductDelegate {
     }
 }
 
+protocol DeleteListDelegate: AnyObject {
+    func didDeleteList(_ productList: ProductList)
+}
