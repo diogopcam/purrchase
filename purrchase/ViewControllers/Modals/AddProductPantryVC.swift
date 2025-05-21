@@ -13,7 +13,7 @@ class AddProductPantryVC: UIViewController {
     private var dropdownIsVisible = false
     private var outsideTapGesture: UITapGestureRecognizer?
     var controller: PantryController
-
+    private var selectedImage: UIImage?
     weak var delegate: AddPantryProductDelegate?
     
     init(controller: PantryController) {
@@ -47,6 +47,7 @@ class AddProductPantryVC: UIViewController {
     lazy var imagePickerButton: ImagePickerButton = {
         let button = ImagePickerButton()
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(toggleDropdown), for: .touchUpInside)
         return button
     }()
     
@@ -163,7 +164,6 @@ class AddProductPantryVC: UIViewController {
         dropdownView = dropdown
         dropdownIsVisible = true
         
-        // Adicionar tap gesture para fechar dropdown ao clicar fora
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleOutsideTap(_:)))
         tapGesture.cancelsTouchesInView = false
         view.addGestureRecognizer(tapGesture)
@@ -194,8 +194,36 @@ class AddProductPantryVC: UIViewController {
     }
     
     private func handleDropdownSelection(index: Int) {
-        print("Selecionou opção: \(dropdownView?.options[index].title ?? "")")
-        // Aqui você pode fazer a ação que quiser
+        switch index {
+        case 0: // Take photo
+            openCamera()
+        case 1: // Choose from gallery
+            openPhotoLibrary()
+        case 2: // Our library
+            // Implement your custom image library here
+            print("Our library selected")
+        default:
+            break
+        }
+    }
+    
+    private func openCamera() {
+        guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
+            showAlert(title: "Error", message: "Camera not available")
+            return
+        }
+        
+        let imagePicker = UIImagePickerController()
+        imagePicker.sourceType = .camera
+        imagePicker.delegate = self
+        present(imagePicker, animated: true)
+    }
+    
+    private func openPhotoLibrary() {
+        let imagePicker = UIImagePickerController()
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.delegate = self
+        present(imagePicker, animated: true)
     }
     
     func doneButtonTapped() {
@@ -219,12 +247,25 @@ class AddProductPantryVC: UIViewController {
         
         let expirationDate = expirationDate.date
         
-        let pantryProduct = PantryProduct(name: name, category: selectedCategory, image: "IMAGEM", expirationDate: expirationDate, price: priceValue)
+        var imageName: String? = nil
         
+        if let image = selectedImage {
+            // Salva a imagem no storage e pega o nome do arquivo
+            imageName = ProductStorageService.shared.saveImage(image)
+            ProductStorageService.shared.listStoredImages() // log da
+        }
+        
+        let pantryProduct = PantryProduct(name: name, category: selectedCategory, imageName: imageName, expirationDate: expirationDate, price: priceValue)
         controller.addToPantry(pantryProduct)
         controller.printAllPantryProducts()
         delegate?.didAddProduct()
         self.dismiss(animated: true)
+    }
+    
+    private func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
     }
 }
 
@@ -256,3 +297,20 @@ extension AddProductPantryVC: ViewCodeProtocol {
 protocol AddProductPantryDelegate: AnyObject {
     func didAddPantryProduct(_ product: PantryProduct)
 }
+
+// MARK: - Image Picker Delegate
+extension AddProductPantryVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+            if let image = info[.originalImage] as? UIImage {
+                selectedImage = image
+                imagePickerButton.setImage(image, for: .normal)
+                imagePickerButton.imageView?.contentMode = .scaleAspectFill
+            }
+            picker.dismiss(animated: true)
+        }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true)
+    }
+}
+
