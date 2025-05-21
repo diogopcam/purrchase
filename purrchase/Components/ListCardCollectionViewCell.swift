@@ -57,7 +57,7 @@ class ListCardCollectionViewCell: UICollectionViewCell {
     private lazy var iconAndTextStack: UIStackView = {
         var stack = UIStackView(arrangedSubviews: [textsStack, icon])
         stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.spacing = 120
+        stack.spacing = 1
         stack.alignment = .center
         stack.layer.cornerRadius = 12
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(buttonTapped))
