@@ -16,8 +16,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "ADD7F7E32DD3ADD30040F299"
-               BuildableName = "purrchase.app"
-               BlueprintName = "purrchase"
+               BuildableName = "Purrchase.app"
+               BlueprintName = "Purrchase"
                ReferencedContainer = "container:purrchase.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,8 +45,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "ADD7F7E32DD3ADD30040F299"
-            BuildableName = "purrchase.app"
-            BlueprintName = "purrchase"
+            BuildableName = "Purrchase.app"
+            BlueprintName = "Purrchase"
             ReferencedContainer = "container:purrchase.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -62,8 +62,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "ADD7F7E32DD3ADD30040F299"
-            BuildableName = "purrchase.app"
-            BlueprintName = "purrchase"
+            BuildableName = "Purrchase.app"
+            BlueprintName = "Purrchase"
             ReferencedContainer = "container:purrchase.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

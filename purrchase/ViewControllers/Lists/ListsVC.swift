@@ -79,9 +79,9 @@ class ListsVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let bundleID = Bundle.main.bundleIdentifier {
-            UserDefaults.standard.removePersistentDomain(forName: bundleID)
-        }
+//        if let bundleID = Bundle.main.bundleIdentifier {
+//            UserDefaults.standard.removePersistentDomain(forName: bundleID)
+//        }
         
         updateCatIconVisibility()
         

@@ -7,16 +7,16 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		69D765ED2DD533FB00BD0D84 /* purrchase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = purrchase.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		69D765ED2DD533FB00BD0D84 /* Purrchase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Purrchase.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		ADD7F7F62DD3ADD40040F299 /* Exceptions for "purrchase" folder in "purrchase" target */ = {
+		ADD7F7F62DD3ADD40040F299 /* Exceptions for "purrchase" folder in "Purrchase" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = ADD7F7E32DD3ADD30040F299 /* purrchase */;
+			target = ADD7F7E32DD3ADD30040F299 /* Purrchase */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -24,7 +24,7 @@
 		ADD7F7E62DD3ADD30040F299 /* purrchase */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				ADD7F7F62DD3ADD40040F299 /* Exceptions for "purrchase" folder in "purrchase" target */,
+				ADD7F7F62DD3ADD40040F299 /* Exceptions for "purrchase" folder in "Purrchase" target */,
 			);
 			path = purrchase;
 			sourceTree = "<group>";
@@ -46,16 +46,16 @@
 			isa = PBXGroup;
 			children = (
 				ADD7F7E62DD3ADD30040F299 /* purrchase */,
-				69D765ED2DD533FB00BD0D84 /* purrchase.app */,
+				69D765ED2DD533FB00BD0D84 /* Purrchase.app */,
 			);
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		ADD7F7E32DD3ADD30040F299 /* purrchase */ = {
+		ADD7F7E32DD3ADD30040F299 /* Purrchase */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = ADD7F7F72DD3ADD40040F299 /* Build configuration list for PBXNativeTarget "purrchase" */;
+			buildConfigurationList = ADD7F7F72DD3ADD40040F299 /* Build configuration list for PBXNativeTarget "Purrchase" */;
 			buildPhases = (
 				ADD7F7E02DD3ADD30040F299 /* Sources */,
 				ADD7F7E12DD3ADD30040F299 /* Frameworks */,
@@ -68,11 +68,11 @@
 			fileSystemSynchronizedGroups = (
 				ADD7F7E62DD3ADD30040F299 /* purrchase */,
 			);
-			name = purrchase;
+			name = Purrchase;
 			packageProductDependencies = (
 			);
 			productName = purrchase;
-			productReference = 69D765ED2DD533FB00BD0D84 /* purrchase.app */;
+			productReference = 69D765ED2DD533FB00BD0D84 /* Purrchase.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -104,7 +104,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				ADD7F7E32DD3ADD30040F299 /* purrchase */,
+				ADD7F7E32DD3ADD30040F299 /* Purrchase */,
 			);
 		};
 /* End PBXProject section */
@@ -317,7 +317,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		ADD7F7F72DD3ADD40040F299 /* Build configuration list for PBXNativeTarget "purrchase" */ = {
+		ADD7F7F72DD3ADD40040F299 /* Build configuration list for PBXNativeTarget "Purrchase" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				ADD7F7F82DD3ADD40040F299 /* Debug */,
