@@ -20,8 +20,17 @@ class InspirationVC: UIViewController {
             action: #selector(handleComponent)
         )
         navigationController?.navigationBar.tintColor = .textAndIcons
+        
+        
+        let tapDismissKeyboard = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapDismissKeyboard)
     }
     
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+        
+        
     lazy var inspirationsLabel: UILabel = {
         var label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
