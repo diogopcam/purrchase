@@ -25,27 +25,20 @@ class SymbolLibraryVC: UIViewController {
         header.title = "Products"
         header.secondButtonTitle = "Done"
         
-        header.cancelButtonAction = { [weak self] in
+        header.firstButtonTitle = { [weak self] in
             self?.dismiss(animated: true)
         }
-//        
-//        header.doneButtonAction = { [weak self] in
-//            self?.doneButtonTapped()
-//        }
+        
+        header.secondButtonTitle = { [weak self] in
+            self?.doneButtonTapped()
+        }
         
         return header
     }()
     
-//    func doneButtonTapped() {
-//        guard let selectedSymbol = selectedSymbol else {
-//            // Você pode mostrar um alerta aqui caso nenhum símbolo tenha sido selecionado
-//            dismiss(animated: true)
-//            return
-//        }
-//        
-//        delegate?.didSelectSymbol(imageName: image)
-//        dismiss(animated: true)
-//    }
+    func doneButtonTapped() {
+        dismiss(animated: true)
+    }
     
     private let symbolSections: [(title: String, symbols: [SymbolItem])] = [
         ("Vegetables", [
