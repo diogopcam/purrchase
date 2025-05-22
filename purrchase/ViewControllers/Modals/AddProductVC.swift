@@ -200,11 +200,7 @@ class AddProductVC: UIViewController {
         case 1: // Choose from gallery
             openPhotoLibrary()
         case 2: // Our library
-            let libraryVC = SymbolLibraryVC()
-            libraryVC.delegate = self
-            let nav = UINavigationController(rootViewController: libraryVC)
-            present(nav, animated: true)
-            print("Our library selected")
+            openAppLibrary()
         default:
             break
         }
@@ -227,6 +223,15 @@ class AddProductVC: UIViewController {
         imagePicker.sourceType = .photoLibrary
         imagePicker.delegate = self
         present(imagePicker, animated: true)
+    }
+    
+    private func openAppLibrary() {
+        // Implement your custom image library here
+        let libraryVC = SymbolLibraryVC()
+        libraryVC.delegate = self
+        let nav = UINavigationController(rootViewController: libraryVC)
+        present(nav, animated: true)
+        print("Our library selected")
     }
     
     func doneButtonTapped() {
@@ -315,5 +320,4 @@ extension AddProductVC: SymbolLibraryDelegate {
         imagePickerButton.imageView?.contentMode = .scaleAspectFit
         // Depois adiciona no controller
     }
-
 }

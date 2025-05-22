@@ -104,7 +104,7 @@ class EditProductVC: UIViewController {
     lazy var deleteButton: DeleteButtonComponent = {
         let btn = DeleteButtonComponent()
         btn.translatesAutoresizingMaskIntoConstraints = false
-//        btn.deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
+        btn.deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
         return btn
     }()
     
@@ -249,16 +249,17 @@ class EditProductVC: UIViewController {
         dismiss(animated: true)
     }
     
-//    @objc private func deleteButtonTapped() {
-//        // Delete image if exists
-//        if let imageName = product.imageName {
-//            ProductStorageService.shared.deleteImage(named: imageName)
-//        }
-//        
-//        controller.removeProduct(product.id, fromListWithId: productList.id)
-//        delegate?.didDeleteProduct(product)
-//        dismiss(animated: true)
-//    }
+    @objc private func deleteButtonTapped() {
+        // Delete image if exists
+        
+        if let imageName = product.imageName {
+            ProductStorageService.shared.deleteImage(named: imageName)
+        }
+        
+        controller.removeProduct(product.id, fromListWithId: productList.id)
+        delegate?.didDeleteProduct(product)
+        dismiss(animated: true)
+    }
     
     // MARK: - Helpers
     private func populateFields() {
