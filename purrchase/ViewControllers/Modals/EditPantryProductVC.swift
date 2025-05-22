@@ -239,7 +239,7 @@ extension EditPantryProductVC: ViewCodeProtocol {
             header.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
 
             // Product
-            productComponent.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 16),
+            productComponent.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 32),
             productComponent.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             productComponent.textLabel.widthAnchor.constraint(equalToConstant: 1000),
 

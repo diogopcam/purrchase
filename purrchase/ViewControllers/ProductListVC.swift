@@ -18,7 +18,7 @@ class ProductListVC: UIViewController, EditProductDelegate {
         controller.removeProduct(deletedProduct.id, fromListWithId: productList.id)
         refreshProductListData()
     }
-    
+
     let controller: ProductListController
     var productList: ProductList
     weak var delegate: DeleteListDelegate? // <--- Adicione isso
@@ -265,12 +265,9 @@ extension ProductListVC: UICollectionViewDataSource {
             for: indexPath) as? CardCollectionViewCell else {
             fatalError("Unable to dequeue CardCollectionViewCell")
         }
-        // REMOVA ESTA LINHA: collectionView.dataSource = self
-//        collectionView.dataSource = self
-        
+
         let product = productList.list[indexPath.item]
-        cell.configure(title: product.name, pImage: product.image) {
-            // 1) Cria o VC de edição da despensa passando o controller e o produto correto
+        cell.configure(title: product.name, pImage: product.image, number: product.amount) {
             let editVC = EditProductVC(controller: self.controller, productList: self.productList, product: product)
             editVC.delegate = self
             self.present(editVC, animated: true)
@@ -285,8 +282,8 @@ extension ProductListVC: UICollectionViewDelegateFlowLayout {
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let totalSpacing = 12 * 3 // 3 espaços entre 4 itens
-        let width = (collectionView.bounds.width - CGFloat(totalSpacing)) / 4
-        return CGSize(width: width, height: 100)
+        let width = (collectionView.bounds.width - CGFloat(totalSpacing) - 40) / 4
+        return CGSize(width: width, height: 125)
     }
 }
 

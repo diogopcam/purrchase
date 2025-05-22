@@ -60,6 +60,7 @@ class EditProductVC: UIViewController {
     lazy var productComponent: ProductImageComponent = {
         let comp = ProductImageComponent()
         comp.translatesAutoresizingMaskIntoConstraints = false
+//        comp..addTarget(self, action: #selector(toggleDropdown), for: .touchUpInside)
         return comp
     }()
     
@@ -84,7 +85,7 @@ class EditProductVC: UIViewController {
         tf.nameFont = UIFont(name: "Poppins-Medium", size: 17)
         tf.placeholderFont = UIFont(name: "Poppins-Medium", size: 17)!
         tf.placeholderColor = .textAndIcons
-//        tf.heightAnchor.constraint(equalToConstant: 100).isActive = true)
+        tf.heightAnchor.constraint(equalToConstant: 50).isActive = true
         return tf
     }()
     
@@ -103,7 +104,7 @@ class EditProductVC: UIViewController {
     lazy var deleteButton: DeleteButtonComponent = {
         let btn = DeleteButtonComponent()
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
+//        btn.deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
         return btn
     }()
     
@@ -248,16 +249,16 @@ class EditProductVC: UIViewController {
         dismiss(animated: true)
     }
     
-    @objc private func deleteButtonTapped() {
-        // Delete image if exists
-        if let imageName = product.imageName {
-            ProductStorageService.shared.deleteImage(named: imageName)
-        }
-        
-        controller.removeProduct(product.id, fromListWithId: productList.id)
-        delegate?.didDeleteProduct(product)
-        dismiss(animated: true)
-    }
+//    @objc private func deleteButtonTapped() {
+//        // Delete image if exists
+//        if let imageName = product.imageName {
+//            ProductStorageService.shared.deleteImage(named: imageName)
+//        }
+//        
+//        controller.removeProduct(product.id, fromListWithId: productList.id)
+//        delegate?.didDeleteProduct(product)
+//        dismiss(animated: true)
+//    }
     
     // MARK: - Helpers
     private func populateFields() {
@@ -318,7 +319,7 @@ extension EditProductVC: ViewCodeProtocol {
             header.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
 
             // Product Component
-            productComponent.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 16),
+            productComponent.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 32),
             productComponent.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             productComponent.textLabel.widthAnchor.constraint(equalToConstant: 1000),
 

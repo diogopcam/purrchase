@@ -74,13 +74,21 @@ class ProductListController {
         repository.save(lists)
         loadLists()
     }
-
+    
     func removeProduct(_ productId: UUID, fromListWithId listId: UUID) {
-        guard let li = lists.firstIndex(where: { $0.id == listId }) else { return }
+        guard let listIndex = lists.firstIndex(where: { $0.id == listId }) else {
+            print("❌ Lista com ID \(listId) não encontrada.")
+            return
+        }
 
-        lists[li].list.removeAll { $0.id == productId }
+        guard let productIndex = lists[listIndex].list.firstIndex(where: { $0.id == productId }) else {
+            print("❌ Produto com ID \(productId) não encontrado na lista.")
+            return
+        }
+
+        let removedProduct = lists[listIndex].list.remove(at: productIndex)
         repository.save(lists)
         loadLists()
+        print("🗑️ Produto '\(removedProduct.name)' removido da lista '\(lists[listIndex].name)'.")
     }
-
 }
