@@ -19,25 +19,33 @@ class SymbolLibraryVC: UIViewController {
     
     // MARK: - UI Components
     lazy var header: NavBarComponent = {
-        var header = NavBarComponent()
-        header.translatesAutoresizingMaskIntoConstraints = false
-        header.firstButtonTitle = "Cancel"
-        header.title = "Products"
-        header.secondButtonTitle = "Done"
-        
-        header.firstButtonTitle = { [weak self] in
-            self?.dismiss(animated: true)
-        }
-        
-        header.secondButtonTitle = { [weak self] in
-            self?.doneButtonTapped()
-        }
-        
-        return header
-    }()
+            var header = NavBarComponent()
+            header.translatesAutoresizingMaskIntoConstraints = false
+            header.firstButtonTitle = "Cancel"
+            header.title = "Products"
+            header.secondButtonTitle = "Done"
+            
+            header.cancelButtonAction = { [weak self] in
+                print("Cancel button tapped") // Debug
+                self?.dismiss(animated: true)
+            }
+            
+            header.doneButtonAction = { [weak self] in
+                print("Done button tapped") // Debug
+                self?.doneButtonTapped()
+            }
+            
+            return header
+        }()
     
     func doneButtonTapped() {
-        dismiss(animated: true)
+            print("Done button tapped - selectedSymbol: \(String(describing: selectedSymbol))")
+            if let selectedSymbol = selectedSymbol,
+               let image = selectedSymbol.emoji.emojiToImage() {
+                print("Will call delegate with image")
+                delegate?.didSelectSymbol(image: image)
+            }
+            dismiss(animated: true)
     }
     
     private let symbolSections: [(title: String, symbols: [SymbolItem])] = [
@@ -125,9 +133,9 @@ class SymbolLibraryVC: UIViewController {
         view.addSubview(collectionView)
         
         NSLayoutConstraint.activate([
-            header.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            header.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            header.topAnchor.constraint(equalTo: view.topAnchor, constant: 11),
+           header.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+           header.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+           header.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
             collectionView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 16),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -16),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
