@@ -31,6 +31,18 @@ class EditPantryProductVC: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private let scrollView: UIScrollView = {
+        let sv = UIScrollView()
+        sv.translatesAutoresizingMaskIntoConstraints = false
+        return sv
+    }()
+
+    private let contentView: UIView = {
+        let v = UIView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
     // MARK: - UI Components
     lazy var header: NavBarComponent = {
         let nav = NavBarComponent()
@@ -196,26 +208,49 @@ class EditPantryProductVC: UIViewController {
 
 extension EditPantryProductVC: ViewCodeProtocol {
     func addSubViews() {
-        view.addSubview(header)
-        view.addSubview(productComponent)
-        view.addSubview(infoStackView)
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        
+        contentView.addSubview(header)
+        contentView.addSubview(productComponent)
+        contentView.addSubview(infoStackView)
+        
         view.addSubview(deleteButton)
     }
     
     func setupConstraints() {
         NSLayoutConstraint.activate([
-            header.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            header.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            
+            // ScrollView ocupa a tela, exceto espaço do botão de deletar
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: deleteButton.topAnchor),
+
+            // contentView com largura igual à da view (importante para scroll vertical)
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+
+            // Header
+            header.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            header.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            header.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
+
+            // Product
             productComponent.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 16),
-            productComponent.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            productComponent.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             productComponent.textLabel.widthAnchor.constraint(equalToConstant: 1000),
-            
+
+            // InfoStack
             infoStackView.topAnchor.constraint(equalTo: productComponent.bottomAnchor, constant: 16),
-            infoStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            infoStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            infoStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            infoStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            infoStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20), // necessário p/ rolar tudo
             
+
+            // Delete button fixo
             deleteButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             deleteButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             deleteButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
