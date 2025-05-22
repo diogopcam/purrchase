@@ -7,7 +7,18 @@
 
 import UIKit
 
-class ProductListVC: UIViewController {
+class ProductListVC: UIViewController, EditProductDelegate {
+    func didUpdateProduct(_ updatedProduct: Product) {
+        // persiste a mudança no controller e recarrega a UI
+        controller.updateProduct(updatedProduct, inListWithId: updatedProduct.id)
+        refreshProductListData()
+    }
+    
+    func didDeleteProduct(_ deletedProduct: Product) {
+        controller.removeProduct(deletedProduct.id, fromListWithId: productList.id)
+        refreshProductListData()
+    }
+    
     let controller: ProductListController
     var productList: ProductList
     weak var delegate: DeleteListDelegate? // <--- Adicione isso
@@ -258,7 +269,12 @@ extension ProductListVC: UICollectionViewDataSource {
 //        collectionView.dataSource = self
         
         let product = productList.list[indexPath.item]
-        cell.configure(title: product.name, pImage: product.image)
+        cell.configure(title: product.name, pImage: product.image) {
+            // 1) Cria o VC de edição da despensa passando o controller e o produto correto
+            let editVC = EditProductVC(controller: self.controller, productList: self.productList, product: product)
+            editVC.delegate = self
+            self.present(editVC, animated: true)
+        }
         return cell
     }
 }
