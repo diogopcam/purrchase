@@ -87,15 +87,42 @@ class AddProductVC: UIViewController {
         return amountComponent
     }()
     
-    lazy var observations: NamedTextField = {
-        var observationsTextField = NamedTextField()
-        observationsTextField.translatesAutoresizingMaskIntoConstraints = false
-        observationsTextField.name = "Observations"
-        observationsTextField.placeholder = ""
-        observationsTextField.nameFont = UIFont(name: "Poppins-Medium", size: 17)
-        observationsTextField.heightAnchor.constraint(equalToConstant: 147).isActive = true
-        return observationsTextField
+    
+    lazy var observationLabel: UILabel = {
+        var label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "   Observations"
+        label.font = UIFont(name: "Poppins-Medium", size: 17)
+        label.textColor = .black
+        label.backgroundColor = .backgroundPrimaria
+        label.layer.cornerRadius = 17
+        label.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        label.clipsToBounds = true
+        
+        return label
     }()
+    
+    lazy var observationTextField: UITextView = {
+        var textField = UITextView()
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.backgroundColor = .backgroundPrimaria
+        textField.font = UIFont(name: "Poppins-Medium", size: 17)
+        textField.textColor = .textAndIcons
+        textField.layer.cornerRadius = 17
+        textField.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        textField.clipsToBounds = true
+        
+        return textField
+    }()
+    
+    lazy var observations: UIStackView = {
+        var observations = UIStackView(arrangedSubviews: [observationLabel, observationTextField])
+        observations.translatesAutoresizingMaskIntoConstraints = false
+        observations.axis = .vertical
+  
+        return observations
+    }()
+    
     
     lazy var stack: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [photoAndNameStack, category, amount, observations])
@@ -246,7 +273,7 @@ class AddProductVC: UIViewController {
         }
         
         let amountNum = amount.value
-        let observationInfo = observations.text ?? ""
+        let observationInfo = observationTextField.text ?? ""
         
         var imageName: String? = nil
         
@@ -303,7 +330,9 @@ extension AddProductVC: ViewCodeProtocol {
             header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             stack.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 15),
             stack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            stack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
+            stack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            
+            observations.heightAnchor.constraint(equalToConstant: 147)
         ])
     }
     

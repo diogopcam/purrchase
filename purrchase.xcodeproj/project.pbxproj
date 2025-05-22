@@ -141,8 +141,11 @@
 				DEVELOPMENT_TEAM = 7BUDD8LAH7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = purrchase/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need to access your camera to take photos of products";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need to access your microphone for video recording of products";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We need to access your photo library to select product images";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = "";
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -169,8 +172,11 @@
 				DEVELOPMENT_TEAM = 7BUDD8LAH7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = purrchase/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need to access your camera to take photos of products";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need to access your microphone for video recording of products";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We need to access your photo library to select product images";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = "";
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
