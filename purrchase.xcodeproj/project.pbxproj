@@ -7,16 +7,16 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		ADD7F7E42DD3ADD30040F299 /* purrchase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = purrchase.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		69D765ED2DD533FB00BD0D84 /* Purrchase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Purrchase.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		ADD7F7F62DD3ADD40040F299 /* Exceptions for "purrchase" folder in "purrchase" target */ = {
+		ADD7F7F62DD3ADD40040F299 /* Exceptions for "purrchase" folder in "Purrchase" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = ADD7F7E32DD3ADD30040F299 /* purrchase */;
+			target = ADD7F7E32DD3ADD30040F299 /* Purrchase */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -24,7 +24,7 @@
 		ADD7F7E62DD3ADD30040F299 /* purrchase */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				ADD7F7F62DD3ADD40040F299 /* Exceptions for "purrchase" folder in "purrchase" target */,
+				ADD7F7F62DD3ADD40040F299 /* Exceptions for "purrchase" folder in "Purrchase" target */,
 			);
 			path = purrchase;
 			sourceTree = "<group>";
@@ -46,24 +46,16 @@
 			isa = PBXGroup;
 			children = (
 				ADD7F7E62DD3ADD30040F299 /* purrchase */,
-				ADD7F7E52DD3ADD30040F299 /* Products */,
+				69D765ED2DD533FB00BD0D84 /* Purrchase.app */,
 			);
-			sourceTree = "<group>";
-		};
-		ADD7F7E52DD3ADD30040F299 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				ADD7F7E42DD3ADD30040F299 /* purrchase.app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		ADD7F7E32DD3ADD30040F299 /* purrchase */ = {
+		ADD7F7E32DD3ADD30040F299 /* Purrchase */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = ADD7F7F72DD3ADD40040F299 /* Build configuration list for PBXNativeTarget "purrchase" */;
+			buildConfigurationList = ADD7F7F72DD3ADD40040F299 /* Build configuration list for PBXNativeTarget "Purrchase" */;
 			buildPhases = (
 				ADD7F7E02DD3ADD30040F299 /* Sources */,
 				ADD7F7E12DD3ADD30040F299 /* Frameworks */,
@@ -76,11 +68,11 @@
 			fileSystemSynchronizedGroups = (
 				ADD7F7E62DD3ADD30040F299 /* purrchase */,
 			);
-			name = purrchase;
+			name = Purrchase;
 			packageProductDependencies = (
 			);
 			productName = purrchase;
-			productReference = ADD7F7E42DD3ADD30040F299 /* purrchase.app */;
+			productReference = 69D765ED2DD533FB00BD0D84 /* Purrchase.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -108,11 +100,11 @@
 			mainGroup = ADD7F7DB2DD3ADD30040F299;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = ADD7F7E52DD3ADD30040F299 /* Products */;
+			productRefGroup = ADD7F7DB2DD3ADD30040F299;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				ADD7F7E32DD3ADD30040F299 /* purrchase */,
+				ADD7F7E32DD3ADD30040F299 /* Purrchase */,
 			);
 		};
 /* End PBXProject section */
@@ -143,13 +135,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7BUDD8LAH7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = purrchase/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UILaunchStoryboardName = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -170,13 +163,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7BUDD8LAH7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = purrchase/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UILaunchStoryboardName = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -323,7 +317,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		ADD7F7F72DD3ADD40040F299 /* Build configuration list for PBXNativeTarget "purrchase" */ = {
+		ADD7F7F72DD3ADD40040F299 /* Build configuration list for PBXNativeTarget "Purrchase" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				ADD7F7F82DD3ADD40040F299 /* Debug */,

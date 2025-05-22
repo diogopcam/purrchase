@@ -1,0 +1,137 @@
+//
+//  NamedTextfieldComponent.swift
+//  purrchase
+//
+//  Created by Richard Fagundes Rodrigues on 14/05/25.
+//
+
+import UIKit
+
+class NamedTextField: UIView {
+    
+    lazy var textLabel: UILabel = {
+        let textLabel = UILabel()
+        textLabel.font = UIFont(name: "Poppins-Regular", size: 17)
+        textLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        return textLabel
+    }()
+    
+    lazy var textField: UITextField = {
+        var textField =  UITextField()
+        textField.textAlignment = .right
+        return textField
+    }()
+    
+    lazy var stackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [textLabel, textField])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.spacing = 4
+        stackView.backgroundColor = UIColor.primary.withAlphaComponent(0.5)
+        stackView.layer.cornerRadius = 12
+        stackView.layoutMargins = .init(top: 0, left: 16, bottom: 0, right: 16)
+        stackView.isLayoutMarginsRelativeArrangement = true
+        return stackView
+    }()
+    
+    var name: String? {
+        didSet {
+            textLabel.text = name
+        }
+    }
+    
+    var nameFont: UIFont? {
+        didSet {
+            textLabel.font = nameFont
+        }
+    }
+    
+    var placeholder: String? {
+        didSet {
+            textField.placeholder = placeholder
+        }
+    }
+    
+    var placeholderFont: UIFont? {
+        didSet {
+            textField.attributedPlaceholder = NSAttributedString(string: placeholder ?? "", attributes: [NSAttributedString.Key.font: placeholderFont ?? UIFont.systemFont(ofSize: 17)])
+        }
+    }
+    
+    override var backgroundColor: UIColor? {
+        didSet {
+            stackView.backgroundColor = backgroundColor
+        }
+    }
+    
+    var placeholderColor: UIColor? {
+        didSet {
+            textField.attributedPlaceholder = NSAttributedString(string: placeholder ?? "", attributes: [NSAttributedString.Key.foregroundColor: placeholderColor ?? UIColor.label])
+        }
+    }
+    
+    var text: String? {
+        get {
+            textField.text
+        }
+        set {
+            textField.text = newValue
+        }
+    }
+    
+    var delegate: UITextFieldDelegate? {
+        didSet {
+            textField.delegate = delegate
+        }
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension NamedTextField: ViewCodeProtocol {
+    func addSubViews() {
+        addSubview(stackView)
+    }
+    
+    func setupConstraints() {
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: self.topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            stackView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            stackView.heightAnchor.constraint(equalToConstant: 42),
+        ])
+    }
+}
+
+extension NamedTextField: Validatable {
+    var errorMessage: String? {
+        switch name?.lowercased() {
+        case "name":
+            return "O campo Nome não pode estar vazio."
+        case "price":
+            return "Preço inválido. Digite apenas números."
+        default:
+            return "Campo inválido."
+        }
+    }
+
+    func validate() -> Bool {
+        guard let text = self.text?.trimmingCharacters(in: .whitespacesAndNewlines), !text.isEmpty else {
+            return false
+        }
+
+        if name?.lowercased() == "price" {
+            let normalized = text.replacingOccurrences(of: ",", with: ".")
+            return Double(normalized) != nil
+        }
+
+        return true
+    }
+}
