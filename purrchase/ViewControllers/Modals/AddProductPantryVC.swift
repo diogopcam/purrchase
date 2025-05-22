@@ -200,8 +200,7 @@ class AddProductPantryVC: UIViewController {
         case 1: // Choose from gallery
             openPhotoLibrary()
         case 2: // Our library
-            // Implement your custom image library here
-            print("Our library selected")
+            openAppLibrary()
         default:
             break
         }
@@ -226,22 +225,30 @@ class AddProductPantryVC: UIViewController {
         present(imagePicker, animated: true)
     }
     
+    private func openAppLibrary() {
+        // Implement your custom image library here
+        let libraryVC = SymbolLibraryVC()
+        libraryVC.delegate = self
+        let nav = UINavigationController(rootViewController: libraryVC)
+        present(nav, animated: true)
+        print("Our library selected")
+    }
+    
     func doneButtonTapped() {
         print("Botão done pressionado!")
 
         guard let name = nameTextField.text, !name.isEmpty else {
-            print("O nome do produto é obrigatório.")
+            showAlert(title: "Name Required", message: "Please enter a product name")
             return
         }
-
+        
         guard let selectedCategory = category.selectedCategory else {
-            print("Selecione uma categoria.")
+            showAlert(title: "Category Required", message: "Please select a category")
             return
         }
-
-        guard let priceText = price.text?.replacingOccurrences(of: ",", with: "."),
-            let priceValue = Double(priceText) else {
-            print("Digite um valor numérico válido para o preço.")
+        
+        guard let priceValue = price.text?.replacingOccurrences(of: ",", with: ".") else {
+            showAlert(title: "Product Value Required", message: "Please select a valid value")
             return
         }
         
@@ -255,13 +262,13 @@ class AddProductPantryVC: UIViewController {
             ProductStorageService.shared.listStoredImages() // log da
         }
         
-        let pantryProduct = PantryProduct(name: name, category: selectedCategory, imageName: imageName, expirationDate: expirationDate, price: priceValue)
+        let pantryProduct = PantryProduct(name: name, category: selectedCategory, imageName: imageName, expirationDate: expirationDate, price: Double(priceValue))
         controller.addToPantry(pantryProduct)
         controller.printAllPantryProducts()
         delegate?.didAddProduct()
         self.dismiss(animated: true)
     }
-    
+  
     private func showAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
@@ -272,9 +279,7 @@ class AddProductPantryVC: UIViewController {
 extension AddProductPantryVC: ViewCodeProtocol {
     func addSubViews() {
         view.addSubview(header)
-        //view.addSubview(photoAndNameStack)
         view.addSubview(stack)
-        //view.addSubview(imagePickerButton)
     }
     
     func setupConstraints() {
@@ -310,3 +315,11 @@ extension AddProductPantryVC: UIImagePickerControllerDelegate, UINavigationContr
     }
 }
 
+extension AddProductPantryVC: SymbolLibraryDelegate {
+    func didSelectSymbol(image: UIImage) {
+        selectedImage = image
+        imagePickerButton.setImage(image, for: .normal)
+        imagePickerButton.imageView?.contentMode = .scaleAspectFit
+        // Depois adiciona no controller
+    }
+}

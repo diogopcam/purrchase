@@ -191,6 +191,7 @@ class ProductListVC: UIViewController, EditProductDelegate {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(CardCollectionViewCell.self, forCellWithReuseIdentifier: CardCollectionViewCell.identifier)
+        
         collectionView.backgroundColor = .clear
         return collectionView
     }()

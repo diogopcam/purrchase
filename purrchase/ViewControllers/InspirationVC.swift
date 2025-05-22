@@ -70,8 +70,34 @@ class InspirationVC: UIViewController {
         card.translatesAutoresizingMaskIntoConstraints = false
         card.name = "Cookies"
         
+        let view1 = UIView()
+        view1.backgroundColor = .clear
+        view1.layer.cornerRadius = 8
+        view1.isUserInteractionEnabled = true
+        card.addSubview(view1)
+        
+        // Add constraints properly
+        view1.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            view1.topAnchor.constraint(equalTo: card.topAnchor),
+            view1.bottomAnchor.constraint(equalTo: card.bottomAnchor),
+            view1.leadingAnchor.constraint(equalTo: card.leadingAnchor),
+            view1.trailingAnchor.constraint(equalTo: card.trailingAnchor)
+        ])
+        
+        // Add tap gesture recognizer
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(openCookiesModal))
+        view1.addGestureRecognizer(tapGesture)
+        
         return card
     }()
+
+    @objc private func openCookiesModal() {
+        let cookiesModal = CookiesModalVC()
+        // Present modally (adjust presentation style as needed)
+        cookiesModal.modalPresentationStyle = .pageSheet // or .formSheet, .fullScreen, etc.
+        self.present(cookiesModal, animated: true, completion: nil)
+    }
     
     @objc func handleComponent() {
         print("component tapped")
