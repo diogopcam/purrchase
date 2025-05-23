@@ -47,7 +47,7 @@ class CategorySelectorComponent: UIView {
         var stack = UIStackView(arrangedSubviews: [label, categoryButton])
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.backgroundColor = .backgroundPrimaria
-        stack.layer.cornerRadius = 12
+        stack.layer.cornerRadius = 17
         stack.distribution = .equalSpacing
         
         stack.isLayoutMarginsRelativeArrangement = true

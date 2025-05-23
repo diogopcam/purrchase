@@ -43,9 +43,11 @@ extension PantryVC: UICollectionViewDataSource {
         } else {
             product = productsExpired[indexPath.item]
         }
+        
+        let thumbnail = product.image ?? UIImage(named: "nonPhotoProduct")
 
         let productName = product.name
-        cell.configure(title: product.name, pImage: product.image) {
+        cell.configure(title: product.name, pImage: thumbnail) {
             // 1) Cria o VC de edição da despensa passando o controller e o produto correto
             let editVC = EditPantryProductVC(controller: self.controller,
                                              product: product)

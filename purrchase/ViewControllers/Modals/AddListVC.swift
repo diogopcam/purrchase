@@ -82,12 +82,12 @@ class AddListVC: UIViewController {
         print("Botão done pressionado! ")
         
         guard let name = listName.text, !name.isEmpty else {
-            showAlert(message: "Please enter a list name.")
+            showAlert(title: "Name required!", message: "Please enter a list name.")
             return
         }
         
         guard let selectedColor = colorSelector.selectedColorName else {
-            showAlert(message: "Please select a color.")
+            showAlert(title: "Color required", message: "Please select a color.")
             return
         }
 
@@ -100,8 +100,8 @@ class AddListVC: UIViewController {
         delegate?.didAddList(list: newList)
         dismiss(animated: true)
         
-        func showAlert(message: String) {
-            let alert = UIAlertController(title: "Oops!", message: message, preferredStyle: .alert)
+        func showAlert(title: String, message: String) {
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default))
             present(alert, animated: true)
         }

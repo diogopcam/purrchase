@@ -15,29 +15,43 @@ class ProductImageComponent: UIView {
         icon.translatesAutoresizingMaskIntoConstraints = false
         icon.heightAnchor.constraint(equalToConstant: 215).isActive = true
         icon.widthAnchor.constraint(equalToConstant: 215).isActive = true
-           icon.clipsToBounds = true
+        icon.clipsToBounds = true
+        icon.isUserInteractionEnabled = true
+        icon.contentMode = .scaleAspectFill
         return icon
     }()
 
-
-    lazy var textLabel: UILabel = {
-        var label = UILabel()
-        label.font = UIFont(name: "Poppins-Medium", size: 40)
-        label.numberOfLines = 0
-        label.lineBreakMode = .byWordWrapping
-        label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
-        
-        return label
+//    lazy var textLabel: UILabel = {
+//        var label = UILabel()
+//        label.font = UIFont(name: "Poppins-Medium", size: 40)
+//        label.numberOfLines = 0
+//        label.lineBreakMode = .byWordWrapping
+//        label.textAlignment = .center
+//        label.translatesAutoresizingMaskIntoConstraints = false
+//        
+//        return label
+//    }()
+    
+    lazy var textLabel: UITextField = {
+        let tf = UITextField()
+        tf.font = UIFont(name: "Poppins-Medium", size: 40)
+        tf.textAlignment = .center
+        tf.borderStyle = .none
+        tf.translatesAutoresizingMaskIntoConstraints = false
+        return tf
     }()
+
     
     lazy var stackView: UIStackView = {
        var view = UIStackView(arrangedSubviews: [imageView, textLabel])
         view.axis = .vertical
         view.translatesAutoresizingMaskIntoConstraints = false
         view.spacing = 10
+        view.alignment = .center
         return view
     }()
+    
+    var onImageTap: (() -> Void)?
     
     var name: String? {
         get {
@@ -60,11 +74,18 @@ class ProductImageComponent: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
+        imageView.addGestureRecognizer(tapGesture)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    @objc private func imageTapped() {
+        onImageTap?()
+   }
     
 }
 
@@ -82,6 +103,10 @@ extension ProductImageComponent: ViewCodeProtocol {
         ])
     }
     
+    func setup() {
+            addSubViews()
+            setupConstraints()
+        }
     
 }
 

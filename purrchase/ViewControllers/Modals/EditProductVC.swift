@@ -14,6 +14,7 @@ class EditProductVC: UIViewController {
     private var dropdownView: ImagePickerOptionsView?
     private var dropdownIsVisible = false
     private var selectedImage: UIImage?
+    private var outsideTapGesture: UITapGestureRecognizer?
     
     // MARK: - Init
     init(controller: ProductListController, productList: ProductList, product: Product) {
@@ -51,16 +52,9 @@ class EditProductVC: UIViewController {
         return nav
     }()
     
-    lazy var imagePickerButton: ImagePickerButton = {
-        let btn = ImagePickerButton()
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        return btn
-    }()
-    
     lazy var productComponent: ProductImageComponent = {
         let comp = ProductImageComponent()
         comp.translatesAutoresizingMaskIntoConstraints = false
-//        comp..addTarget(self, action: #selector(toggleDropdown), for: .touchUpInside)
         return comp
     }()
     
@@ -77,24 +71,46 @@ class EditProductVC: UIViewController {
         return comp
     }()
     
-    lazy var observationsField: NamedTextField = {
-        let tf = NamedTextField()
-        tf.translatesAutoresizingMaskIntoConstraints = false
-        tf.name = "Observations"
-        tf.placeholder = "Additional information"
-        tf.nameFont = UIFont(name: "Poppins-Medium", size: 17)
-        tf.placeholderFont = UIFont(name: "Poppins-Medium", size: 17)!
-        tf.placeholderColor = .textAndIcons
-        tf.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        return tf
+    lazy var observationLabel: UILabel = {
+        var label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "   Observations"
+        label.font = UIFont(name: "Poppins-Medium", size: 17)
+        label.textColor = .black
+        label.backgroundColor = .backgroundPrimaria
+        label.layer.cornerRadius = 17
+        label.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        label.clipsToBounds = true
+        
+        return label
+    }()
+    
+    lazy var observationTextField: UITextView = {
+        var textField = UITextView()
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.backgroundColor = .backgroundPrimaria
+        textField.font = UIFont(name: "Poppins-Medium", size: 17)
+        textField.textColor = .textAndIcons
+        textField.layer.cornerRadius = 17
+        textField.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        textField.textContainerInset = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+        textField.clipsToBounds = true
+        
+        return textField
+    }()
+    
+    lazy var observations: UIStackView = {
+        var observations = UIStackView(arrangedSubviews: [observationLabel, observationTextField])
+        observations.translatesAutoresizingMaskIntoConstraints = false
+        observations.axis = .vertical
+        
+        observationTextField.heightAnchor.constraint(equalToConstant: 120).isActive = true
+  
+        return observations
     }()
     
     lazy var infoStackView: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [
-            categoryComponent,
-            amountComponent,
-            observationsField
-        ])
+        let stack = UIStackView(arrangedSubviews: [categoryComponent, amountComponent, observations])
         stack.axis = .vertical
         stack.spacing = 24
         stack.translatesAutoresizingMaskIntoConstraints = false
@@ -112,25 +128,49 @@ class EditProductVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        setupDismissKeyboardGesture()
-        setupDropdownToggle()
+        
+        let tapDismissKeyboard = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapDismissKeyboard)
+        view.backgroundColor = .white
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(toggleDropdown))
+        productComponent.imageView.isUserInteractionEnabled = true
+        productComponent.imageView.addGestureRecognizer(tap)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+
+        
         setup()
         populateFields()
-    }
-    
-    private func setupDismissKeyboardGesture() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
     }
     
     @objc private func dismissKeyboard() {
         view.endEditing(true)
     }
+    
+    @objc private func keyboardWillShow(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+        
+        let keyboardHeight = keyboardFrame.height
+        scrollView.contentInset.bottom = keyboardHeight
+        scrollView.verticalScrollIndicatorInsets.bottom = keyboardHeight
 
-    private func setupDropdownToggle() {
-        imagePickerButton.addTarget(self, action: #selector(toggleDropdown), for: .touchUpInside)
+        // Garante que o campo visível role
+        let convertedFrame = observationTextField.convert(observationTextField.bounds, to: scrollView)
+        scrollView.scrollRectToVisible(convertedFrame, animated: true)
     }
+
+    @objc private func keyboardWillHide(_ notification: Notification) {
+        scrollView.contentInset.bottom = 0
+        scrollView.verticalScrollIndicatorInsets.bottom = 0
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     
     @objc private func toggleDropdown() {
         dropdownIsVisible ? hideDropdown() : showDropdown()
@@ -145,7 +185,7 @@ class EditProductVC: UIViewController {
         }
         view.addSubview(dropdown)
         
-        let frame = imagePickerButton.convert(imagePickerButton.bounds, to: view)
+        let frame = productComponent.imageView.convert(productComponent.imageView.bounds, to: view)
         
         NSLayoutConstraint.activate([
             dropdown.topAnchor.constraint(equalTo: view.topAnchor, constant: frame.maxY + 4),
@@ -159,6 +199,19 @@ class EditProductVC: UIViewController {
         
         dropdownView = dropdown
         dropdownIsVisible = true
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleOutsideTap(_:)))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+        outsideTapGesture = tapGesture
+    }
+    
+    @objc private func handleOutsideTap(_ sender: UITapGestureRecognizer) {
+        guard let dropdown = dropdownView else { return }
+        let location = sender.location(in: view)
+        if !dropdown.frame.contains(location) && !productComponent.imageView.frame.contains(location) {
+            hideDropdown()
+        }
     }
     
     private func hideDropdown() {
@@ -178,8 +231,7 @@ class EditProductVC: UIViewController {
         case 1: // Choose from gallery
             openPhotoLibrary()
         case 2: // Our library
-            // Implement your custom image library here
-            print("Our library selected")
+            openAppLibrary()
         default:
             break
         }
@@ -204,6 +256,14 @@ class EditProductVC: UIViewController {
         present(imagePicker, animated: true)
     }
     
+    private func openAppLibrary() {
+        let libraryVC = SymbolLibraryVC()
+        libraryVC.delegate = self
+        let nav = UINavigationController(rootViewController: libraryVC)
+        present(nav, animated: true)
+        print("Our library selected")
+    }
+    
     private func showAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
@@ -212,6 +272,7 @@ class EditProductVC: UIViewController {
     
     // MARK: - Actions
     @objc private func doneButtonTapped() {
+        
         guard let name = productComponent.name, !name.isEmpty else {
             showAlert(title: "Name Required", message: "Please enter a product name")
             return
@@ -223,34 +284,27 @@ class EditProductVC: UIViewController {
         }
         
         let amount = amountComponent.value
-        let observation = observationsField.text
+        let observation = observationTextField.text
         
-        // Handle image update
-        var newImageName: String? = product.imageName
-        if let selectedImage = selectedImage {
-            // Delete old image if exists
-            if let oldImageName = product.imageName {
-                ProductStorageService.shared.deleteImage(named: oldImageName)
-            }
-            // Save new image
-            newImageName = ProductStorageService.shared.saveImage(selectedImage)
+        var imageName: String? = product.imageName
+        
+        if let image = selectedImage {
+            imageName = ProductStorageService.shared.saveImage(image)
+            ProductStorageService.shared.listStoredImages()
         }
         
-        // Update product
         product.name = name
         product.category = category
         product.amount = amount
         product.observation = observation
-        product.imageName = newImageName
+        product.imageName = imageName
         
-        // Update in controller
         controller.updateProduct(product, inListWithId: productList.id)
         delegate?.didUpdateProduct(product)
         dismiss(animated: true)
     }
     
     @objc private func deleteButtonTapped() {
-        // Delete image if exists
         
         if let imageName = product.imageName {
             ProductStorageService.shared.deleteImage(named: imageName)
@@ -264,25 +318,10 @@ class EditProductVC: UIViewController {
     // MARK: - Helpers
     private func populateFields() {
         productComponent.name = product.name
-        productComponent.image = product.image ?? UIImage(systemName: "photo")
+        productComponent.image = product.image ?? .nonPhotoProduct
         categoryComponent.selectedCategory = product.category
         amountComponent.value = product.amount
-        observationsField.text = product.observation
-    }
-}
-
-// MARK: - Image Picker Delegate
-extension EditProductVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let image = info[.originalImage] as? UIImage {
-            selectedImage = image
-            productComponent.image = image
-        }
-        picker.dismiss(animated: true)
-    }
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        picker.dismiss(animated: true)
+        observationTextField.text = product.observation
     }
 }
 
@@ -323,6 +362,9 @@ extension EditProductVC: ViewCodeProtocol {
             productComponent.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 32),
             productComponent.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             productComponent.textLabel.widthAnchor.constraint(equalToConstant: 1000),
+            
+            categoryComponent.heightAnchor.constraint(equalToConstant: 60),
+            amountComponent.heightAnchor.constraint(equalToConstant: 50),
 
             // InfoStack
             infoStackView.topAnchor.constraint(equalTo: productComponent.bottomAnchor, constant: 16),
@@ -336,5 +378,28 @@ extension EditProductVC: ViewCodeProtocol {
             deleteButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
             deleteButton.heightAnchor.constraint(equalToConstant: 56),
         ])
+    }
+}
+
+// MARK: - Image Picker Delegate
+extension EditProductVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+            if let image = info[.originalImage] as? UIImage {
+                selectedImage = image
+                productComponent.image = image
+
+            }
+            picker.dismiss(animated: true)
+        }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true)
+    }
+}
+
+extension EditProductVC: SymbolLibraryDelegate {
+    func didSelectSymbol(image: UIImage) {
+        selectedImage = image
+        productComponent.image = image
     }
 }

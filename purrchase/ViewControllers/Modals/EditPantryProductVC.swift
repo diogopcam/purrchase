@@ -16,9 +16,11 @@ class EditPantryProductVC: UIViewController {
     let controller: PantryController
     var product: PantryProduct
     weak var delegate: EditPantryProductDelegate?
+    private var selectedImage: UIImage?
     
     private var dropdownView: ImagePickerOptionsView?
     private var dropdownIsVisible = false
+    private var outsideTapGesture: UITapGestureRecognizer?
     
     // MARK: - Init
     init(controller: PantryController, product: PantryProduct) {
@@ -55,12 +57,6 @@ class EditPantryProductVC: UIViewController {
         return nav
     }()
     
-    lazy var imagePickerButton: ImagePickerButton = {
-        let btn = ImagePickerButton()
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        return btn
-    }()
-    
     lazy var productComponent: ProductImageComponent = {
         let comp = ProductImageComponent()
         comp.translatesAutoresizingMaskIntoConstraints = false
@@ -89,16 +85,17 @@ class EditPantryProductVC: UIViewController {
         tf.nameFont = UIFont(name: "Poppins-Medium", size: 17)
         tf.placeholderFont = UIFont(name: "Poppins-Medium", size: 17)!
         tf.placeholderColor = .textAndIcons
-        tf.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        tf.textField.addTarget(self, action: #selector(clearPriceFieldIfNeeded), for: .editingDidBegin)
         return tf
     }()
     
+    @objc private func clearPriceFieldIfNeeded() {
+        guard let text = priceField.textField.text, !text.isEmpty else { return }
+        priceField.textField.text = ""
+    }
+    
     lazy var infoStackView: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [
-            categoryComponent,
-            expirationDatePicker,
-            priceField
-        ])
+        let stack = UIStackView(arrangedSubviews: [categoryComponent, expirationDatePicker, priceField])
         stack.axis = .vertical
         stack.spacing = 24
         stack.translatesAutoresizingMaskIntoConstraints = false
@@ -115,23 +112,44 @@ class EditPantryProductVC: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let tapDismissKeyboard = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapDismissKeyboard)
         view.backgroundColor = .white
-        setupDismissKeyboardGesture()
-        setupDropdownToggle()
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(toggleDropdown))
+        productComponent.imageView.isUserInteractionEnabled = true
+        productComponent.imageView.addGestureRecognizer(tap)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
         setup()
         populateFields()
     }
-    
-    private func setupDismissKeyboardGesture() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
-    }
-    @objc private func dismissKeyboard() { view.endEditing(true) }
 
-    private func setupDropdownToggle() {
-        imagePickerButton.addTarget(self, action: #selector(toggleDropdown), for: .touchUpInside)
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
+    
+    @objc private func keyboardWillShow(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+        
+        let bottomInset = keyboardFrame.height - view.safeAreaInsets.bottom
+        scrollView.contentInset.bottom = bottomInset
+        scrollView.verticalScrollIndicatorInsets.bottom = bottomInset
+    }
+
+    @objc private func keyboardWillHide(_ notification: Notification) {
+        scrollView.contentInset.bottom = 0
+        scrollView.verticalScrollIndicatorInsets.bottom = 0
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     @objc private func toggleDropdown() {
         dropdownIsVisible ? hideDropdown() : showDropdown()
     }
@@ -139,49 +157,144 @@ class EditPantryProductVC: UIViewController {
         let dropdown = ImagePickerOptionsView()
         dropdown.translatesAutoresizingMaskIntoConstraints = false
         dropdown.onSelect = { [weak self] idx in
-            self?.handleDropdownSelection(index: idx); self?.hideDropdown()
+            self?.handleDropdownSelection(index: idx)
+            self?.hideDropdown()
         }
+        
         view.addSubview(dropdown)
-        let frame = imagePickerButton.convert(imagePickerButton.bounds, to: view)
+        
+        let frame = productComponent.imageView.convert(productComponent.imageView.bounds, to: view)
+        
         NSLayoutConstraint.activate([
             dropdown.topAnchor.constraint(equalTo: view.topAnchor, constant: frame.maxY + 4),
             dropdown.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: frame.minX),
             dropdown.widthAnchor.constraint(equalToConstant: frame.width),
             dropdown.heightAnchor.constraint(equalToConstant: CGFloat(dropdown.options.count) * 44)
         ])
-        dropdown.alpha = 0; UIView.animate(withDuration: 0.25) { dropdown.alpha = 1 }
-        dropdownView = dropdown; dropdownIsVisible = true
+        
+        dropdown.alpha = 0
+        UIView.animate(withDuration: 0.25) {
+            dropdown.alpha = 1
+        }
+        
+        dropdownView = dropdown
+        dropdownIsVisible = true
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleOutsideTap(_:)))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+        outsideTapGesture = tapGesture
     }
+    
+    @objc private func handleOutsideTap(_ sender: UITapGestureRecognizer) {
+        guard let dropdown = dropdownView else { return }
+        let location = sender.location(in: view)
+        if !dropdown.frame.contains(location) && !productComponent.imageView.frame.contains(location) {
+            hideDropdown()
+        }
+    }
+    
     private func hideDropdown() {
-        guard let dd = dropdownView else { return }
-        UIView.animate(withDuration: 0.25, animations: { dd.alpha = 0 }) { _ in dd.removeFromSuperview() }
+        guard let dropdown = dropdownView else { return }
+        UIView.animate(withDuration: 0.25, animations: {
+            dropdown.alpha = 0
+        }, completion: { _ in
+            dropdown.removeFromSuperview()
+        })
         dropdownIsVisible = false
+        
+        if let tap = outsideTapGesture {
+            view.removeGestureRecognizer(tap)
+            outsideTapGesture = nil
+        }
     }
+    
     private func handleDropdownSelection(index: Int) {
-        // TODO: set productComponent.image/name
+        switch index {
+        case 0: // Take photo
+            openCamera()
+        case 1: // Choose from gallery
+            openPhotoLibrary()
+        case 2: // Our library
+            openAppLibrary()
+        default:
+            break
+        }
+    }
+    
+    private func openCamera() {
+        guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
+            showAlert(title: "Error", message: "Camera not available")
+            return
+        }
+        
+        let imagePicker = UIImagePickerController()
+        imagePicker.sourceType = .camera
+        imagePicker.delegate = self
+        present(imagePicker, animated: true)
+    }
+    
+    private func openPhotoLibrary() {
+        let imagePicker = UIImagePickerController()
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.delegate = self
+        present(imagePicker, animated: true)
+    }
+    
+    private func openAppLibrary() {
+        let libraryVC = SymbolLibraryVC()
+        libraryVC.delegate = self
+        let nav = UINavigationController(rootViewController: libraryVC)
+        present(nav, animated: true)
+        print("Our library selected")
+    }
+    
+    private func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
     }
     
     // MARK: - Actions
     @objc private func doneButtonTapped() {
-        guard let name = productComponent.name, !name.isEmpty else { return }
-        guard let category = categoryComponent.selectedCategory else { return }
-
-        let expDate = expirationDatePicker.date
-        product.expirationDate = expDate
-
+        
+        guard let name = productComponent.name, !name.isEmpty else {
+            showAlert(title: "Name Required", message: "Please enter a product name")
+            return
+        }
+        
+        guard let selectedCategory = categoryComponent.selectedCategory else {
+            showAlert(title: "Category Required", message: "Please select a category")
+            return
+        }
+        
         if let text = priceField.text?
-            .replacingOccurrences(of: "R$", with: "")
-            .replacingOccurrences(of: ",", with: "."),
+                .replacingOccurrences(of: "R$", with: "")
+                .replacingOccurrences(of: ",", with: "."),
            let priceValue = Double(text) {
             product.price = priceValue
+        } else {
+            showAlert(title: "Product Value Required", message: "Please select a valid value")
+            return
+        }
+
+        let expDate = expirationDatePicker.date
+        
+        var imageName: String? = product.imageName
+        
+        if let image = selectedImage {
+            imageName = ProductStorageService.shared.saveImage(image)
+            ProductStorageService.shared.listStoredImages()
         }
 
         product.name = name
-        product.category = category
+        product.category = selectedCategory
+        product.expirationDate = expDate
+        product.imageName = imageName
 
         controller.updateProduct(product)
         delegate?.didUpdatePantryProduct(product)
-        dismiss(animated: true)
+        self.dismiss(animated: true)
     }
     
     @objc private func deleteButtonTapped() {
@@ -193,12 +306,10 @@ class EditPantryProductVC: UIViewController {
     // MARK: - Helpers
     private func populateFields() {
         productComponent.name = product.name
+        //productComponent.textLabel.text = product.name
         categoryComponent.selectedCategory = product.category
-        if let img = product.image {
-            productComponent.image = img
-        } else {
-            productComponent.image = .apple
-        }
+        productComponent.image = product.image ?? .nonPhotoProduct
+
         if let date = product.expirationDate { expirationDatePicker.date = date }
         if let price = product.price {
             priceField.text = String(format: "R$%.2f", price)
@@ -256,5 +367,28 @@ extension EditPantryProductVC: ViewCodeProtocol {
             deleteButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
             deleteButton.heightAnchor.constraint(equalToConstant: 56),
         ])
+    }
+}
+
+// MARK: - Image Picker Delegate
+extension EditPantryProductVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+            if let image = info[.originalImage] as? UIImage {
+                selectedImage = image
+                productComponent.image = image
+
+            }
+            picker.dismiss(animated: true)
+        }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true)
+    }
+}
+
+extension EditPantryProductVC: SymbolLibraryDelegate {
+    func didSelectSymbol(image: UIImage) {
+        selectedImage = image
+        productComponent.image = image
     }
 }

@@ -136,7 +136,7 @@ class AddProductPantryVC: UIViewController {
     }
     
     private func showDropdown() {
-        guard let button = imagePickerButton.superview else { return }
+        //guard let button = imagePickerButton.superview else { return }
         
         let dropdown = ImagePickerOptionsView()
         dropdown.translatesAutoresizingMaskIntoConstraints = false
@@ -247,8 +247,18 @@ class AddProductPantryVC: UIViewController {
             return
         }
         
-        guard let priceValue = price.text?.replacingOccurrences(of: ",", with: ".") else {
-            showAlert(title: "Product Value Required", message: "Please select a valid value")
+        guard let priceText = price.text, !priceText.trimmingCharacters(in: .whitespaces).isEmpty else {
+            showAlert(title: "Product Value Required", message: "Please enter a price")
+            return
+        }
+
+        let cleanedPrice = priceText
+            .replacingOccurrences(of: "R$", with: "")
+            .replacingOccurrences(of: ",", with: ".")
+            .trimmingCharacters(in: .whitespaces)
+
+        guard let priceValue = Double(cleanedPrice) else {
+            showAlert(title: "Product value required!", message: "Please enter a valid number for the price")
             return
         }
         
@@ -262,7 +272,7 @@ class AddProductPantryVC: UIViewController {
             ProductStorageService.shared.listStoredImages() // log da
         }
         
-        let pantryProduct = PantryProduct(name: name, category: selectedCategory, imageName: imageName, expirationDate: expirationDate, price: Double(priceValue))
+        let pantryProduct = PantryProduct(name: name, category: selectedCategory, imageName: imageName, expirationDate: expirationDate, price: priceValue)
         controller.addToPantry(pantryProduct)
         controller.printAllPantryProducts()
         delegate?.didAddProduct()
