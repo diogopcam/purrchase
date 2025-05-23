@@ -110,6 +110,7 @@ class AddProductVC: UIViewController {
         textField.textColor = .textAndIcons
         textField.layer.cornerRadius = 17
         textField.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        textField.textContainerInset = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
         textField.clipsToBounds = true
         
         return textField

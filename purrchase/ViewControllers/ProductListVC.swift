@@ -268,7 +268,8 @@ extension ProductListVC: UICollectionViewDataSource {
         }
 
         let product = productList.list[indexPath.item]
-        cell.configure(title: product.name, pImage: product.image, number: product.amount) {
+        let thumbnail = product.image ?? .nonPhotoProduct
+        cell.configure(title: product.name, pImage: thumbnail, number: product.amount) {
             let editVC = EditProductVC(controller: self.controller, productList: self.productList, product: product)
             editVC.delegate = self
             self.present(editVC, animated: true)
